@@ -17,42 +17,55 @@
 
         <RelativeLayout
             android:id="@+id/RRtoolbar"
-            android:layout_alignParentTop="true"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_marginEnd="@dimen/_2sdp"
+            android:layout_marginBottom="@dimen/_2sdp"
             android:background="@null"
-            android:padding="@dimen/_1sdp">
-
-            <com.mancj.materialsearchbar.MaterialSearchBar
-                android:id="@+id/searchBar"
-                style="@style/MaterialSearchBarLight"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_centerInParent="true"
-                android:layout_marginStart="@dimen/_5sdp"
-                android:layout_marginTop="@dimen/_20sdp"
-                android:layout_marginEnd="@dimen/_5sdp"
-                android:layout_toRightOf="@id/menu"
-                app:mt_backIconDrawable="@drawable/search_vctr"
-                app:mt_hint="@string/search_here"
-                app:mt_maxSuggestionsCount="15"
-                app:mt_placeholder="@string/search_here"
-                app:mt_searchBarColor="@color/back"
-                app:mt_speechMode="false" />
-
+            android:padding="@dimen/_3sdp">
 
             <ImageView
                 android:id="@+id/menu"
                 android:layout_width="@dimen/_45sdp"
                 android:layout_height="@dimen/_45sdp"
-                android:layout_marginStart="@dimen/_5sdp"
-                android:layout_marginTop="@dimen/_10sdp"
-                android:padding="@dimen/_2sdp"
+                android:layout_marginTop="@dimen/_5sdp"
+                android:layout_marginEnd="@dimen/_2sdp"
+                android:scaleType="centerInside"
                 android:src="@drawable/side_bar" />
 
 
+            <com.mancj.materialsearchbar.MaterialSearchBar
+                android:id="@+id/searchBar"
+                style="@style/MaterialSearchBarLight"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:layout_marginStart="@dimen/_1sdp"
+                android:layout_marginTop="@dimen/_4sdp"
+                android:layout_marginEnd="@dimen/_1sdp"
+                android:layout_marginBottom="@dimen/_5sdp"
+                android:layout_toStartOf="@id/filter"
+                android:layout_toEndOf="@id/menu"
+                android:textSize="@dimen/_12sdp"
+                app:mt_backIconDrawable="@drawable/search_vctr"
+                app:mt_hint="@string/enter_txt"
+                app:mt_maxSuggestionsCount="15"
+                app:mt_placeholder="@string/search_here"
+                app:mt_roundedSearchBarEnabled="true"
+                app:mt_speechMode="false"
+                app:mt_textCursorTint="@color/black" />
 
-
+            <ImageView
+                android:id="@+id/filter"
+                android:layout_width="@dimen/_35sdp"
+                android:layout_height="@dimen/_35sdp"
+                android:layout_alignParentEnd="true"
+                android:layout_marginStart="@dimen/_2sdp"
+                android:layout_marginEnd="@dimen/_2sdp"
+                android:layout_marginTop="@dimen/_7sdp"
+                android:scaleType="fitXY"
+              android:background="@drawable/filter" />
         </RelativeLayout>
 
         <LinearLayout

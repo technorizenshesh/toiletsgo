@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <variable
+            name="model"
+            type="com.toilets.go.models.SuccessResRequests.Result" />
+    </data>
+
+    <androidx.cardview.widget.CardView
+        android:visibility="visible"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:cardCornerRadius="@dimen/_10sdp"
+        app:cardUseCompatPadding="true"
+        app:cardElevation="@dimen/_3sdp"
+
+        >
+        <LinearLayout
+            android:layout_margin="@dimen/_2sdp"
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            >
+
+            <LinearLayout
+                android:layout_margin="@dimen/_3sdp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <de.hdodenhof.circleimageview.CircleImageView
+                    android:layout_width="@dimen/_40sdp"
+                    android:layout_height="@dimen/_40sdp"
+                    android:id="@+id/ivProfile"
+                    android:visibility="gone"
+                    android:src="@drawable/dummy">
+
+                </de.hdodenhof.circleimageview.CircleImageView>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginLeft="@dimen/_5sdp"
+                    android:orientation="vertical">
+<LinearLayout
+    android:weightSum="2"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    >
+    <TextView
+        android:layout_weight="1"
+        android:padding="@dimen/_5sdp"
+        android:id="@+id/tvUserName"
+        android:layout_alignParentStart="true"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:maxLength="25"
+        android:textAlignment="textStart"
+        android:text="@{model.cartDetails.toiletName}"
+        android:fontFamily="@font/poppins_bold"
+        android:textColor="@color/colorPrimary"
+        android:textSize="@dimen/_12sdp"
+        android:textStyle="bold" />
+    <TextView
+        android:layout_weight="1"
+        android:textAlignment="textEnd"
+android:layout_marginEnd="@dimen/_5sdp"
+        android:layout_toEndOf="@id/tvUserName"
+        android:padding="@dimen/_5sdp"
+        android:layout_alignParentEnd="true"
+        android:id="@+id/tvstatus"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:text="@{model.status}"
+
+        android:fontFamily="@font/poppins_bold"
+        android:textColor="@color/green"
+        android:textSize="@dimen/_12sdp"
+        android:textStyle="bold" />
+</LinearLayout>
+
+
+                    <TextView
+                        android:layout_margin="@dimen/_2sdp"
+                        android:id="@+id/tvTimeAgo"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:text="@{model.cartDetails.address}"
+                        android:textColor="@color/hint_text_color"
+                        android:textSize="@dimen/_12sdp" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <View
+                android:layout_marginTop="@dimen/_5sdp"
+                android:background="@color/white"
+                android:layout_width="match_parent"
+                android:layout_height="1sp"
+                >
+            </View>
+
+            <RelativeLayout
+                android:layout_marginBottom="@dimen/_5sdp"
+                android:visibility="visible"
+                android:layout_marginLeft="@dimen/_10sdp"
+                android:layout_marginTop="@dimen/_2sdp"
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                >
+                <TextView
+                    android:layout_alignParentStart="true"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:text="@{` #`+model.id}"
+                    android:textColor="@color/hint_text_color"
+                    android:textSize="@dimen/_12sdp" />
+                <TextView
+                    android:background="@drawable/border_btn_ovel"
+                    android:layout_marginEnd="@dimen/_15sdp"
+                    android:layout_alignParentEnd="true"
+                    android:id="@+id/tvRating"
+                    android:padding="@dimen/_5sdp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:text="@{`$`+model.amount}"
+                    android:fontFamily="@font/poppins_medium"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/_12sdp"
+                    />
+
+
+            </RelativeLayout>
+
+        </LinearLayout>
+
+    </androidx.cardview.widget.CardView>
+
+
+</layout>

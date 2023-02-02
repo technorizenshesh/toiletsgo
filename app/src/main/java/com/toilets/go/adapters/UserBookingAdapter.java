@@ -1,5 +1,6 @@
 package com.toilets.go.adapters;
 
+
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,21 +13,21 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.toilets.go.BR;
 import com.toilets.go.R;
 import com.toilets.go.databinding.ItemRowBinding;
+import com.toilets.go.databinding.ItemRowUserBinding;
 import com.toilets.go.models.SuccessResRequests;
 import com.toilets.go.utills.CustomClickListener;
 
 import java.util.List;
 
-public class CustomerListAdapter extends
-        RecyclerView.Adapter<CustomerListAdapter.ViewHolder>
-         {
+public class UserBookingAdapter extends
+        RecyclerView.Adapter<UserBookingAdapter.ViewHolder> {
 
     private List<SuccessResRequests.Result> dataModelList;
     private Context context;
-    CustomClickListener customClickListener ;
+    CustomClickListener customClickListener;
 
-    public CustomerListAdapter(List<SuccessResRequests.Result> dataModelList,
-                               Context ctx,  CustomClickListener customClickListener ) {
+    public UserBookingAdapter(List<SuccessResRequests.Result> dataModelList,
+                              Context ctx, CustomClickListener customClickListener) {
         this.dataModelList = dataModelList;
         this.customClickListener = customClickListener;
         context = ctx;
@@ -35,9 +36,9 @@ public class CustomerListAdapter extends
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent,
                                          int viewType) {
-        ItemRowBinding binding= DataBindingUtil.inflate(
+        ItemRowUserBinding binding = DataBindingUtil.inflate(
                 LayoutInflater.from(parent.getContext()),
-                R.layout.item_row, parent, false);
+                R.layout.item_row_user, parent, false);
         return new ViewHolder(binding);
     }
 
@@ -45,16 +46,10 @@ public class CustomerListAdapter extends
     public void onBindViewHolder(ViewHolder holder, int position) {
         SuccessResRequests.Result dataModel = dataModelList.get(position);
         holder.bind(dataModel);
-        if (dataModel.getStatus().equalsIgnoreCase("Pending")) {
-            holder.itemRowBinding.acceptRejectLay.setVisibility(View.VISIBLE);
-            holder.itemRowBinding.viewDtl.setVisibility(View.GONE);
-        }
-        holder.itemRowBinding.btnAccept.setOnClickListener( v -> {
-            customClickListener.cardClicked(dataModel,"Accept",position);
-        });
-        holder.itemRowBinding.btnReject.setOnClickListener( v -> {
-            customClickListener.cardClicked(dataModel,"Reject",position);
-        });
+         if (dataModel.getStatus().equalsIgnoreCase("Pending")){
+             holder.itemRowBinding.tvstatus.setTextColor(context.getColor(R.color.red));
+
+         }
 
     }
 
@@ -65,9 +60,9 @@ public class CustomerListAdapter extends
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
-        public ItemRowBinding itemRowBinding;
+        public ItemRowUserBinding itemRowBinding;
 
-        public ViewHolder(ItemRowBinding itemRowBinding) {
+        public ViewHolder(ItemRowUserBinding itemRowBinding) {
             super(itemRowBinding.getRoot());
             this.itemRowBinding = itemRowBinding;
         }
@@ -78,9 +73,9 @@ public class CustomerListAdapter extends
         }
     }
 
-             public void removeAt(int position) {
-                 dataModelList.remove(position);
-                 notifyItemRemoved(position);
-                 notifyItemRangeChanged(position, dataModelList.size());
-             }
+    public void removeAt(int position) {
+        dataModelList.remove(position);
+        notifyItemRemoved(position);
+        notifyItemRangeChanged(position, dataModelList.size());
+    }
 }

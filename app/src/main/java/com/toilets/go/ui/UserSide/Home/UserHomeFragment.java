@@ -1,7 +1,9 @@
 package com.toilets.go.ui.UserSide.Home;
 
 import android.Manifest;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.pm.PackageManager;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
@@ -55,10 +57,12 @@ import com.google.android.libraries.places.api.net.FetchPlaceResponse;
 import com.google.android.libraries.places.api.net.FindAutocompletePredictionsRequest;
 import com.google.android.libraries.places.api.net.FindAutocompletePredictionsResponse;
 import com.google.android.libraries.places.api.net.PlacesClient;
+import com.google.android.material.slider.LabelFormatter;
 import com.mancj.materialsearchbar.MaterialSearchBar;
 import com.mancj.materialsearchbar.adapter.SuggestionsAdapter;
 import com.toilets.go.R;
 import com.toilets.go.databinding.BottemSheeetDetailsBinding;
+import com.toilets.go.databinding.BottemSheeetFilterBinding;
 import com.toilets.go.models.SuccessResBooking;
 import com.toilets.go.utills.DataManager;
 import com.toilets.go.utills.GPSTracker;
@@ -96,6 +100,11 @@ public class UserHomeFragment extends Fragment implements OnMapReadyCallback {
     Geocoder geocoder;
     private PlacesClient placesClient;
     private List<AutocompletePrediction> predictionList;
+    String price = "";
+    String range = "";
+    String rating = "";
+    String lat = "";
+    String lon = "";
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -107,6 +116,9 @@ public class UserHomeFragment extends Fragment implements OnMapReadyCallback {
         gpsTracker = new GPSTracker(requireActivity());
         apiInterface = ApiClient.getClient().create(GosInterface.class);
         session = new Session(requireActivity());
+        lat = session.getHOME_LAT();
+        lon = session.getHOME_LONG();
+        Log.e(TAG, "getFireBaseTokengetFireBaseToken: "+session.getFireBaseToken() );
 
 ///rearch
         Places.initialize(requireActivity(), requireActivity().getString(R.string.api_key));
@@ -183,29 +195,28 @@ public class UserHomeFragment extends Fragment implements OnMapReadyCallback {
                 }
                 AutocompletePrediction selectedPrediction = predictionList.get(position);
                 String suggestion = binding.searchBar.getLastSuggestions().get(position).toString();
-                binding.searchBar.setHint(suggestion);
-                binding.searchBar.setEnabled(false);
+                binding.searchBar.setPlaceHolder(suggestion);
+                // binding.searchBar.setEnabled(false);
                 binding.searchBar.clearSuggestions();
                 binding.searchBar.closeSearch();
                 binding.searchBar.hideSuggestionsList();
 
-                new Handler().postDelayed(() -> binding.searchBar.clearSuggestions(), 1000);
+                new Handler().postDelayed(() -> binding.searchBar.clearSuggestions(), 500);
                 InputMethodManager imm = (InputMethodManager) requireActivity().getSystemService(INPUT_METHOD_SERVICE);
                 if (imm != null)
                     imm.hideSoftInputFromWindow(binding.searchBar.getWindowToken(), InputMethodManager.HIDE_IMPLICIT_ONLY);
                 final String placeId = selectedPrediction.getPlaceId();
                 List<Place.Field> placeFields = List.of(Place.Field.LAT_LNG);
-
                 FetchPlaceRequest fetchPlaceRequest = FetchPlaceRequest.builder(placeId, placeFields).build();
                 placesClient.fetchPlace(fetchPlaceRequest).addOnSuccessListener(fetchPlaceResponse -> {
                     Place place = fetchPlaceResponse.getPlace();
                     Log.i("mytag", "Place found: " + place.getName());
                     LatLng latLngOfPlace = place.getLatLng();
                     if (latLngOfPlace != null) {
-
-                        getnearByUsersAPI("" + latLngOfPlace.latitude, "" + latLngOfPlace.longitude);
+                        lat = "" + latLngOfPlace.latitude;
+                        lon = "" + latLngOfPlace.longitude;
+                        getnearByUsersAPI();
                         googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLngOfPlace, 14));
-                        binding.searchBar.closeSearch();
                     }
                 }).addOnFailureListener(e -> {
                     if (e instanceof ApiException) {
@@ -233,134 +244,22 @@ public class UserHomeFragment extends Fragment implements OnMapReadyCallback {
                 e.printStackTrace();
             }
         });
+        binding.filter.setOnClickListener(v -> {
+            try {
+                openFilterBottem();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        });
 
         return binding.getRoot();
     }
 
     @Override
     public void onResume() {
-        getnearByUsersAPI(session.getHOME_LAT(),
-                session.getHOME_LONG());
+        getnearByUsersAPI();
         super.onResume();
     }
-
-
-    private void getnearByUsersAPI(String home_lat, String home_long) {
-        DataManager.getInstance().showProgressMessage(requireActivity(), getString(R.string.searching));
-        Map<String, String> map = new HashMap<>();
-        map.put("user_id", session.getUserId());
-        map.put("token", session.getAuthtoken());
-       /* map.put("lat", session.getHOME_LAT()  );
-        map.put("lon",   session.getHOME_LONG() );
-      */
-        map.put("lat", home_lat);
-        map.put("lon", home_long);
-        Call<SuccessResNearbyList> call = apiInterface.get_provider_list_nearbuy(map);
-        call.enqueue(new Callback<>() {
-            @Override
-            public void onResponse(Call<SuccessResNearbyList> call,
-                                   Response<SuccessResNearbyList> response) {
-                try {
-                    DataManager.getInstance().hideProgressMessage();
-                    SuccessResNearbyList data = response.body();
-                    Log.e("data", data.getStatus());
-                    if (data.getStatus().equals("1")) {
-
-                        resultArrayList = response.body().getResult();
-                        if (resultArrayList.size() >= 1) {
-                            for (int i = 0; i < resultArrayList.size(); i++) {
-                                SuccessResNearbyList.Result dataobj = resultArrayList.get(i);
-                                LatLng sydney = new LatLng(Double.parseDouble(dataobj.getLat()), Double.parseDouble(
-                                        dataobj.getLon()));
-                                Marker mArker = googleMap.addMarker(new MarkerOptions()
-                                        .position(sydney)
-                                        .title(dataobj.getToiletName())
-                                        .icon(bitmapDescriptorFromVector(getActivity(), R.drawable.marker_orenge)));
-                                datasnap.put(mArker, dataobj);
-
-                            }
-
-                        }
-                    }
-
-
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-
-            @Override
-            public void onFailure(Call<SuccessResNearbyList> call, Throwable t) {
-                call.cancel();
-                DataManager.getInstance().hideProgressMessage();
-            }
-        });
-
-    }
-
-    private void openBottemSheet(SuccessResNearbyList.Result data) {
-        Log.e(TAG, "openBottemSheet: " + "=-=-=-=-=-=-");
-        RoundedBottomSheetDialog mBottomSheetDialog = new RoundedBottomSheetDialog(requireActivity());
-        BottemSheeetDetailsBinding bottemSheeetDetailsBinding= DataBindingUtil.inflate(getLayoutInflater()
-                ,R.layout.bottem_sheeet_details,null,false);
-        mBottomSheetDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-       mBottomSheetDialog.setContentView(bottemSheeetDetailsBinding.getRoot());
-        bottemSheeetDetailsBinding.setDatamodel(data);
-        bottemSheeetDetailsBinding.btnSubmit.setOnClickListener(v -> {
-
-            sendRequestAPI(data.getUserId(),data.getId(),data.getPrice());
-            mBottomSheetDialog.dismiss();
-          /*  Bundle bundle = new Bundle();
-            bundle.putString("from", "home");
-            Navigation.findNavController(binding.getRoot())
-                    .navigate(R.id.action_navigation_home_to_payment_fragment, bundle);*/
-        });
-        mBottomSheetDialog.show();
-
-    }
-
-    private void sendRequestAPI(String provider_id , String id, String amount)
-        {
-            DataManager.getInstance().showProgressMessage(requireActivity(), getString(R.string.searching));
-            Map<String, String> map = new HashMap<>();
-            map.put("user_id", session.getUserId());
-            map.put("provider_id", provider_id);
-            map.put("toilet_id", id);
-            map.put("amount", amount);
-            map.put("token", session.getAuthtoken());
-
-            Log.e(TAG, "sendRequestAPI: "+ map);
-            Call<SuccessResBooking> call = apiInterface.booking_request(map);
-            call.enqueue(new Callback<>() {
-                @Override
-                public void onResponse(Call<SuccessResBooking> call,
-                                       Response<SuccessResBooking> response) {
-                    try {
-                        DataManager.getInstance().hideProgressMessage();
-                        SuccessResBooking data = response.body();
-                        Log.e("data", data.getStatus());
-                        if (data.getStatus().equals("1")) {
-                            Toast.makeText(requireActivity(), data.getMessage(), Toast.LENGTH_SHORT).show();
-                            }
-
-
-
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                }
-
-                @Override
-                public void onFailure(Call<SuccessResBooking> call, Throwable t) {
-                    call.cancel();
-                    DataManager.getInstance().hideProgressMessage();
-                }
-            });
-
-        }
-
-
-
 
 
     @Override
@@ -377,6 +276,8 @@ public class UserHomeFragment extends Fragment implements OnMapReadyCallback {
                 return;
             }
             googleMap.setMyLocationEnabled(true);
+            googleMap.getUiSettings().setMyLocationButtonEnabled(false);
+
             try {
                 boolean success = googleMap.setMapStyle(
                         MapStyleOptions.loadRawResourceStyle(
@@ -426,6 +327,90 @@ public class UserHomeFragment extends Fragment implements OnMapReadyCallback {
         }
     }
 
+    private void openBottemSheet(SuccessResNearbyList.Result data) {
+        Log.e(TAG, "openBottemSheet: " + "=-=-=-=-=-=-");
+        RoundedBottomSheetDialog mBottomSheetDialog = new RoundedBottomSheetDialog(requireActivity());
+        BottemSheeetDetailsBinding bottemSheeetDetailsBinding = DataBindingUtil.inflate(getLayoutInflater()
+                , R.layout.bottem_sheeet_details, null, false);
+        mBottomSheetDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        mBottomSheetDialog.setContentView(bottemSheeetDetailsBinding.getRoot());
+        bottemSheeetDetailsBinding.setDatamodel(data);
+        bottemSheeetDetailsBinding.btnSubmit.setOnClickListener(v -> {
+
+            sendRequestAPI(data.getUserId(), data.getId(), data.getPrice());
+            mBottomSheetDialog.dismiss();
+          /*  Bundle bundle = new Bundle();
+            bundle.putString("from", "home");
+            Navigation.findNavController(binding.getRoot())
+                    .navigate(R.id.action_navigation_home_to_payment_fragment, bundle);*/
+        });
+
+        mBottomSheetDialog.show();
+
+    }
+
+    private void openFilterBottem() {
+
+        Log.e(TAG, "openBottemSheet: " + "=-=-=-=-=-=-");
+        RoundedBottomSheetDialog mBottomSheetDialog = new RoundedBottomSheetDialog(requireActivity());
+        BottemSheeetFilterBinding bottemSheeetFilterBinding = DataBindingUtil.inflate(getLayoutInflater()
+                , R.layout.bottem_sheeet_filter, null, false);
+        mBottomSheetDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        mBottomSheetDialog.setContentView(bottemSheeetFilterBinding.getRoot());
+        if (!rating.equalsIgnoreCase("")) {
+            //    bottemSheeetFilterBinding.sliderRating.set
+            float f = Float.parseFloat(rating);
+            bottemSheeetFilterBinding.sliderRating.setValues(f);
+        }
+        if (!range.equalsIgnoreCase("")) {
+            //    bottemSheeetFilterBinding.sliderRating.set
+            float f = Float.parseFloat(range);
+            bottemSheeetFilterBinding.sliderRange.setValues(f);
+        }
+        if (!price.equalsIgnoreCase("")) {
+            //    bottemSheeetFilterBinding.sliderRating.set
+            float f = Float.parseFloat(price);
+            bottemSheeetFilterBinding.sliderPrice.setValues(f);
+        }
+        bottemSheeetFilterBinding.btnSubmit.setOnClickListener(v -> {
+            List<Float> val = bottemSheeetFilterBinding.sliderRating.getValues();
+            float f11 = val.get(0);
+            rating = String.valueOf(f11);
+            List<Float> val2 = bottemSheeetFilterBinding.sliderRange.getValues();
+            float f112 = val2.get(0);
+            range = String.valueOf(f112);
+            List<Float> val3 = bottemSheeetFilterBinding.sliderPrice.getValues();
+            float f113 = val3.get(0);
+            price = String.valueOf(f113);
+            Log.e(TAG, "openFilterBottem: rating  ====  " + rating);
+            Log.e(TAG, "openFilterBottem: range  ====  " + range);
+            Log.e(TAG, "openFilterBottem: price  ====  " + price);
+            mBottomSheetDialog.dismiss();
+            getnearByUsersAPI();
+        });
+        bottemSheeetFilterBinding.imgReset.setOnClickListener(v -> {
+                    new AlertDialog.Builder(requireActivity())
+                            .setTitle(R.string.reset_filters)
+                            .setMessage(R.string.are_you_sure_to_reset)
+                            .setPositiveButton(android.R.string.yes, (dialog, which) -> {
+                                price = "";
+                                range = "";
+                                rating = "";
+                                dialog.dismiss();
+                                mBottomSheetDialog.dismiss();
+                                getnearByUsersAPI();
+
+                            })
+
+                            .setNegativeButton(android.R.string.no, null)
+                            .setIcon(android.R.drawable.ic_dialog_alert)
+                            .show();
+                }
+        );
+
+
+        mBottomSheetDialog.show();
+    }
 
 
     private BitmapDescriptor bitmapDescriptorFromVector(Context context, int vectorResId) {
@@ -435,5 +420,97 @@ public class UserHomeFragment extends Fragment implements OnMapReadyCallback {
         Canvas canvas = new Canvas(bitmap);
         vectorDrawable.draw(canvas);
         return BitmapDescriptorFactory.fromBitmap(bitmap);
+    }
+
+    private void getnearByUsersAPI() {
+        DataManager.getInstance().showProgressMessage(requireActivity(), getString(R.string.searching));
+        Map<String, String> map = new HashMap<>();
+        map.put("user_id", session.getUserId());
+        map.put("token", session.getAuthtoken());
+        map.put("lat", lat);
+        map.put("lon", lon);
+        map.put("price", price);
+        map.put("distance", range);
+        map.put("rating", rating);
+        Call<SuccessResNearbyList> call = apiInterface.get_provider_list_nearbuy(map);
+        call.enqueue(new Callback<>() {
+            @Override
+            public void onResponse(Call<SuccessResNearbyList> call,
+                                   Response<SuccessResNearbyList> response) {
+                try {
+                    DataManager.getInstance().hideProgressMessage();
+                    SuccessResNearbyList data = response.body();
+                    Log.e("data", data.getStatus());
+                    if (data.getStatus().equals("1")) {
+
+                        resultArrayList = response.body().getResult();
+                        if (resultArrayList.size() >= 1) {
+                            for (int i = 0; i < resultArrayList.size(); i++) {
+                                SuccessResNearbyList.Result dataobj = resultArrayList.get(i);
+                                LatLng sydney = new LatLng(Double.parseDouble(dataobj.getLat()), Double.parseDouble(
+                                        dataobj.getLon()));
+                                Marker mArker = googleMap.addMarker(new MarkerOptions()
+                                        .position(sydney)
+                                        .title(dataobj.getToiletName())
+                                        .icon(bitmapDescriptorFromVector(getActivity(), R.drawable.marker_orenge)));
+                                datasnap.put(mArker, dataobj);
+
+                            }
+
+                        }
+                    }
+
+
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<SuccessResNearbyList> call, Throwable t) {
+                call.cancel();
+                DataManager.getInstance().hideProgressMessage();
+            }
+        });
+
+    }
+
+
+    private void sendRequestAPI(String provider_id, String id, String amount) {
+        DataManager.getInstance().showProgressMessage(requireActivity(), getString(R.string.searching));
+        Map<String, String> map = new HashMap<>();
+        map.put("user_id", session.getUserId());
+        map.put("provider_id", provider_id);
+        map.put("toilet_id", id);
+        map.put("amount", amount);
+        map.put("token", session.getAuthtoken());
+
+        Log.e(TAG, "sendRequestAPI: " + map);
+        Call<SuccessResBooking> call = apiInterface.booking_request(map);
+        call.enqueue(new Callback<>() {
+            @Override
+            public void onResponse(Call<SuccessResBooking> call,
+                                   Response<SuccessResBooking> response) {
+                try {
+                    DataManager.getInstance().hideProgressMessage();
+                    SuccessResBooking data = response.body();
+                    Log.e("data", data.getStatus());
+                    if (data.getStatus().equals("1")) {
+                        Toast.makeText(requireActivity(), data.getMessage(), Toast.LENGTH_SHORT).show();
+                    }
+
+
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<SuccessResBooking> call, Throwable t) {
+                call.cancel();
+                DataManager.getInstance().hideProgressMessage();
+            }
+        });
+
     }
 }

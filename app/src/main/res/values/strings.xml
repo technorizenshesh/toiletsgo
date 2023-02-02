@@ -11,11 +11,12 @@
     <string name="google">Google</string>
     <string name="facebook">Facebook</string>
     <string name="already_ac">Already have an account? Login</string>
-    <string name="search_here">Type a destination</string>
-    <string name="suggaction">Suggaction</string>
+    <string name="search_here">    Type a destination</string>
+    <string name="enter_txt">enter search text</string>
+    <string name="suggaction">Suggestion</string>
     <string name="toilet_name">Toilet Name</string>
     <string name="price">Price</string>
-    <string name="desc">Discription                                                                     </string>
+    <string name="desc">Discription</string>
     <string name="address">Address</string>
     <string name="my_last">MY LAST SEARCHES</string>
     <string name="my_location"> Within my country:  India </string>
@@ -48,5 +49,18 @@
     <string name="no_data_found">No Data Found</string>
     <string name="reservation">reservation</string>
     <string name="waiting">waiting</string>
+    <string name="rating">Rating</string>
+    <string name="range">Range</string>
+    <string name="_0_km">0 km</string>
+    <string name="_50_km">50 km</string>
+    <string name="_0_rs">0 $ </string>
+    <string name="_50_rs">50 $ </string>
+    <string name="apply_filter">Apply Filter</string>
+    <string name="reset_filters">Reset Filter</string>
+    <string name="are_you_sure_to_reset">Are you sure you want to reset this filter ?</string>
+    <string name="are_you_sure_to_accept">Are you sure you want to Accept this Booking ?</string>
+    <string name="are_you_sure_to_reject">Are you sure you want to Reject this Booking ?</string>
+    <string name="accept_booking">Accept Booking</string>
+    <string name="reject_booking">Reject Booking</string>
 
 </resources>

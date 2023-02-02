@@ -257,6 +257,9 @@ public class SuccessResRequests implements Serializable
             @SerializedName("toilet_name")
             @Expose
             private String toiletName;
+            @SerializedName("address")
+            @Expose
+            private String address;
             @SerializedName("image1")
             @Expose
             private String image1;
@@ -264,6 +267,14 @@ public class SuccessResRequests implements Serializable
             @Expose
             private String image2;
             private final static long serialVersionUID = 534809182374706652L;
+
+            public String getAddress() {
+                return address;
+            }
+
+            public void setAddress(String address) {
+                this.address = address;
+            }
 
             public String getId() {
                 return id;

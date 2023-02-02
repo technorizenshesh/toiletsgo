@@ -1,7 +1,12 @@
 package com.toilets.go.ui.ProviderHome.Home;
 
 import android.annotation.SuppressLint;
+import android.app.AlertDialog;
 import android.app.Dialog;
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
@@ -20,6 +25,7 @@ import androidx.fragment.app.Fragment;
 import com.toilets.go.adapters.CustomerListAdapter;
 import com.toilets.go.R;
 import com.toilets.go.databinding.FragmentProviderHomeBinding;
+import com.toilets.go.models.SuccessResAcptRej;
 import com.toilets.go.models.SuccessResRequests;
 import com.toilets.go.retrofit.ApiClient;
 import com.toilets.go.retrofit.GosInterface;
@@ -45,7 +51,26 @@ public class ProviderHomeFragment extends Fragment implements CustomClickListene
     String status = "Accept";
     private GosInterface apiInterface;
     List<SuccessResRequests.Result> res = new ArrayList<>();
+    CustomerListAdapter myRecyclerViewAdapter;
 
+    @Override
+    public void onPause() {
+        super.onPause();
+        requireActivity().unregisterReceiver(mMessageReceiver);
+    }
+
+
+    //This is the handler that will manager to process the broadcast intent
+    private BroadcastReceiver mMessageReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+
+            // Extract data included in the Intent
+            String message = intent.getStringExtra("message");
+            Toast.makeText(context, message, Toast.LENGTH_SHORT).show();
+            //do other stuff here
+        }
+    };
     @SuppressLint("UseCompatLoadingForDrawables")
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -54,6 +79,7 @@ public class ProviderHomeFragment extends Fragment implements CustomClickListene
                 , R.layout.fragment_provider_home, container, false);
         apiInterface = ApiClient.getClient().create(GosInterface.class);
         session = new Session(requireActivity());
+        Log.e(TAG, "getFireBaseTokengetFireBaseToken: "+session.getFireBaseToken() );
         binding.btnOne.setOnClickListener(v -> {
             status = "Accept";
             getRequestAPI(status);
@@ -95,6 +121,8 @@ public class ProviderHomeFragment extends Fragment implements CustomClickListene
     @Override
     public void onResume() {
         getRequestAPI(status);
+        requireActivity().registerReceiver(mMessageReceiver, new IntentFilter("Booking"));
+
         super.onResume();
     }
 
@@ -121,10 +149,8 @@ public class ProviderHomeFragment extends Fragment implements CustomClickListene
                         res.clear();
                         assert response.body() != null;
                         res = response.body().getResult();
-
-                        CustomerListAdapter myRecyclerViewAdapter = new CustomerListAdapter(
-                                res,
-                                requireActivity(), ProviderHomeFragment.this::cardClicked);
+                        myRecyclerViewAdapter = new CustomerListAdapter(res, requireActivity(),
+                                ProviderHomeFragment.this);
                         binding.setMyAdapter(myRecyclerViewAdapter);
                     } else {
                         Toast.makeText(requireActivity(), data.getMessage(), Toast.LENGTH_SHORT).show();
@@ -156,9 +182,69 @@ public class ProviderHomeFragment extends Fragment implements CustomClickListene
 
 
     @Override
-    public void cardClicked(SuccessResRequests.Result f, String Status) {
+    public void cardClicked(SuccessResRequests.Result f, String Status, Integer position) {
         if (Status.equalsIgnoreCase("Accept")) {
+            new AlertDialog.Builder(requireActivity())
+                    .setTitle(R.string.accept_booking).setMessage(R.string.are_you_sure_to_accept)
+                    .setPositiveButton(android.R.string.yes, (dialog, which) -> {
+                        acceptRejectApi(f, Status, position);
+                        dialog.dismiss();
+                    })
+                    .setNegativeButton(android.R.string.no, null)
+                    .setIcon(android.R.drawable.ic_dialog_alert)
+                    .show();
 
+        } else {
+            new AlertDialog.Builder(requireActivity()).setTitle(R.string.reject_booking)
+                    .setMessage(R.string.are_you_sure_to_reject)
+                    .setPositiveButton(android.R.string.yes, (dialog, which) -> {
+                        acceptRejectApi(f, Status, position);
+                        dialog.dismiss();
+                    })
+                    .setNegativeButton(android.R.string.no, null)
+                    .setIcon(android.R.drawable.ic_dialog_alert)
+                    .show();
         }
     }
+
+    private void acceptRejectApi(SuccessResRequests.Result f, String status, Integer position) {
+        DataManager.getInstance().showProgressMessage(requireActivity(), getString(R.string.please_wait));
+        Map<String, String> map = new HashMap<>();
+        map.put("request_id", f.getId());
+        map.put("user_id", session.getUserId());
+        map.put("status", status);
+        map.put("token", session.getAuthtoken());
+        Log.e(TAG, "get_accept_cancel_order: " + map);
+        Call<SuccessResAcptRej> call = apiInterface.get_accept_cancel_order(map);
+        call.enqueue(new Callback<>() {
+            @Override
+            public void onResponse(Call<SuccessResAcptRej> call,
+                                   Response<SuccessResAcptRej> response) {
+                try {
+                    DataManager.getInstance().hideProgressMessage();
+                    SuccessResAcptRej data = response.body();
+                    Log.e("data", data.getStatus());
+                    if (data.getStatus().equalsIgnoreCase("1")) {
+                        myRecyclerViewAdapter.removeAt(position);
+                    } else {
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<SuccessResAcptRej> call, Throwable t) {
+                call.cancel();
+                Log.e(TAG, "onFailure: " + t.getCause());
+                Log.e(TAG, "onFailure: " + t.getMessage());
+                Log.e(TAG, "onFailure: " + t.getLocalizedMessage());
+                Toast.makeText(requireActivity(), t.getCause().toString(),
+                        Toast.LENGTH_SHORT).show();
+                DataManager.getInstance().hideProgressMessage();
+            }
+        });
+
+    }
+
 }

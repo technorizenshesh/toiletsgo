@@ -8,8 +8,6 @@ import android.os.Bundle;
 import android.util.Log;
 import android.widget.Toast;
 
-import com.google.firebase.FirebaseApp;
-import com.google.firebase.messaging.FirebaseMessaging;
 import com.google.gson.Gson;
 import com.toilets.go.databinding.ActivityLoginBinding;
 import com.toilets.go.models.SuccessResSignup;
@@ -29,7 +27,6 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-import static android.content.ContentValues.TAG;
 
 public class LoginActivity extends AppCompatActivity {
     ActivityLoginBinding binding;

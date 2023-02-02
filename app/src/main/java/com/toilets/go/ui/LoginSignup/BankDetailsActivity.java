@@ -90,15 +90,17 @@ public class BankDetailsActivity extends AppCompatActivity {
                     SuccessResAddbank data = response.body();
                     Log.e("data", data.getStatus());
                     if (data.getStatus().equals("1")) {
-
+                        Log.e("TAG", "onResponse: "+UserType );
                         if (UserType.equalsIgnoreCase("in")) {
                             onBackPressed();
                         } else if (UserType.equalsIgnoreCase("User")) {
                             startActivity(new Intent(getApplicationContext(), HomeUserAct.class)
-                                    .putExtra("User_type", UserType));
+                                    .putExtra("User_type", UserType).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK
+                                            |Intent.FLAG_ACTIVITY_CLEAR_TOP));
                         } else {
                             startActivity(new Intent(getApplicationContext(), ProviderHomeActivity.class)
-                                    .putExtra("User_type", UserType));
+                                    .putExtra("User_type", UserType).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK
+                                            |Intent.FLAG_ACTIVITY_CLEAR_TOP));
                         }
                     }
 

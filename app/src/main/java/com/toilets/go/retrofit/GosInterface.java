@@ -1,6 +1,7 @@
 package com.toilets.go.retrofit;
 
 
+import com.toilets.go.models.SuccessResAcptRej;
 import com.toilets.go.models.SuccessResBooking;
 import com.toilets.go.models.SuccessResGetCountry;
 import com.toilets.go.models.SuccessResGetGender;
@@ -73,6 +74,12 @@ public interface GosInterface {
     @FormUrlEncoded
     @POST("get_order_history")
     Call<SuccessResRequests> get_order_history(@FieldMap Map<String, String> paramHashMap);
+    @FormUrlEncoded
+    @POST("get_user_order")
+    Call<SuccessResRequests> get_user_order(@FieldMap Map<String, String> paramHashMap);
+    @FormUrlEncoded
+    @POST("get_accept_cancel_order")
+    Call<SuccessResAcptRej> get_accept_cancel_order(@FieldMap Map<String, String> paramHashMap);
 
 
 }

@@ -39,7 +39,6 @@ import java.util.Map;
 
     @Override
     public void onMessageReceived(RemoteMessage remoteMessage) {
-
         try
         {
             Log.d(TAG, "onMessageReceived: "+remoteMessage.toString());
@@ -47,11 +46,11 @@ import java.util.Map;
             if (remoteMessage.getData().size() > 0) {
                 Log.d(TAG, "payload:" + remoteMessage.getData());
                 Map<String,String> map = remoteMessage.getData();
-                try {
-                    sendNotification("","",map);
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
+             //   try {
+             //       sendNotification("","",map);
+            //    } catch (JSONException e) {
+           //         e.printStackTrace();
+           //     }
             }
         }catch (Exception e)
         {
@@ -61,16 +60,15 @@ import java.util.Map;
         Log.d(TAG, "onMessageReceived for FCM");
         if (remoteMessage.getNotification() != null) {
             Log.d(TAG, "c: " + remoteMessage.getData());
-            try {
-                sendNotification(remoteMessage.getNotification().getTitle(), remoteMessage.getNotification().getBody(), remoteMessage.getData());
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
+         //   try {
+              //  sendNotification(remoteMessage.getNotification().getTitle(), remoteMessage.getNotification().getBody(), remoteMessage.getData());
+           // } catch (JSONException e) {
+          //      e.printStackTrace();
+         //   }
         }
     }
 
     private void sendNotification(String message, String title,Map<String,String> map) throws JSONException {
-
         JSONObject jsonObject = null;
         jsonObject = new JSONObject(map);
         String key = jsonObject.getString("key");

@@ -83,8 +83,6 @@ public class SignupActivity extends AppCompatActivity {
         binding = DataBindingUtil.setContentView(this, R.layout.activity_signup);
         apiInterface = ApiClient.getClient().create(GosInterface.class);
         session = new Session(this);
-        FirebaseApp.initializeApp(this);
-        getToken();
         if (getIntent() != null) {
             UserType = getIntent().getExtras().getString("User_type");
         }
@@ -180,9 +178,9 @@ public class SignupActivity extends AppCompatActivity {
         RequestBody cntry = RequestBody.create(MediaType.parse("text/plain"), Country);
         RequestBody gende = RequestBody.create(MediaType.parse("text/plain"), Gender);
         RequestBody type = RequestBody.create(MediaType.parse("text/plain"), UserType);
-        RequestBody regist = RequestBody.create(MediaType.parse("text/plain"), "1234rf");
-        RequestBody lat = RequestBody.create(MediaType.parse("text/plain"), "1234rf");
-        RequestBody lang = RequestBody.create(MediaType.parse("text/plain"), "1234rf");
+        RequestBody regist = RequestBody.create(MediaType.parse("text/plain"), session.getFireBaseToken());
+        RequestBody lat = RequestBody.create(MediaType.parse("text/plain"), session.getHOME_LAT());
+        RequestBody lang = RequestBody.create(MediaType.parse("text/plain"), session.getHOME_LONG());
         Call<SuccessResSignup> call = apiInterface.signup(firstname, lastname, emailaddress, password,
                 cntry, gende, regist, type, filePart);
         call.enqueue(new Callback<SuccessResSignup>() {
@@ -524,22 +522,5 @@ public class SignupActivity extends AppCompatActivity {
             }
         });
 
-    }
-    private void getToken() {
-        try {
-            FirebaseMessaging.getInstance().getToken()
-                    .addOnCompleteListener(task -> {
-                        if (!task.isSuccessful()) {
-                            return;
-                        }
-                        // Get new FCM registration token
-                        String token = task.getResult();
-                        Log.e(TAG, "getToken: =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-"+token );
-                        session.setFireBaseToken(token);
-                    });
-        } catch (Exception e) {
-            Toast.makeText(SignupActivity.this, "Error=>" + e, Toast.LENGTH_SHORT).show();
-            e.printStackTrace();
-        }
     }
 }

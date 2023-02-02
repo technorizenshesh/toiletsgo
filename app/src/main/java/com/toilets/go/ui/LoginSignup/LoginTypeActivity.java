@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.Window;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
@@ -21,7 +22,10 @@ import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.location.LocationSettingsRequest;
 import com.google.android.gms.location.LocationSettingsResponse;
 import com.google.android.gms.location.SettingsClient;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.FirebaseApp;
+import com.google.firebase.messaging.FirebaseMessaging;
 import com.toilets.go.R;
 import com.toilets.go.utills.DataManager;
 import com.toilets.go.utills.LocationHandler;
@@ -30,6 +34,7 @@ import com.toilets.go.databinding.ActivityLoginTypeBinding;
 
 import static android.Manifest.permission.ACCESS_COARSE_LOCATION;
 import static android.Manifest.permission.ACCESS_FINE_LOCATION;
+import static androidx.fragment.app.FragmentManager.TAG;
 
 public class LoginTypeActivity extends AppCompatActivity {
     ActivityLoginTypeBinding binding;
@@ -50,7 +55,20 @@ public class LoginTypeActivity extends AppCompatActivity {
         } else {
             enableGPSAutomatically();
         }
-
+        FirebaseApp.initializeApp(this);
+        FirebaseMessaging.getInstance().getToken()
+                .addOnCompleteListener(task -> {
+                    if (!task.isSuccessful()) {
+                        Log.w("TAG", "Fetching FCM registration token failed", task.getException());
+                        return;
+                    }
+                    // Get new FCM registration token
+                    String token = task.getResult();
+session.setFireBaseToken(token);
+                    // Log and toast
+                    Log.e("TAG", token);
+                   // Toast.makeText(MainActivity.this, msg, Toast.LENGTH_SHORT).show();
+                });
         binding.btnIndividual.setOnClickListener(v -> {
             startActivity(new Intent(this, SignupActivity.class)
                     .putExtra("User_type", "User"));

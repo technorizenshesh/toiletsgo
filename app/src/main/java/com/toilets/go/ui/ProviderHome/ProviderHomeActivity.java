@@ -8,7 +8,10 @@ import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.NavigationUI;
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.os.Build;
@@ -30,7 +33,7 @@ import com.toilets.go.utills.Session;
 import static android.Manifest.permission.ACCESS_COARSE_LOCATION;
 import static android.Manifest.permission.ACCESS_FINE_LOCATION;
 
-public class ProviderHomeActivity extends AppCompatActivity {
+public class ProviderHomeActivity extends AppCompatActivity   {
 
     static BottomNavigationView navView;
     private static final int ENABLE_GPS = 3030;
@@ -163,6 +166,7 @@ public class ProviderHomeActivity extends AppCompatActivity {
                     }
                 }, UPDATE_INTERVAL, FASTEST_INTERVAL);
     }
+
 
 
 }

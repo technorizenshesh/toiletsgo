@@ -1,33 +1,33 @@
 {
   "project_info": {
-    "project_number": "106441475702",
-    "project_id": "toilet-ace0d",
-    "storage_bucket": "toilet-ace0d.appspot.com"
+    "project_number": "970896202091",
+    "project_id": "toilets-go",
+    "storage_bucket": "toilets-go.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:106441475702:android:0e9c448f1db8e54b3b0157",
+        "mobilesdk_app_id": "1:970896202091:android:bb0502c4722be567d9942e",
         "android_client_info": {
           "package_name": "com.toilets.go"
         }
       },
       "oauth_client": [
         {
-          "client_id": "106441475702-q2rb6q1e1orlnqp9rv7b7c3mmkub54f1.apps.googleusercontent.com",
+          "client_id": "970896202091-dicniiau42gf2fndsa95rabrt0v9u2be.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyC0CIdbQ_k3jRAmV59igLZtEZITQt0lcpI"
+          "current_key": "AIzaSyDFmJSrDIL4w_1LgLfJYNIlYOJWaSMUEa0"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "106441475702-q2rb6q1e1orlnqp9rv7b7c3mmkub54f1.apps.googleusercontent.com",
+              "client_id": "970896202091-dicniiau42gf2fndsa95rabrt0v9u2be.apps.googleusercontent.com",
               "client_type": 3
             }
           ]
