@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    package="com.toilets.go">
+
+    <application
+        android:name=".AppController"
+        android:allowBackup="true"
+        android:dataExtractionRules="@xml/data_extraction_rules"
+        android:fullBackupContent="@xml/backup_rules"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:supportsRtl="true"
+        android:theme="@style/Theme.ToiletsGo"
+        android:usesCleartextTraffic="true"
+        tools:targetApi="31">
+        <meta-data
+            android:name="com.google.firebase.messaging.default_notification_icon"
+            android:resource="@drawable/logo" />
+        <meta-data
+            android:name="com.google.firebase.messaging.default_notification_color"
+            android:resource="@color/colorAccent" />
+        <meta-data
+            android:name="com.google.firebase.messaging.default_notification_channel_id"
+            android:value="@string/default_notification_channel_id" />
+        <service
+            android:name=".utills.GosNotification"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
+            </intent-filter>
+        </service>
+        <activity
+            android:name=".SearchLocationMapAct"
+            android:exported="false">
+        </activity>
+        <activity
+            android:name=".ui.LoginSignup.LoginActivity"
+            android:exported="false"/>
+        <activity
+            android:name=".ui.ProviderHome.ProviderHomeActivity"
+            android:exported="false"/>
+        <activity
+            android:name=".ui.LoginSignup.SearchPlaceActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.LoginSignup.BankDetailsActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.LoginSignup.BasicDetailsActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.LoginSignup.SignupActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.UserSide.HomeUserAct"
+            android:exported="false"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.LoginSignup.LoginTypeActivity"
+            android:exported="false" />
+        <activity
+            android:name=".MainActivity"
+            android:exported="true"
+            android:screenOrientation="portrait">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
+        <meta-data
+            android:name="com.google.android.maps.v2.API_KEY"
+            android:value="@string/api_key" />
+    </application>
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+
+    <uses-permission android:name="android.permission.INTERNET" />
+
+</manifest>

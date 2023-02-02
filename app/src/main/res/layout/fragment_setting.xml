@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    >
+    <LinearLayout
+        android:layout_margin="@dimen/_10sdp"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        tools:context=".ui.ProviderHome.Setting.SettingFragment">
+        <androidx.core.widget.NestedScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:fillViewport="true"
+            >
+
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="@dimen/_5sdp">
+
+                <TextView
+                    android:id="@+id/tv_bank_details"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_toRightOf="@+id/ivProfile"
+                    android:drawableLeft="@drawable/bank"
+                    android:drawablePadding="@dimen/_15sdp"
+                    android:fontFamily="@font/poppins_medium"
+                    android:padding="@dimen/_10sdp"
+                    android:text="Bank Details"
+                    android:textColor="@color/texts"
+                    android:textSize="@dimen/_13sdp" />
+                <TextView
+                    android:id="@+id/tv_payment"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_toRightOf="@+id/ivProfile"
+                    android:drawableLeft="@drawable/payment"
+                    android:drawablePadding="@dimen/_15sdp"
+                    android:fontFamily="@font/poppins_medium"
+                    android:padding="@dimen/_10sdp"
+                    android:text="Payment"
+                    android:textColor="@color/texts"
+                    android:textSize="@dimen/_13sdp" />
+                <TextView
+                    android:id="@+id/tv_terms"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_toRightOf="@+id/ivProfile"
+                    android:drawableLeft="@drawable/privacy"
+                    android:drawablePadding="@dimen/_15sdp"
+                    android:fontFamily="@font/poppins_medium"
+                    android:padding="@dimen/_10sdp"
+                    android:text="@string/trems_condition"
+                    android:textColor="@color/texts"
+                    android:textSize="@dimen/_13sdp" />
+                <TextView
+                    android:visibility="gone"
+                    android:id="@+id/tv_review"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_toRightOf="@+id/ivProfile"
+                    android:drawableLeft="@drawable/review"
+                    android:drawablePadding="@dimen/_15sdp"
+                    android:fontFamily="@font/poppins_medium"
+                    android:padding="@dimen/_10sdp"
+                    android:text="Review"
+                    android:textColor="@color/texts"
+                    android:textSize="@dimen/_13sdp" />
+                <TextView
+                    android:id="@+id/tv_contact_us"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_toRightOf="@+id/ivProfile"
+                    android:drawableLeft="@drawable/contact_us_sidebar"
+                    android:drawablePadding="@dimen/_15sdp"
+                    android:fontFamily="@font/poppins_medium"
+                    android:padding="@dimen/_10sdp"
+                    android:text="Contact Us"
+                    android:textColor="@color/texts"
+                    android:textSize="@dimen/_13sdp" />
+
+                <TextView
+                    android:id="@+id/tv_share_app"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_toRightOf="@+id/ivProfile"
+                    android:drawableLeft="@drawable/share_app"
+                    android:drawablePadding="@dimen/_15sdp"
+                    android:fontFamily="@font/poppins_medium"
+                    android:padding="@dimen/_10sdp"
+                    android:text="Share App"
+                    android:textColor="@color/texts"
+                    android:textSize="@dimen/_13sdp" />
+                <TextView
+                    android:id="@+id/tv_logout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_toRightOf="@+id/ivProfile"
+                    android:drawableLeft="@drawable/logout"
+                    android:drawablePadding="@dimen/_15sdp"
+                    android:fontFamily="@font/poppins_medium"
+                    android:padding="@dimen/_10sdp"
+                    android:text="Logout"
+                    android:textColor="@color/texts"
+                    android:textSize="@dimen/_13sdp" />
+
+
+            </LinearLayout>
+
+        </androidx.core.widget.NestedScrollView>
+
+
+
+    </LinearLayout>
+</layout>

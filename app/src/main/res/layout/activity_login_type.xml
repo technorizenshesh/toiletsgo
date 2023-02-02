@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fillViewport="true"
+        android:background="@drawable/background_login"
+        tools:context=".ui.LoginSignup.LoginTypeActivity">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <RelativeLayout
+                android:layout_margin="@dimen/_10sdp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <ImageView
+                    android:layout_margin="@dimen/_40sdp"
+                    android:padding="@dimen/_40sdp"
+                    android:layout_gravity="center"
+                    android:src="@drawable/logo_1"
+                    android:layout_width="@dimen/_250sdp"
+                    android:layout_height="@dimen/_250sdp" />
+
+
+            </RelativeLayout>
+
+            <LinearLayout
+                android:layout_alignParentBottom="true"
+                android:layout_gravity="bottom"
+                android:layout_margin="@dimen/_20sdp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btn_individual"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginStart="@dimen/_10sdp"
+                    android:layout_marginTop="@dimen/_10sdp"
+                    android:layout_marginEnd="@dimen/_10sdp"
+                    android:layout_marginBottom="@dimen/_5sdp"
+                    android:elevation="@dimen/_3sdp"
+                    android:fontFamily="@font/poppins_bold"
+                    android:outlineProvider="background"
+                    android:outlineSpotShadowColor="@color/white"
+                    android:padding="@dimen/_10sdp"
+                    android:text="@string/individual"
+                    android:textAllCaps="false"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/_14sdp"
+                    android:textStyle="bold"
+                    app:backgroundTint="@color/colorPrimary"
+                    app:cornerRadius="@dimen/_10sdp"
+                    app:rippleColor="@color/gray_two"
+
+                    />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btn_profesnal"
+                    android:layout_width="match_parent"
+                    android:padding="@dimen/_10sdp"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:layout_marginStart="@dimen/_10sdp"
+                    android:layout_marginTop="@dimen/_5sdp"
+                    android:layout_marginEnd="@dimen/_10sdp"
+                    android:layout_marginBottom="@dimen/_10sdp"                    android:fontFamily="@font/poppins_bold"
+                    android:textSize="@dimen/_14sdp"
+                    android:text="@string/proffescal"
+                    android:textColor="@color/white"
+                    android:elevation="@dimen/_3sdp"
+                    android:outlineProvider="background"
+                    android:outlineSpotShadowColor="@color/white"
+                    android:textAllCaps="false"
+                    android:textStyle="bold"
+                    app:backgroundTint="@color/gray_two"
+                    app:cornerRadius="@dimen/_10sdp"
+                    app:rippleColor="@color/colorPrimary" />
+
+            </LinearLayout>
+        </RelativeLayout>
+    </ScrollView>
+</layout>

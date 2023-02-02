@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/mobile_navigation.xml"
+    app:startDestination="@id/user_home">
+    <fragment
+        android:id="@+id/user_home"
+        android:name="com.toilets.go.ui.UserSide.Home.UserHomeFragment"
+        android:label="Home"
+        tools:layout="@layout/fragment_user_home">
+        <action
+            android:id="@+id/action_navigation_home_to_booking"
+            app:destination="@id/booking_fragment" />
+        <action
+            android:id="@+id/action_navigation_home_to_notification"
+            app:destination="@id/notification_fragment" />
+        <action
+            android:id="@+id/action_navigation_home_to_review_fragment"
+            app:destination="@id/review_fragment" />
+        <action
+            android:id="@+id/action_navigation_home_to_contact_us_fragment"
+            app:destination="@id/contact_us_fragment" />
+        <action
+            android:id="@+id/action_navigation_home_to_profile_fragment"
+            app:destination="@id/profile_fragment" />
+        <action
+            android:id="@+id/action_navigation_home_to_payment_fragment"
+            app:destination="@id/payment_fragment" />
+
+    </fragment>
+    <fragment
+        android:id="@+id/booking_fragment"
+        android:name="com.toilets.go.ui.UserSide.Booking.BookingFragment"
+        android:label="Booking"
+        tools:layout="@layout/fragment_booking"></fragment>
+    <fragment
+        android:id="@+id/notification_fragment"
+        android:name="com.toilets.go.ui.UserSide.Notification.NotificationFragment"
+        android:label="Notification"
+        tools:layout="@layout/fragment_notification"></fragment>
+    <fragment
+        android:id="@+id/review_fragment"
+        android:name="com.toilets.go.ui.UserSide.Review.ReviewFragment"
+        android:label="Review"
+        tools:layout="@layout/fragment_review"></fragment>
+    <fragment
+        android:id="@+id/contact_us_fragment"
+        android:name="com.toilets.go.ui.UserSide.Review.ContactUsFragment"
+        android:label="ContactUs"
+        tools:layout="@layout/fragment_contact_us"></fragment>
+    <fragment
+        android:id="@+id/profile_fragment"
+        android:name="com.toilets.go.ui.UserSide.Profile.ProfileFragment"
+        android:label="Profile"
+        tools:layout="@layout/fragment_profile"></fragment>
+    <fragment
+        android:id="@+id/payment_fragment"
+        android:name="com.toilets.go.ui.UserSide.Payment.PaymentFragment"
+        android:label="Payment"
+        tools:layout="@layout/fragment_payment">
+        <action
+            android:id="@+id/action_navigation_payment_fragment_to_success_fragment"
+            app:destination="@id/success_fragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/success_fragment"
+        android:name="com.toilets.go.ui.UserSide.Payment.SuccessFragment"
+        android:label="Success"
+        tools:layout="@layout/fragment_success">
+        <action
+            android:id="@+id/action_navigation_success_fragment_to_home"
+            app:destination="@id/user_home"
+            app:popUpToInclusive="true"
+            app:launchSingleTop="true"
+            app:restoreState="true"
+            />
+    </fragment>
+</navigation>

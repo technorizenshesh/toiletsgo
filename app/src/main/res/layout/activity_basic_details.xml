@@ -1,0 +1,182 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    >
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".ui.LoginSignup.BasicDetailsActivity">
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:id="@+id/top"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:orientation="vertical">
+
+            <HorizontalScrollView
+                android:padding="@dimen/_5sdp"
+                android:layout_marginTop="@dimen/_10sdp"
+                android:layout_marginStart="@dimen/_3sdp"
+                android:layout_marginEnd="@dimen/_3sdp"
+                android:layout_marginBottom="@dimen/_10sdp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                >
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+                    <com.makeramen.roundedimageview.RoundedImageView
+                        android:scaleType="fitCenter"
+                        app:riv_corner_radius="15dip"
+                        app:riv_border_width="1dip"
+                        app:riv_border_color="@color/white"
+                        app:riv_mutate_background="true"
+                        app:riv_tile_mode="repeat"
+                        app:riv_oval="false"
+                        android:id="@+id/ivAddPost"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:layout_alignParentBottom="true"
+                        android:layout_marginRight="@dimen/_10sdp"
+                        android:src="@drawable/group_holder_1"/>
+
+                    <com.makeramen.roundedimageview.RoundedImageView
+                        android:scaleType="fitCenter"
+                        app:riv_corner_radius="15dip"
+                        app:riv_border_width="1dip"
+                        app:riv_border_color="@color/white"
+                        app:riv_mutate_background="true"
+                        app:riv_tile_mode="repeat"
+                        app:riv_oval="false"
+                        android:id="@+id/ivAddPost2"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:layout_alignParentBottom="true"
+                        android:layout_marginRight="@dimen/_10sdp"
+                        android:src="@drawable/group_holder_2"/>
+
+                </LinearLayout>
+            </HorizontalScrollView>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/middle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/top"
+                android:layout_marginStart="@dimen/_10sdp"
+                android:layout_marginTop="@dimen/_10sdp"
+                android:layout_marginEnd="@dimen/_10sdp"
+                android:layout_marginBottom="@dimen/_10sdp"
+                android:orientation="vertical">
+
+
+                    <EditText
+                        android:maxLines="1"
+                        android:id="@+id/edt_toilet_name"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="@dimen/_5sdp"
+                        android:layout_marginTop="@dimen/_5sdp"
+                        android:layout_weight="1"
+                        android:background="@drawable/background_edit"
+                        android:fontFamily="@font/poppinsregular"
+                        android:hint="@string/toilet_name"
+                        android:inputType="textPersonName"
+                        android:padding="@dimen/_10sdp"
+                        android:textColor="@color/hint_text_color"
+                        android:textColorHint="@color/hint_text_color"
+                        android:textSize="@dimen/_12sdp" />
+
+                    <EditText
+                        android:maxLines="1"
+                        android:id="@+id/edt_price"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="@dimen/_5sdp"
+                        android:layout_marginTop="@dimen/_5sdp"
+                        android:layout_weight="1"
+                        android:background="@drawable/background_edit"
+                        android:fontFamily="@font/poppinsregular"
+                        android:hint="@string/price"
+                        android:inputType="numberDecimal"
+                        android:padding="@dimen/_10sdp"
+                        android:textColor="@color/hint_text_color"
+                        android:textColorHint="@color/hint_text_color"
+                        android:textSize="@dimen/_12sdp" />
+
+
+
+
+                <EditText
+                    android:id="@+id/edt_desc"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/_100sdp"
+                    android:layout_margin="@dimen/_5sdp"
+                    android:background="@drawable/background_edit"
+                    android:fontFamily="@font/poppinsregular"
+                    android:hint="@string/desc"
+                    android:maxLines="10"
+                    android:inputType="text"
+                    android:padding="@dimen/_10sdp"
+                    android:textColor="@color/hint_text_color"
+                    android:textColorHint="@color/hint_text_color"
+                    android:textSize="@dimen/_12sdp" />
+                <EditText
+                    android:maxLines="2"
+                    android:id="@+id/edt_address"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/_5sdp"
+                    android:background="@drawable/background_edit"
+                    android:fontFamily="@font/poppinsregular"
+                    android:hint="@string/address"
+                    android:drawableRight="@drawable/ic_baseline_my_location"
+                    android:inputType="textPostalAddress"
+                    android:padding="@dimen/_10sdp"
+                    android:textColor="@color/hint_text_color"
+                    android:textColorHint="@color/hint_text_color"
+                    android:textSize="@dimen/_12sdp" />
+
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btn_submit"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/_10sdp"
+                    android:layout_marginTop="@dimen/_20sdp"
+                    android:layout_marginEnd="@dimen/_10sdp"
+                    android:layout_marginBottom="@dimen/_10sdp"
+                    android:elevation="@dimen/_3sdp"
+                    android:fontFamily="@font/poppins_bold"
+                    android:outlineProvider="background"
+                    android:outlineSpotShadowColor="@color/white"
+                    android:padding="@dimen/_10sdp"
+                    android:text="@string/submit"
+                    android:textAllCaps="false"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/_14sdp"
+                    android:textStyle="bold"
+                    app:backgroundTint="@color/colorPrimary"
+                    app:cornerRadius="@dimen/_10sdp"
+                    app:rippleColor="@color/gray_two" />
+
+
+
+            </LinearLayout>
+        </RelativeLayout>
+
+    </ScrollView>
+</layout>

@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/mobile_navigation_provider"
+    app:startDestination="@id/provider_home">
+
+    <fragment
+        android:id="@+id/provider_home"
+        android:name="com.toilets.go.ui.ProviderHome.Home.ProviderHomeFragment"
+        android:label="Home"
+        tools:layout="@layout/fragment_provider_home">
+    </fragment>
+    <fragment
+        android:id="@+id/navigation_notifications"
+        android:name="com.toilets.go.ui.UserSide.Notification.NotificationFragment"        android:label="Home"
+        tools:layout="@layout/fragment_notification">
+    </fragment>
+    <fragment
+        android:id="@+id/navigation_setting"
+        android:name="com.toilets.go.ui.ProviderHome.Setting.SettingFragment"
+        android:label="Setting"
+        tools:layout="@layout/fragment_setting">
+        <action
+            android:id="@+id/action_setting_to_payment_history"
+            app:destination="@+id/navigation_payment"
+            />
+        <action
+            android:id="@+id/action_setting_t_contact_us_fragment"
+            app:destination="@+id/contact_us_fragment"
+            /><action
+            android:id="@+id/action_setting_t_privacy_fragment"
+            app:destination="@+id/privacy_fragment"
+            />
+    </fragment>
+    <fragment
+        android:id="@+id/navigation_profile"
+        android:name="com.toilets.go.ui.UserSide.Profile.ProfileFragment"
+        android:label="Profile"
+        tools:layout="@layout/fragment_profile">
+    </fragment>
+    <fragment
+        android:id="@+id/navigation_payment"
+        android:name="com.toilets.go.ui.ProviderHome.Setting.PaymentHistoryFragment"
+        android:label="Payments"
+        tools:layout="@layout/fragment_payment_history">
+    </fragment>
+    <fragment
+        android:id="@+id/contact_us_fragment"
+        android:name="com.toilets.go.ui.UserSide.Review.ContactUsFragment"
+        android:label="ContactUs"
+        tools:layout="@layout/fragment_contact_us">
+
+    </fragment>
+    <fragment
+        android:id="@+id/privacy_fragment"
+        android:name="com.toilets.go.ui.UserSide.Review.PrivacyFragment"
+        android:label="Privacy"
+        tools:layout="@layout/fragment_privacy">
+
+    </fragment>
+</navigation>

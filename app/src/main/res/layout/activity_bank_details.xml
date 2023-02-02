@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    >
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".ui.LoginSignup.BasicDetailsActivity">
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:padding="@dimen/_10sdp"
+                android:id="@+id/top"
+                android:layout_marginTop="@dimen/_20sdp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/tvtitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/texts"
+                    android:text="Bank Details "
+                    android:textSize="@dimen/_14sdp"
+                    android:layout_gravity="center"
+                    android:fontFamily="@font/poppins_bold"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/middle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/top"
+                android:layout_marginStart="@dimen/_10sdp"
+                android:layout_marginTop="@dimen/_10sdp"
+                android:layout_marginEnd="@dimen/_10sdp"
+                android:layout_marginBottom="@dimen/_10sdp"
+                android:orientation="vertical">
+
+
+                    <EditText
+                        android:maxLines="1"
+                        android:id="@+id/edt_bank_name"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="@dimen/_5sdp"
+                        android:layout_marginTop="@dimen/_5sdp"
+                        android:layout_weight="1"
+                        android:background="@drawable/background_edit"
+                        android:fontFamily="@font/poppinsregular"
+                        android:hint="Bank Name"
+                        android:inputType="textPersonName"
+                        android:padding="@dimen/_10sdp"
+                        android:textColor="@color/hint_text_color"
+                        android:textColorHint="@color/hint_text_color"
+                        android:textSize="@dimen/_12sdp" />
+
+                    <EditText
+                        android:maxLines="1"
+                        android:id="@+id/edt_ac_no"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="@dimen/_5sdp"
+                        android:layout_marginTop="@dimen/_5sdp"
+                        android:layout_weight="1"
+                        android:background="@drawable/background_edit"
+                        android:fontFamily="@font/poppinsregular"
+                        android:hint="Account No"
+                        android:inputType="numberDecimal"
+                        android:padding="@dimen/_10sdp"
+                        android:textColor="@color/hint_text_color"
+                        android:textColorHint="@color/hint_text_color"
+                        android:textSize="@dimen/_12sdp" />
+
+
+
+
+                <EditText
+                    android:id="@+id/edt_holder"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/_5sdp"
+                    android:background="@drawable/background_edit"
+                    android:fontFamily="@font/poppinsregular"
+                    android:hint=" Holder Name"
+                    android:maxLines="1"
+                    android:inputType="text"
+                    android:padding="@dimen/_10sdp"
+                    android:textColor="@color/hint_text_color"
+                    android:textColorHint="@color/hint_text_color"
+                    android:textSize="@dimen/_12sdp" />
+                <EditText
+                    android:id="@+id/edt_ifsc"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/_5sdp"
+                    android:background="@drawable/background_edit"
+                    android:fontFamily="@font/poppinsregular"
+                    android:hint="IFSC Code"
+                    android:maxLines="1"
+                    android:inputType="text"
+                    android:padding="@dimen/_10sdp"
+                    android:textColor="@color/hint_text_color"
+                    android:textColorHint="@color/hint_text_color"
+                    android:textSize="@dimen/_12sdp" />
+                <EditText
+                    android:maxLines="1"
+                    android:id="@+id/edt_branch"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/_5sdp"
+                    android:background="@drawable/background_edit"
+                    android:fontFamily="@font/poppinsregular"
+                    android:hint="Branch"
+                    android:inputType="textPostalAddress"
+                    android:padding="@dimen/_10sdp"
+                    android:textColor="@color/hint_text_color"
+                    android:textColorHint="@color/hint_text_color"
+                    android:textSize="@dimen/_12sdp" />
+
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btn_submit"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/_10sdp"
+                    android:layout_marginTop="@dimen/_20sdp"
+                    android:layout_marginEnd="@dimen/_10sdp"
+                    android:layout_marginBottom="@dimen/_10sdp"
+                    android:elevation="@dimen/_3sdp"
+                    android:fontFamily="@font/poppins_bold"
+                    android:outlineProvider="background"
+                    android:outlineSpotShadowColor="@color/white"
+                    android:padding="@dimen/_10sdp"
+                    android:text="@string/submit"
+                    android:textAllCaps="false"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/_14sdp"
+                    android:textStyle="bold"
+                    app:backgroundTint="@color/colorPrimary"
+                    app:cornerRadius="@dimen/_10sdp"
+                    app:rippleColor="@color/gray_two" />
+
+
+
+            </LinearLayout>
+        </RelativeLayout>
+
+    </ScrollView>
+</layout>

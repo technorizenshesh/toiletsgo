@@ -1,0 +1,52 @@
+<resources>
+    <string name="app_name">Toilet\'sGo</string>
+    <string name="individual">I am an individual</string>
+    <string name="proffescal">I am a professional</string>
+    <string name="first_name"> First Name</string>
+    <string name="last_name"> Last Name</string>
+    <string name="email">  Email </string>
+    <string name="gender">Gender</string>
+    <string name="country">Country</string>
+    <string name="submit">Submit</string>
+    <string name="google">Google</string>
+    <string name="facebook">Facebook</string>
+    <string name="already_ac">Already have an account? Login</string>
+    <string name="search_here">Type a destination</string>
+    <string name="suggaction">Suggaction</string>
+    <string name="toilet_name">Toilet Name</string>
+    <string name="price">Price</string>
+    <string name="desc">Discription                                                                     </string>
+    <string name="address">Address</string>
+    <string name="my_last">MY LAST SEARCHES</string>
+    <string name="my_location"> Within my country:  India </string>
+    <string name="i_support">I support local travel!</string>
+    <string name="anywere_in_world">Anywhere in the world</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="api_key">AIzaSyB90Ml5dpDCKI5-WuAGnkT-EHyCJrUR7ao</string>
+    <string name="message">Message</string>
+    <string name="trems_condition"><![CDATA[Terms & Condition\'s]]></string>
+    <string name="share_your_views">Loorem ipsum dolor sit amet consectetur. In aliquet hac tincidunt congue tellus pellentesque vestibulum.</string>
+    <string name="cancel">Cancel</string>
+    <string name="take_photo">Take Photo</string>
+    <string name="select_from_gallery">Select From Gallery</string>
+    <string name="select_image">Select Image</string>
+    <string name="permission_denied_boo">Permission Denied</string>
+    <string name="empty">Empty</string>
+    <string name="please_pick_image">please pick image</string>
+    <string name="please_pick_another_image">please pick  Second image</string>
+    <string name="please_wait">Please Wait</string>
+    <string name="select_country">Select Country</string>
+    <string name="select_gender">Select Gender</string>
+    <string name="select">Select</string>
+    <string name="save_changes">Save Changes</string>
+    <string name="no_location">Location Turned Off</string>
+    <string name="view_details">View Details</string>
+    <string name="searching">Searching</string>
+    <string name="request">Request</string>
+    <string name="default_notification_channel_id">1</string>
+    <string name="no_data_found">No Data Found</string>
+    <string name="reservation">reservation</string>
+    <string name="waiting">waiting</string>
+
+</resources>
