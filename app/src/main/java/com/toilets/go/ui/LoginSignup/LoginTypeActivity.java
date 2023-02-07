@@ -70,11 +70,13 @@ session.setFireBaseToken(token);
                    // Toast.makeText(MainActivity.this, msg, Toast.LENGTH_SHORT).show();
                 });
         binding.btnIndividual.setOnClickListener(v -> {
-            startActivity(new Intent(this, SignupActivity.class)
+            session.setUSERTYPE("User");
+            startActivity(new Intent(this, LoginActivity.class)
                     .putExtra("User_type", "User"));
         });
         binding.btnProfesnal.setOnClickListener(v -> {
-            startActivity(new Intent(this, SignupActivity.class)
+            session.setUSERTYPE("PROVIDER");
+            startActivity(new Intent(this, LoginActivity.class)
                     .putExtra("User_type", "PROVIDER"));
         });
 
@@ -99,22 +101,18 @@ session.setFireBaseToken(token);
                         enableGPSAutomatically();
                     else {
 
-                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                            if (shouldShowRequestPermissionRationale(ACCESS_FINE_LOCATION)) {
-                                showMessageOKCancel(
-                                        "You need to allow access to both the permissions",
-                                        new DialogInterface.OnClickListener() {
-                                            @Override
-                                            public void onClick(DialogInterface dialog, int which) {
-                                                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                                                    requestPermissions(new String[]{ACCESS_FINE_LOCATION,
-                                                                    ACCESS_COARSE_LOCATION},
-                                                            REQUEST_LOCATION_PERMISSION);
-                                                }
-                                            }
-                                        });
-                                return;
-                            }
+                        if (shouldShowRequestPermissionRationale(ACCESS_FINE_LOCATION)) {
+                            showMessageOKCancel(
+                                    "You need to allow access to both the permissions",
+                                    new DialogInterface.OnClickListener() {
+                                        @Override
+                                        public void onClick(DialogInterface dialog, int which) {
+                                            requestPermissions(new String[]{ACCESS_FINE_LOCATION,
+                                                            ACCESS_COARSE_LOCATION},
+                                                    REQUEST_LOCATION_PERMISSION);
+                                        }
+                                    });
+                            return;
                         }
 
                     }

@@ -3,7 +3,6 @@ package com.toilets.go.ui.UserSide.Home;
 import android.Manifest;
 import android.app.AlertDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.pm.PackageManager;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
@@ -21,15 +20,15 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
-import androidx.navigation.Navigation;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.deishelon.roundedbottomsheet.RoundedBottomSheetDialog;
 import com.google.android.gms.common.api.ApiException;
@@ -45,25 +44,25 @@ import com.google.android.gms.maps.model.MapStyleOptions;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.libraries.places.api.Places;
 import com.google.android.libraries.places.api.model.AutocompletePrediction;
 import com.google.android.libraries.places.api.model.AutocompleteSessionToken;
 import com.google.android.libraries.places.api.model.Place;
 import com.google.android.libraries.places.api.net.FetchPlaceRequest;
-import com.google.android.libraries.places.api.net.FetchPlaceResponse;
 import com.google.android.libraries.places.api.net.FindAutocompletePredictionsRequest;
 import com.google.android.libraries.places.api.net.FindAutocompletePredictionsResponse;
 import com.google.android.libraries.places.api.net.PlacesClient;
-import com.google.android.material.slider.LabelFormatter;
 import com.mancj.materialsearchbar.MaterialSearchBar;
 import com.mancj.materialsearchbar.adapter.SuggestionsAdapter;
 import com.toilets.go.R;
+import com.toilets.go.adapters.NotificationListAdapter;
 import com.toilets.go.databinding.BottemSheeetDetailsBinding;
 import com.toilets.go.databinding.BottemSheeetFilterBinding;
+import com.toilets.go.databinding.BottemSheeetWaitingBinding;
 import com.toilets.go.models.SuccessResBooking;
+import com.toilets.go.models.SuccessResNotifications;
+import com.toilets.go.ui.UserSide.Notification.NotificationFragment;
 import com.toilets.go.utills.DataManager;
 import com.toilets.go.utills.GPSTracker;
 import com.toilets.go.utills.Session;
@@ -72,15 +71,12 @@ import com.toilets.go.models.SuccessResNearbyList;
 import com.toilets.go.retrofit.ApiClient;
 import com.toilets.go.retrofit.GosInterface;
 import com.toilets.go.ui.UserSide.HomeUserAct;
-import com.toilets.go.utills.Util;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
-import java.util.Objects;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -88,6 +84,8 @@ import retrofit2.Response;
 
 import static android.content.ContentValues.TAG;
 import static android.content.Context.INPUT_METHOD_SERVICE;
+import static com.toilets.go.utills.DataManager.checkConnection;
+import static com.toilets.go.utills.DataManager.showNoInternet;
 
 public class UserHomeFragment extends Fragment implements OnMapReadyCallback {
     FragmentUserHomeBinding binding;
@@ -257,7 +255,12 @@ public class UserHomeFragment extends Fragment implements OnMapReadyCallback {
 
     @Override
     public void onResume() {
-        getnearByUsersAPI();
+        if (checkConnection((requireActivity()))) {
+            getnearByUsersAPI();
+
+        } else {
+            showNoInternet(requireActivity(),true);
+        }
         super.onResume();
     }
 
@@ -335,9 +338,14 @@ public class UserHomeFragment extends Fragment implements OnMapReadyCallback {
         mBottomSheetDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         mBottomSheetDialog.setContentView(bottemSheeetDetailsBinding.getRoot());
         bottemSheeetDetailsBinding.setDatamodel(data);
+        //  getRating(bottemSheeetDetailsBinding.recyclerView,bottemSheeetDetailsBinding.progressBar,data.getId());
         bottemSheeetDetailsBinding.btnSubmit.setOnClickListener(v -> {
+            if (checkConnection((requireActivity()))) {
+                sendRequestAPI(data.getUserId(), data.getId(), data.getPrice());
 
-            sendRequestAPI(data.getUserId(), data.getId(), data.getPrice());
+            } else {
+                showNoInternet(requireActivity(),true);
+            }
             mBottomSheetDialog.dismiss();
           /*  Bundle bundle = new Bundle();
             bundle.putString("from", "home");
@@ -348,6 +356,61 @@ public class UserHomeFragment extends Fragment implements OnMapReadyCallback {
         mBottomSheetDialog.show();
 
     }
+
+   /* private void getRating(RecyclerView recyclerView, LinearLayout progressBar, String id) {
+        {
+            DataManager.getInstance().showProgressMessage(requireActivity(), getString(R.string.please_wait));
+            Map<String, String> map = new HashMap<>();
+            map.put("user_id", session.getUserId());
+            map.put("token", session.getAuthtoken());
+            Log.e(TAG, "sendRequestAPI: " + map);
+            Call<SuccessResNotifications> call = apiInterface.get_notification(map);
+            call.enqueue(new Callback<>() {
+                @Override
+                public void onResponse(Call<SuccessResNotifications> call,
+                                       Response<SuccessResNotifications> response) {
+                    try {
+                        DataManager.getInstance().hideProgressMessage();
+                        SuccessResNotifications data = response.body();
+                        Log.e("data", data.getStatus());
+                        if (data.getStatus().equalsIgnoreCase("1")) {
+                          progressBar.setVisibility(View.GONE);
+                            recyclerView.setVisibility(View.VISIBLE);
+                            res = response.body().getResult();
+                            binding.recyclerView.setLayoutManager(new LinearLayoutManager(requireContext()
+                                    , LinearLayoutManager.VERTICAL, false));
+                            myRecyclerViewAdapter = new NotificationListAdapter(res, requireActivity(),
+                                    NotificationFragment.this);
+                            recyclerView.setAdapter(myRecyclerViewAdapter);
+                            recyclerView.hasFixedSize();
+                        } else {
+                            Toast.makeText(requireActivity(), data.getMessage(), Toast.LENGTH_SHORT).show();
+                            recyclerView.setVisibility(View.GONE);
+
+                        }
+
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<SuccessResNotifications> call, Throwable t) {
+                    call.cancel();
+                    Log.e(TAG, "onFailure: " + t.getCause());
+                    Log.e(TAG, "onFailure: " + t.getMessage());
+                    Log.e(TAG, "onFailure: " + t.getLocalizedMessage());
+                    Toast.makeText(requireActivity(), t.getCause().toString(),
+                            Toast.LENGTH_SHORT).show();
+                    binding.nodata.setVisibility(View.VISIBLE);
+                    binding.recyclerView.setVisibility(View.GONE);
+                    DataManager.getInstance().hideProgressMessage();
+                }
+            });
+
+
+        }
+    }*/
 
     private void openFilterBottem() {
 
@@ -386,7 +449,12 @@ public class UserHomeFragment extends Fragment implements OnMapReadyCallback {
             Log.e(TAG, "openFilterBottem: range  ====  " + range);
             Log.e(TAG, "openFilterBottem: price  ====  " + price);
             mBottomSheetDialog.dismiss();
-            getnearByUsersAPI();
+            if (checkConnection((requireActivity()))) {
+                getnearByUsersAPI();
+
+            } else {
+                showNoInternet(requireActivity(),true);
+            }
         });
         bottemSheeetFilterBinding.imgReset.setOnClickListener(v -> {
                     new AlertDialog.Builder(requireActivity())
@@ -414,7 +482,12 @@ public class UserHomeFragment extends Fragment implements OnMapReadyCallback {
 
 
     private BitmapDescriptor bitmapDescriptorFromVector(Context context, int vectorResId) {
-        Drawable vectorDrawable = ContextCompat.getDrawable(context, vectorResId);
+         try {
+
+         }catch (Exception e){
+
+         }
+        Drawable vectorDrawable = requireContext().getDrawable( vectorResId);
         vectorDrawable.setBounds(0, 0, vectorDrawable.getIntrinsicWidth(), vectorDrawable.getIntrinsicHeight());
         Bitmap bitmap = Bitmap.createBitmap(vectorDrawable.getIntrinsicWidth(), vectorDrawable.getIntrinsicHeight(), Bitmap.Config.ARGB_8888);
         Canvas canvas = new Canvas(bitmap);
@@ -484,7 +557,6 @@ public class UserHomeFragment extends Fragment implements OnMapReadyCallback {
         map.put("toilet_id", id);
         map.put("amount", amount);
         map.put("token", session.getAuthtoken());
-
         Log.e(TAG, "sendRequestAPI: " + map);
         Call<SuccessResBooking> call = apiInterface.booking_request(map);
         call.enqueue(new Callback<>() {
@@ -497,6 +569,9 @@ public class UserHomeFragment extends Fragment implements OnMapReadyCallback {
                     Log.e("data", data.getStatus());
                     if (data.getStatus().equals("1")) {
                         Toast.makeText(requireActivity(), data.getMessage(), Toast.LENGTH_SHORT).show();
+                        session.setBookingid(data.getResult().getId());
+                        openBottemSheetfor();
+
                     }
 
 
@@ -512,5 +587,27 @@ public class UserHomeFragment extends Fragment implements OnMapReadyCallback {
             }
         });
 
+    }
+
+    private void openBottemSheetfor() {
+
+        Log.e(TAG, "openBottemSheet: " + "=-=-=-=-=-=-");
+        RoundedBottomSheetDialog mBottomSheetDialog = new RoundedBottomSheetDialog(requireActivity());
+        BottemSheeetWaitingBinding bottemSheeetWaitingBinding = DataBindingUtil.inflate(getLayoutInflater()
+                , R.layout.bottem_sheeet_waiting, null, false);
+        mBottomSheetDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        mBottomSheetDialog.setContentView(bottemSheeetWaitingBinding.getRoot());
+       // bottemSheeetWaitingBinding.setDatamodel(data);
+        bottemSheeetWaitingBinding.btnSubmit.setOnClickListener(v -> {
+
+          //  sendRequestAPI(data.getUserId(), data.getId(), data.getPrice());
+            mBottomSheetDialog.dismiss();
+          /*  Bundle bundle = new Bundle();
+            bundle.putString("from", "home");
+            Navigation.findNavController(binding.getRoot())
+                    .navigate(R.id.action_navigation_home_to_payment_fragment, bundle);*/
+        });
+
+        mBottomSheetDialog.show();
     }
 }

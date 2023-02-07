@@ -1,24 +1,26 @@
 package com.toilets.go.ui.LoginSignup;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.databinding.DataBindingUtil;
+import static com.toilets.go.utills.DataManager.checkConnection;
+import static com.toilets.go.utills.DataManager.showNoInternet;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.Toast;
 
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.databinding.DataBindingUtil;
+
 import com.google.gson.Gson;
+import com.toilets.go.R;
 import com.toilets.go.databinding.ActivityLoginBinding;
 import com.toilets.go.models.SuccessResSignup;
-import com.toilets.go.R;
+import com.toilets.go.retrofit.ApiClient;
+import com.toilets.go.retrofit.GosInterface;
 import com.toilets.go.ui.ProviderHome.ProviderHomeActivity;
 import com.toilets.go.ui.UserSide.HomeUserAct;
 import com.toilets.go.utills.DataManager;
 import com.toilets.go.utills.Session;
-import com.toilets.go.retrofit.ApiClient;
-import com.toilets.go.retrofit.GosInterface;
-import com.toilets.go.utills.Util;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -31,34 +33,36 @@ import retrofit2.Response;
 public class LoginActivity extends AppCompatActivity {
     ActivityLoginBinding binding;
     String UserType = "";
-    private GosInterface apiInterface;
     Session session;
+    private GosInterface apiInterface;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         binding = DataBindingUtil.setContentView(this, R.layout.activity_login);
         apiInterface = ApiClient.getClient().create(GosInterface.class);
         session = new Session(this);
-
-        if (getIntent() != null) {
-            UserType = getIntent().getExtras().getString("User_type");
-        }
+            UserType = session.getUSERTYPE();
         binding.btnSubmit.setOnClickListener(v -> {
             String email = binding.edtEmail.getText().toString().trim();
             String pass = binding.edtPass.getText().toString().trim();
             if (email.equalsIgnoreCase("")) {
                 binding.edtEmail.setError(getString(R.string.empty));
-            } else
-                if (pass.equalsIgnoreCase("")) {
+            } else if (pass.equalsIgnoreCase("")) {
                 binding.edtPass.setError(getString(R.string.empty));
             } else {
-                loginAPI(email, pass);
+                if (checkConnection(LoginActivity.this)) {
+                    loginAPI(email, pass);
+                } else {
+                    showNoInternet(LoginActivity.this,true);
+                }
             }
         });
+         binding.botm.setOnClickListener(v -> {
+             startActivity(new Intent(getApplicationContext(), SignupActivity.class)
+                     .putExtra("User_type", UserType));
+         });
     }
-
-
-
 
 
     private void loginAPI(String email, String pass) {
@@ -67,7 +71,7 @@ public class LoginActivity extends AppCompatActivity {
         map.put("email", email);
         map.put("password", pass);
         map.put("register_id", session.getFireBaseToken());
-        map.put("type",UserType  );
+        map.put("type", UserType);
         Call<SuccessResSignup> call = apiInterface.login(map);
         call.enqueue(new Callback<SuccessResSignup>() {
             @Override
@@ -93,16 +97,17 @@ public class LoginActivity extends AppCompatActivity {
                             startActivity(new Intent(getApplicationContext(), HomeUserAct.class)
                                     .putExtra("User_type", UserType));
                         } else {
-                             if (signup.getStep().equalsIgnoreCase("0")){
-                                 startActivity(new Intent(getApplicationContext(),
-                                         BasicDetailsActivity.class)
-                                         .putExtra("User_type", UserType));
-                             }else {
-                            startActivity(new Intent(getApplicationContext(),
-                                    ProviderHomeActivity.class)
-                                    .putExtra("User_type", UserType));}
+                            if (signup.getStep().equalsIgnoreCase("0")) {
+                                startActivity(new Intent(getApplicationContext(),
+                                        BasicDetailsActivity.class)
+                                        .putExtra("User_type", UserType));
+                            } else {
+                                startActivity(new Intent(getApplicationContext(),
+                                        ProviderHomeActivity.class)
+                                        .putExtra("User_type", UserType));
+                            }
                         }
-                    }else {
+                    } else {
                         Toast.makeText(LoginActivity.this, response.body().getMessage(), Toast.LENGTH_SHORT).show();
                     }
                 } catch (Exception e) {
@@ -118,5 +123,6 @@ public class LoginActivity extends AppCompatActivity {
         });
 
     }
+
 
 }

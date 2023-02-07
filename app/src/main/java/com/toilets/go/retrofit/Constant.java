@@ -41,9 +41,7 @@ public class Constant {
         return matcher.matches();
     }
 
-    public static void showToast(Activity context, String msg) {
-        Toast.makeText(context, msg, Toast.LENGTH_LONG).show();
-    }
+
 
     public static void updateResources(Context context, String language) {
         Locale locale = new Locale(language);

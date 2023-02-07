@@ -27,6 +27,7 @@ public class Session extends Object {
     private static final String USERDATA   = "data";
     private static final String USERTYPE = "type";
     private static final String AUTHTOKEN = "token";
+    private static final String BOOKINGID = "booking_id";
     private Context _context;
     private SharedPreferences Rapidine_pref;
     private SharedPreferences.Editor editor;
@@ -47,6 +48,15 @@ public class Session extends Object {
     }
 
 
+    public String getBookingid() {
+        return Rapidine_pref.getString(BOOKINGID, "");
+
+    }
+
+    public void setBookingid(String user_name) {
+        editor.putString(BOOKINGID, user_name);
+        this.editor.apply();
+    }
     public String getUser_name() {
         return Rapidine_pref.getString(User_name, "");
 

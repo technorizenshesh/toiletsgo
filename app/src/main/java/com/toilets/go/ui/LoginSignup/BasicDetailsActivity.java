@@ -1,10 +1,16 @@
 package com.toilets.go.ui.LoginSignup;
 
+import static android.content.ContentValues.TAG;
+import static com.toilets.go.utills.DataManager.checkConnection;
+import static com.toilets.go.utills.DataManager.showNoInternet;
+
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.databinding.DataBindingUtil;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.Manifest;
 import android.content.Context;
@@ -13,22 +19,37 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.Matrix;
 import android.graphics.Paint;
+import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.util.Log;
+import android.view.View;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.deishelon.roundedbottomsheet.RoundedBottomSheetDialog;
 import com.google.gson.Gson;
+import com.toilets.go.adapters.CountryAdapter;
+import com.toilets.go.adapters.EstAdapter;
+import com.toilets.go.adapters.GenderAdapter;
 import com.toilets.go.databinding.ActivityBasicDetailsBinding;
+import com.toilets.go.databinding.BottemSheeetEstBinding;
+import com.toilets.go.databinding.BottemSheeetFilterBinding;
+import com.toilets.go.models.SuccessResCheckRes;
+import com.toilets.go.models.SuccessResGetCountry;
+import com.toilets.go.models.SuccessResGetGender;
 import com.toilets.go.models.SuccessResSignup;
 import com.toilets.go.R;
 import com.toilets.go.SearchLocationMapAct;
+import com.toilets.go.models.SuccessResStabRes;
 import com.toilets.go.utills.DataManager;
 import com.toilets.go.utills.RealPathUtil;
+import com.toilets.go.utills.RecyclerTouchListener;
 import com.toilets.go.utills.Session;
 import com.toilets.go.retrofit.ApiClient;
 import com.toilets.go.retrofit.Constant;
@@ -37,6 +58,9 @@ import com.toilets.go.retrofit.GosInterface;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
@@ -46,71 +70,89 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class BasicDetailsActivity extends AppCompatActivity {
-ActivityBasicDetailsBinding binding ;
-String UserType="";
+    ActivityBasicDetailsBinding binding;
+    String UserType = "";
     private static final int SELECT_FILE = 2;
     private static final int SELECT_FILE2 = 22;
     String str_image_path = "";
     String str_image_path2 = "";
+    String auto_accpet1 = "";
+    String establishment_no1 = "";
+    String est_type1 = "";
+    String is_toilet_available1 = "";
+    String access_toilets1 = "";
+    String unstoppable_nature1 = "";
     private static final int REQUEST_CAMERA = 1;
     private static final int REQUEST_CAMERA2 = 12;
     private GosInterface apiInterface;
     private static final int MY_PERMISSION_CONSTANT = 5;
-    Session session ;
+    Session session;
     boolean cameraClicked = true;
-
+    private List<SuccessResStabRes.Result> country_list;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        binding = DataBindingUtil.setContentView(this,R.layout.activity_basic_details);
+        binding = DataBindingUtil.setContentView(this, R.layout.activity_basic_details);
         apiInterface = ApiClient.getClient().create(GosInterface.class);
         session = new Session(this);
-        if (getIntent() != null) {
-            UserType = getIntent().getExtras().getString("User_type");
+            UserType = session.getUSERTYPE();
+
+        if (checkConnection(BasicDetailsActivity.this)) {
+            get_countryAPI();
+        } else {
+            showNoInternet(BasicDetailsActivity.this,true);
         }
-binding.edtAddress.setText(session.getRestraID());
-         binding.edtAddress.setOnClickListener( v -> {
-             if (ActivityCompat.checkSelfPermission(getApplicationContext(),
-                     Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
-                     && ActivityCompat.checkSelfPermission(getApplicationContext(),
-                     Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-                 ActivityCompat.requestPermissions(BasicDetailsActivity.this,
-                         new String[]{Manifest.permission.ACCESS_FINE_LOCATION,
-                                 Manifest.permission.ACCESS_COARSE_LOCATION},
-                         Constant.LOCATION_REQUEST);
-             } else {
+
+        binding.edtAddress.setText(session.getRestraID());
+        binding.edtAddress.setOnClickListener(v -> {
+            if (ActivityCompat.checkSelfPermission(getApplicationContext(),
+                    Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
+                    && ActivityCompat.checkSelfPermission(getApplicationContext(),
+                    Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                ActivityCompat.requestPermissions(BasicDetailsActivity.this,
+                        new String[]{Manifest.permission.ACCESS_FINE_LOCATION,
+                                Manifest.permission.ACCESS_COARSE_LOCATION},
+                        Constant.LOCATION_REQUEST);
+            } else {
 
 
-                 startActivity(new Intent(BasicDetailsActivity.this,
-                         SearchLocationMapAct.class));
-             }
-         });
+                startActivity(new Intent(BasicDetailsActivity.this,
+                        SearchLocationMapAct.class));
+            }
+        });
         binding.btnSubmit.setOnClickListener(v -> {
-                if (binding.edtToiletName.getText().toString().equalsIgnoreCase("")) {
-                    binding.edtToiletName.setError(getString(R.string.empty));
-                } else if (binding.edtPrice.getText().toString().equalsIgnoreCase("")) {
-                    binding.edtPrice.setError(getString(R.string.empty));
-                } else if (binding.edtDesc.getText().toString().equalsIgnoreCase("")) {
-                    binding.edtDesc.setError(getString(R.string.empty));
-                } else if (binding.edtAddress.getText().toString().equalsIgnoreCase("")) {
-                    binding.edtAddress.setError(getString(R.string.empty));
-                } else  if (str_image_path.equalsIgnoreCase("")) {
-                    Toast.makeText(this, getString(R.string.please_pick_image), Toast.LENGTH_SHORT).show();
-                } else if (str_image_path2.equalsIgnoreCase("")) {
-                    Toast.makeText(this, getString(R.string.please_pick_another_image), Toast.LENGTH_SHORT).show();
-                } else {
+            if (binding.edtToiletName.getText().toString().equalsIgnoreCase("")) {
+                binding.edtToiletName.setError(getString(R.string.empty));
+            } else if (binding.edtPrice.getText().toString().equalsIgnoreCase("")) {
+                binding.edtPrice.setError(getString(R.string.empty));
+            } else if (binding.edtDesc.getText().toString().equalsIgnoreCase("")) {
+                binding.edtDesc.setError(getString(R.string.empty));
+            } else if (binding.edtAddress.getText().toString().equalsIgnoreCase("")) {
+                binding.edtAddress.setError(getString(R.string.empty));
+            } else if (str_image_path.equalsIgnoreCase("")) {
+                Toast.makeText(this, getString(R.string.please_pick_image), Toast.LENGTH_SHORT).show();
+            } else if (str_image_path2.equalsIgnoreCase("")) {
+                Toast.makeText(this, getString(R.string.please_pick_another_image), Toast.LENGTH_SHORT).show();
+            } else if (est_type1.equalsIgnoreCase("")) {
+                Toast.makeText(this, getString(R.string.please_pick_est_type), Toast.LENGTH_SHORT).show();
+            } else {
+                if (checkConnection(BasicDetailsActivity.this)) {
                     SignupAPI(binding.edtToiletName.getText().toString()
                             , binding.edtPrice.getText().toString()
                             , binding.edtDesc.getText().toString()
                             , binding.edtAddress.getText().toString());
-
+                } else {
+                    showNoInternet(BasicDetailsActivity.this, true);
                 }
 
 
+            }
 
 
         });
-
+        binding.edtType.setOnClickListener(v -> {
+            OpenBottemSheet(getString(R.string.select_est));
+        });
         binding.ivAddPost.setOnClickListener(v ->
                 {
                     final CharSequence[] options = {getString(R.string.take_photo), getString(R.string.select_from_gallery), getString(R.string.cancel)};
@@ -169,11 +211,136 @@ binding.edtAddress.setText(session.getRestraID());
                     builder.show();
                 }
         );
+        openFilterBottem();
+    }
+    private void openFilterBottem() {
+
+        Log.e(TAG, "openBottemSheet: " + "=-=-=-=-=-=-");
+        RoundedBottomSheetDialog mBottomSheetDialog = new RoundedBottomSheetDialog(BasicDetailsActivity.this);
+        BottemSheeetEstBinding bottemSheeetEstBinding = DataBindingUtil.inflate(getLayoutInflater()
+                , R.layout.bottem_sheeet_est, null, false);
+        mBottomSheetDialog.setCancelable(false);
+        mBottomSheetDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.parseColor("#E4FFFFFF")));
+        mBottomSheetDialog.setContentView(bottemSheeetEstBinding.getRoot());
+        bottemSheeetEstBinding.btnSubmit.setOnClickListener(v -> {
+            if (checkConnection(BasicDetailsActivity.this)) {
+                 if (bottemSheeetEstBinding.edtExtNo.getText()
+                         .toString().equalsIgnoreCase("")){
+                     Toast.makeText(getApplicationContext(), getString(R.string.empty), Toast.LENGTH_SHORT).show();
+                 }else {
+                checkEstNo(mBottomSheetDialog,"");}
+
+            } else {
+                showNoInternet(BasicDetailsActivity.this,true);
+            }
+        });
+        mBottomSheetDialog.show();
+    }
+
+    private void checkEstNo(RoundedBottomSheetDialog mBottomSheetDialog, String s)
+        {
+            DataManager.getInstance().showProgressMessage(BasicDetailsActivity.this, getString(R.string.please_wait));
+            Map<String, String> map = new HashMap<>();
+            map.put("user_id", session.getUserId());
+            map.put("establishment_no", s);
+            map.put("token", session.getAuthtoken());
+            Call<SuccessResCheckRes> call = apiInterface.check_if_exist(map);
+            call.enqueue(new Callback<>() {
+                @Override
+                public void onResponse(Call<SuccessResCheckRes> call,
+                                       Response<SuccessResCheckRes> response) {
+                    try {
+                        if (response.body().getStatus().equalsIgnoreCase("1")) {
+
+                            mBottomSheetDialog.dismiss();
+                            establishment_no1=s;
+                        }
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<SuccessResCheckRes> call, Throwable t) {
+                    call.cancel();
+                    Log.e("TAG", "onFailure: " + t.getLocalizedMessage());
+                    Log.e("TAG", "onFailure: " + t.getMessage());
+                    //    DataManager.getInstance().hideProgressMessage();
+                }
+            });
+
+        }
+
+
+    private void get_countryAPI() {
+        // DataManager.getInstance().showProgressMessage(SignupActivity.this, getString(R.string.please_wait));
+        Map<String, String> map = new HashMap<>();
+        map.put("user_id", session.getUserId());
+        Call<SuccessResStabRes> call = apiInterface.get_establishment();
+        call.enqueue(new Callback<SuccessResStabRes>() {
+            @Override
+            public void onResponse(Call<SuccessResStabRes> call,
+                                   Response<SuccessResStabRes> response) {
+                try {
+                    if (response.body().getStatus().equalsIgnoreCase("1")) {
+                        country_list = response.body().getResult();
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<SuccessResStabRes> call, Throwable t) {
+                call.cancel();
+                Log.e("TAG", "onFailure: " + t.getLocalizedMessage());
+                Log.e("TAG", "onFailure: " + t.getMessage());
+                //    DataManager.getInstance().hideProgressMessage();
+            }
+        });
+
     }
 
 
+    private void OpenBottemSheet(String type) {
+        RoundedBottomSheetDialog mBottomSheetDialog = new RoundedBottomSheetDialog(BasicDetailsActivity.this);
+        View sheetView = mBottomSheetDialog.getLayoutInflater().inflate(R.layout.home_bottam, null);
+        mBottomSheetDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        mBottomSheetDialog.setContentView(sheetView);
+        TextView title = mBottomSheetDialog.findViewById(R.id.title);
+        title.setText(type);
+        RecyclerView recycle = mBottomSheetDialog.findViewById(R.id.recycle_bottem);
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(BasicDetailsActivity.this);
+        recycle.setLayoutManager(linearLayoutManager);
+        mBottomSheetDialog.show();
+        EstAdapter adapter = new EstAdapter(getApplicationContext(), country_list);
+            recycle.setAdapter(adapter);
+            recycle.addOnItemTouchListener(new RecyclerTouchListener(BasicDetailsActivity.this, recycle,
+                    new RecyclerTouchListener.ClickListener() {
+                        @Override
+                        public void onClick(View view, int position) {
+                            Log.e("->>", "" + country_list.get(position));
+                            Log.e("->>", country_list.get(position).getName());
+                            Log.e("->>", country_list.get(position).getId());
+                            binding.edtType.setText(country_list.get(position).getName());
+                            est_type1 = country_list.get(position).getId();
+                            mBottomSheetDialog.dismiss();
+
+                        }
+
+                        @Override
+                        public void onLongClick(View view, int position) {
+
+                        }
+                    }));
+
+
+    }
+
+
+
     private void SignupAPI(String name, String price, String desc, String address) {
-        DataManager.getInstance().showProgressMessage(BasicDetailsActivity.this, 
+        DataManager.getInstance().showProgressMessage(BasicDetailsActivity.this,
                 getString(R.string.please_wait));
         MultipartBody.Part filePart;
         if (!str_image_path.equalsIgnoreCase("")) {
@@ -189,7 +356,7 @@ binding.edtAddress.setText(session.getRestraID());
             RequestBody attachmentEmpty = RequestBody.create(MediaType.parse("text/plain"), "");
             filePart = MultipartBody.Part.createFormData("attachment", "", attachmentEmpty);
         }
-        MultipartBody.Part filePart2 ;
+        MultipartBody.Part filePart2;
         if (!str_image_path2.equalsIgnoreCase("")) {
             File file = DataManager.getInstance().saveBitmapToFile(new File(str_image_path2));
             if (file != null) {
@@ -201,7 +368,7 @@ binding.edtAddress.setText(session.getRestraID());
 
         } else {
             RequestBody attachmentEmpty = RequestBody.create(MediaType.parse("text/plain"), "");
-            filePart2= MultipartBody.Part.createFormData("attachment", "", attachmentEmpty);
+            filePart2 = MultipartBody.Part.createFormData("attachment", "", attachmentEmpty);
         }
 
         RequestBody User_id = RequestBody.create(MediaType.parse("text/plain"), session.getUserId());
@@ -212,8 +379,20 @@ binding.edtAddress.setText(session.getRestraID());
         RequestBody token = RequestBody.create(MediaType.parse("text/plain"), session.getAuthtoken());
         RequestBody lat = RequestBody.create(MediaType.parse("text/plain"), session.getHOME_LAT());
         RequestBody lang = RequestBody.create(MediaType.parse("text/plain"), session.getHOME_LONG());
-        Call<SuccessResSignup> call = apiInterface.add_toilet(User_id, T_name, PRICE, Descript,
-                Address, lat, lang, token, filePart,filePart2);
+        RequestBody auto_accpet = RequestBody.create(MediaType.parse("text/plain"), auto_accpet1);
+        RequestBody establishment_no = RequestBody.create(MediaType.parse("text/plain"), establishment_no1);
+        RequestBody est_type = RequestBody.create(MediaType.parse("text/plain"), est_type1);
+        RequestBody is_toilet_available = RequestBody.create(MediaType.parse("text/plain"), is_toilet_available1);
+        RequestBody access_toilets = RequestBody.create(MediaType.parse("text/plain"), access_toilets1);
+        RequestBody unstoppable_nature = RequestBody.create(MediaType.parse("text/plain"), unstoppable_nature1);
+
+
+        Call<SuccessResSignup> call = apiInterface.add_toilet(auto_accpet,
+                establishment_no, est_type, is_toilet_available,
+                access_toilets, unstoppable_nature,
+                User_id, T_name, PRICE, Descript,
+                Address, lat, lang, token, filePart,
+                filePart2);
         call.enqueue(new Callback<SuccessResSignup>() {
             @Override
             public void onResponse(Call<SuccessResSignup> call, Response<SuccessResSignup> response) {
@@ -251,6 +430,7 @@ binding.edtAddress.setText(session.getRestraID());
         intent.setType("image/*");
         startActivityForResult(Intent.createChooser(intent, "Select Image"), SELECT_FILE);
     }
+
     private void getPhotoFromGallary2() {
         Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
         intent.setType("image/*");
@@ -262,6 +442,7 @@ binding.edtAddress.setText(session.getRestraID());
         if (cameraIntent.resolveActivity(BasicDetailsActivity.this.getPackageManager()) != null)
             startActivityForResult(cameraIntent, REQUEST_CAMERA);
     }
+
     private void openCamera2() {
         Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         if (cameraIntent.resolveActivity(BasicDetailsActivity.this.getPackageManager()) != null)
@@ -386,8 +567,7 @@ binding.edtAddress.setText(session.getRestraID());
                     Log.i("TAG", "Some exception " + e);
                 }
 
-            } else 
-                if (requestCode == REQUEST_CAMERA) {
+            } else if (requestCode == REQUEST_CAMERA) {
 
                 try {
                     if (data != null) {
@@ -408,9 +588,7 @@ binding.edtAddress.setText(session.getRestraID());
                     e.printStackTrace();
                 }
 
-            }else 
-
-            if (requestCode == SELECT_FILE2) {
+            } else if (requestCode == SELECT_FILE2) {
                 try {
                     Uri selectedImage = data.getData();
                     Bitmap bitmapNew = MediaStore.Images.Media.getBitmap(getContentResolver(), selectedImage);
@@ -427,8 +605,7 @@ binding.edtAddress.setText(session.getRestraID());
                     Log.i("TAG", "Some exception " + e);
                 }
 
-            } else
-            if (requestCode == REQUEST_CAMERA2) {
+            } else if (requestCode == REQUEST_CAMERA2) {
 
                 try {
                     if (data != null) {
@@ -449,7 +626,7 @@ binding.edtAddress.setText(session.getRestraID());
                     e.printStackTrace();
                 }
 
-            }  
+            }
         }
     }
 

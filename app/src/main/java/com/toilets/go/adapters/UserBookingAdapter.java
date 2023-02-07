@@ -48,8 +48,14 @@ public class UserBookingAdapter extends
         holder.bind(dataModel);
          if (dataModel.getStatus().equalsIgnoreCase("Pending")){
              holder.itemRowBinding.tvstatus.setTextColor(context.getColor(R.color.red));
+             holder.itemRowBinding.giveReview.setVisibility(View.GONE);
 
+         }else {
+             holder.itemRowBinding.giveReview.setVisibility(View.VISIBLE);
          }
+          holder.itemRowBinding.giveReview.setOnClickListener( v -> {
+              customClickListener.cardClicked(dataModel,"",position);
+          });
 
     }
 

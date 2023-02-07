@@ -61,6 +61,8 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 import static android.content.ContentValues.TAG;
+import static com.toilets.go.utills.DataManager.checkConnection;
+import static com.toilets.go.utills.DataManager.showNoInternet;
 
 public class SignupActivity extends AppCompatActivity {
     String UserType = "";
@@ -86,8 +88,13 @@ public class SignupActivity extends AppCompatActivity {
         if (getIntent() != null) {
             UserType = getIntent().getExtras().getString("User_type");
         }
-        get_countryAPI();
-        get_genderAPI();
+        if (checkConnection(SignupActivity.this)) {
+            get_countryAPI();
+            get_genderAPI();
+        } else {
+            showNoInternet(SignupActivity.this,true);
+        }
+
         binding.btnSubmit.setOnClickListener(v -> {
             if (binding.edtFirstName.getText().toString().equalsIgnoreCase("")) {
                 binding.edtFirstName.setError(getString(R.string.empty));
@@ -104,15 +111,19 @@ public class SignupActivity extends AppCompatActivity {
             } else if (str_image_path.equalsIgnoreCase("")) {
                 Toast.makeText(this, getString(R.string.please_pick_image), Toast.LENGTH_SHORT).show();
             } else {
-                SignupAPI(binding.edtFirstName.getText().toString()
-                        , binding.edtLastName.getText().toString()
-                        , binding.edtEmail.getText().toString()
-                        , binding.edtpass.getText().toString());
+                if (checkConnection(SignupActivity.this)) {
+                    SignupAPI(binding.edtFirstName.getText().toString()
+                            , binding.edtLastName.getText().toString()
+                            , binding.edtEmail.getText().toString()
+                            , binding.edtpass.getText().toString());
+                } else {
+                    showNoInternet(SignupActivity.this,true);
+                }
+
 
             }
         });
         binding.goLogin.setOnClickListener(v -> {
-
             startActivity(new Intent(this, LoginActivity.class)
                     .putExtra("User_type", UserType));
 

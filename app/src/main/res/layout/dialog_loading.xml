@@ -12,15 +12,24 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
-        android:background="@color/colorPrimary"
-        app:cardBackgroundColor="@color/colorPrimary"
+        android:background="@color/transparent"
+        app:cardBackgroundColor="@color/transparent"
         android:orientation="vertical"
         app:cardUseCompatPadding="true"
         app:cardCornerRadius="@dimen/_10sdp"
         android:layout_margin="@dimen/_5sdp"
         android:padding="15dp">
-
+        <com.airbnb.lottie.LottieAnimationView
+            android:id="@+id/lav_actionBar"
+            android:layout_centerHorizontal="true"
+            android:layout_width="@dimen/_90sdp"
+            android:layout_height="@dimen/_90sdp"
+            android:scaleType="centerCrop"
+            app:lottie_autoPlay="true"
+            app:lottie_rawRes="@raw/loding_at_request"
+            app:lottie_loop="true" />
         <ProgressBar
+            android:visibility="gone"
             android:layout_margin="@dimen/_5sdp"
             android:id="@+id/progressBar"
             android:theme="@style/WhiteAccent"

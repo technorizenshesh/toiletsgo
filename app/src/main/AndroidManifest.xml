@@ -48,9 +48,7 @@
         <activity
             android:name=".ui.LoginSignup.BankDetailsActivity"
             android:exported="false" />
-        <activity
-            android:name=".ui.LoginSignup.BasicDetailsActivity"
-            android:exported="false" />
+
         <activity
             android:name=".ui.LoginSignup.SignupActivity"
             android:exported="false" />
@@ -61,6 +59,12 @@
         <activity
             android:name=".ui.LoginSignup.LoginTypeActivity"
             android:exported="false" />
+        <activity
+            android:name=".ui.LoginSignup.BasicDetailsActivity"
+            android:exported="true"
+            android:screenOrientation="portrait">
+
+        </activity>
         <activity
             android:name=".MainActivity"
             android:exported="true"

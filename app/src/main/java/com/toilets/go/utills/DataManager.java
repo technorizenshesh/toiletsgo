@@ -9,11 +9,14 @@ import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.location.Address;
 import android.location.Geocoder;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.util.Base64;
 import android.util.Log;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.ProgressBar;
+import android.widget.Toast;
 
 import com.toilets.go.R;
 
@@ -71,6 +74,24 @@ public class DataManager {
                 ex.printStackTrace();
             }
         }
+        public static void showNoInternet(Activity dialogActivity, Boolean msg) {
+            try {
+                 Dialog   silog = new Dialog(dialogActivity);
+              silog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+              silog.setContentView(R.layout.dialog_no_internet);
+              silog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+                WindowManager.LayoutParams lp = silog.getWindow().getAttributes();
+                lp.dimAmount = 0.6f;
+               silog.getWindow().setAttributes(lp);
+               silog.getWindow().addFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND);
+               silog.setCancelable(msg);
+               silog.setCanceledOnTouchOutside(msg);
+               silog.show();
+
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
+        }
 
         public void hideProgressMessage() {
             isProgressDialogRunning = true;
@@ -115,7 +136,9 @@ public class DataManager {
             str = dateFormat.format(date);
             return str;
         }
-
+    public static void showToast(Activity context, String msg) {
+        Toast.makeText(context, msg, Toast.LENGTH_LONG).show();
+    }
 
     public File saveBitmapToFile(File file){
         try {
@@ -186,4 +209,21 @@ public class DataManager {
 
     }
 
+    public static boolean checkConnection(Context context) {
+        final ConnectivityManager connMgr = (ConnectivityManager)
+                context.getSystemService(Context.CONNECTIVITY_SERVICE);
+
+        if (connMgr != null) {
+            NetworkInfo activeNetworkInfo = connMgr.getActiveNetworkInfo();
+
+            if (activeNetworkInfo != null) { // connected to the internet
+                // connected to the mobile provider's data plan
+                if (activeNetworkInfo.getType() == ConnectivityManager.TYPE_WIFI) {
+                    // connected to wifi
+                    return true;
+                } else return activeNetworkInfo.getType() == ConnectivityManager.TYPE_MOBILE;
+            }
+        }
+        return false;
+    }
 }

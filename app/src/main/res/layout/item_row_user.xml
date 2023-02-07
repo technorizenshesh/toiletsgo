@@ -117,6 +117,7 @@ android:layout_marginEnd="@dimen/_5sdp"
                 android:layout_height="match_parent"
                 >
                 <TextView
+                     android:id="@+id/onee"
                     android:layout_alignParentStart="true"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -124,6 +125,22 @@ android:layout_marginEnd="@dimen/_5sdp"
                     android:text="@{` #`+model.id}"
                     android:textColor="@color/hint_text_color"
                     android:textSize="@dimen/_12sdp" />
+                <TextView
+                    android:visibility="gone"
+                     android:id="@+id/give_review"
+                     android:layout_below="@id/onee"
+                    android:layout_alignParentStart="true"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:text="@string/give_rating"
+                    android:drawablePadding="@dimen/_12sdp"
+                    android:fontFamily="@font/poppins_bold"
+                    android:padding="5dp"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/_12sdp"
+                    app:drawableTint="@color/black"
+                    app:drawableLeftCompat="@drawable/review" />
                 <TextView
                     android:background="@drawable/border_btn_ovel"
                     android:layout_marginEnd="@dimen/_15sdp"

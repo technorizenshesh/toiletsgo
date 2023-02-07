@@ -43,6 +43,8 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 import static android.content.ContentValues.TAG;
+import static com.toilets.go.utills.DataManager.checkConnection;
+import static com.toilets.go.utills.DataManager.showNoInternet;
 
 
 public class ProviderHomeFragment extends Fragment implements CustomClickListener {
@@ -81,17 +83,33 @@ public class ProviderHomeFragment extends Fragment implements CustomClickListene
         session = new Session(requireActivity());
         Log.e(TAG, "getFireBaseTokengetFireBaseToken: "+session.getFireBaseToken() );
         binding.btnOne.setOnClickListener(v -> {
-            status = "Accept";
-            getRequestAPI(status);
-            binding.btnOne.setBackground(getActivity().getResources().getDrawable(R.drawable.border_btn_selected));
-            binding.btnTwo.setBackground(getActivity().getResources().getDrawable(R.drawable.border_btn));
-        });
+
+            if (checkConnection((requireActivity()))) {
+                status = "Accept";
+
+                getRequestAPI(status);
+                binding.btnOne.setBackground(getActivity().getResources().getDrawable(R.drawable.border_btn_selected));
+                binding.btnTwo.setBackground(getActivity().getResources().getDrawable(R.drawable.border_btn));
+
+
+            } else {
+                showNoInternet(requireActivity(),true);
+            }
+             });
         binding.btnTwo.setOnClickListener(v -> {
-            status = "Pending";
-            getRequestAPI(status);
-            binding.btnTwo.setBackground(getActivity().getResources().getDrawable(R.drawable.border_btn_selected));
-            binding.btnOne.setBackground(getActivity().getResources().getDrawable(R.drawable.border_btn));
-        });
+
+            if (checkConnection((requireActivity()))) {
+                status = "Accept";
+
+                status = "Pending";
+                getRequestAPI(status);
+                binding.btnTwo.setBackground(getActivity().getResources().getDrawable(R.drawable.border_btn_selected));
+                binding.btnOne.setBackground(getActivity().getResources().getDrawable(R.drawable.border_btn));
+
+            } else {
+                showNoInternet(requireActivity(),true);
+            }
+            });
         return binding.getRoot();
     }
 
@@ -120,7 +138,13 @@ public class ProviderHomeFragment extends Fragment implements CustomClickListene
 
     @Override
     public void onResume() {
-        getRequestAPI(status);
+        if (checkConnection((requireActivity()))) {
+            getRequestAPI(status);
+
+
+        } else {
+            showNoInternet(requireActivity(),true);
+        }
         requireActivity().registerReceiver(mMessageReceiver, new IntentFilter("Booking"));
 
         super.onResume();
@@ -183,6 +207,8 @@ public class ProviderHomeFragment extends Fragment implements CustomClickListene
 
     @Override
     public void cardClicked(SuccessResRequests.Result f, String Status, Integer position) {
+
+
         if (Status.equalsIgnoreCase("Accept")) {
             new AlertDialog.Builder(requireActivity())
                     .setTitle(R.string.accept_booking).setMessage(R.string.are_you_sure_to_accept)

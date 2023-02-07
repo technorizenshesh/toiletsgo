@@ -14,7 +14,6 @@
     <string name="search_here">    Type a destination</string>
     <string name="enter_txt">enter search text</string>
     <string name="suggaction">Suggestion</string>
-    <string name="toilet_name">Toilet Name</string>
     <string name="price">Price</string>
     <string name="desc">Discription</string>
     <string name="address">Address</string>
@@ -36,6 +35,7 @@
     <string name="empty">Empty</string>
     <string name="please_pick_image">please pick image</string>
     <string name="please_pick_another_image">please pick  Second image</string>
+    <string name="please_pick_est_type">please select  Establishment type</string>
     <string name="please_wait">Please Wait</string>
     <string name="select_country">Select Country</string>
     <string name="select_gender">Select Gender</string>
@@ -62,5 +62,29 @@
     <string name="are_you_sure_to_reject">Are you sure you want to Reject this Booking ?</string>
     <string name="accept_booking">Accept Booking</string>
     <string name="reject_booking">Reject Booking</string>
-
+    <string name="write">Write</string>
+    <string name="notification">Notification</string>
+<!--
+    <string name="no_internet_connection_please_check_your_network">NO Internet Connection Please Check Your Network</string>
+-->
+    <string name="no_internet_connection_please_check_your_network">Connection Lost !</string>
+    <string name="give_rating">Give Rating</string>
+    <string name="welcome">Welcome,</string>
+    <string name="password">password</string>
+    <string name="forget_password">Forget Password ?</string>
+    <string name="type_of_establishment">Type of Establishment</string>
+    <string name="is_toilets_available_on_the_premises">Is toilets available on the premises ?</string>
+    <string name="no">No</string>
+    <string name="yes">Yes</string>
+    <string name="verify">Verify</string>
+    <string name="verify_establishment">Verify Identification number of the establishment</string>
+    <string name="register_successfull">Register Successfull</string>
+    <string name="register_unsuccessfull">Establishment Number Already Exist ?</string>
+    <string name="is_automatic">Automatic acceptance of users ?</string>
+    <string name="is_access">Access for people with reduced mobility ?</string>
+    <string name="is_usnt">Unstoppable nature of the toilets ?</string>
+    <string name="toilet_name">Establishment Name</string>
+    <string name="toilet_no">Establishment Number</string>
+    <string name="don_t_have_a_account_register_now">Don\'t have a account register now</string>
+    <string name="select_est">Select Establishment</string>
 </resources>
