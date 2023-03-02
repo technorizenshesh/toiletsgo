@@ -55,7 +55,9 @@ public class CustomerListAdapter extends
         holder.itemRowBinding.btnReject.setOnClickListener( v -> {
             customClickListener.cardClicked(dataModel,"Reject",position);
         });
-
+holder.itemRowBinding.viewDtl.setOnClickListener(v -> {
+    customClickListener.cardClicked(dataModel,"Clicked",position);
+});
     }
 
 

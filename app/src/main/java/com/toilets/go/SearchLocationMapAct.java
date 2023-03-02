@@ -53,6 +53,9 @@ public class SearchLocationMapAct  extends AppCompatActivity implements OnMapRea
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(SearchLocationMapAct.this);
         binding.sendBtn.setOnClickListener(v -> {
+            session.setHOME_LAT(lat);
+            session.setHOME_LONG(lon);
+            session.setRestraID(binding.eventLocation.getText().toString().trim());
 
             onBackPressed();
         });

@@ -64,7 +64,7 @@
     <string name="reject_booking">Reject Booking</string>
     <string name="write">Write</string>
     <string name="notification">Notification</string>
-<!--
+    <!--
     <string name="no_internet_connection_please_check_your_network">NO Internet Connection Please Check Your Network</string>
 -->
     <string name="no_internet_connection_please_check_your_network">Connection Lost !</string>
@@ -87,4 +87,13 @@
     <string name="toilet_no">Establishment Number</string>
     <string name="don_t_have_a_account_register_now">Don\'t have a account register now</string>
     <string name="select_est">Select Establishment</string>
+    <string name="datal"><![CDATA[<p><font color=#666666>Continue if you agree to our</font><font color=#5856F2>  <b><u>Terms & Conditions</u></b></font><font color=#666666> and the <u></font><b><font color=#5856F2>Privacy Policy</font></u></b></font></p>]]></string>
+    <string name="i_aggree">I agree to the </string>
+    <string name="tos">Term of services</string>
+    <string name="and">and</string>
+    <string name="privacy"> Privacy Policy</string>
+    <string name="process_booking">Process Booking</string>
+    <string name="scheduled_booking_s">Scheduled Booking\'s</string>
+
+
 </resources>

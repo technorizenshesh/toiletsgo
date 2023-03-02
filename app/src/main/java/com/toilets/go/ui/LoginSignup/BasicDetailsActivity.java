@@ -252,6 +252,12 @@ public class BasicDetailsActivity extends AppCompatActivity {
         openFilterBottem();
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        binding.edtAddress.setText(session.getRestraID());
+    }
+
     private void openFilterBottem() {
 
         Log.e(TAG, "openBottemSheet: " + "=-=-=-=-=-=-");

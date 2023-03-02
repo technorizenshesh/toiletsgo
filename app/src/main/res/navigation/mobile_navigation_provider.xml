@@ -3,13 +3,35 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/mobile_navigation_provider"
-    app:startDestination="@id/provider_home">
+    app:startDestination="@id/provider_qr">
+
+    <fragment
+        android:id="@+id/provider_qr"
+        android:name="com.toilets.go.ui.ProviderHome.Home.ProviderHomeQrFragment"
+        android:label="ProviderHomeQrFragment"
+        tools:layout="@layout/fragment_provider_home_qr">
+        <action
+            android:id="@+id/action_provider_qr_to_provider_home"
+            app:destination="@+id/provider_home"
+            />
+    </fragment>
 
     <fragment
         android:id="@+id/provider_home"
         android:name="com.toilets.go.ui.ProviderHome.Home.ProviderHomeFragment"
         android:label="Home"
         tools:layout="@layout/fragment_provider_home">
+
+        <action
+            android:id="@+id/action_booking_to_booking_details"
+            app:destination="@+id/navigation_booking_details"
+            />
+
+    </fragment>
+    <fragment
+        android:id="@+id/navigation_booking_details"
+        android:name="com.toilets.go.ui.UserSide.Booking.BookingDetailsFragment"        android:label="Home"
+        tools:layout="@layout/fragment_booking_details">
     </fragment>
     <fragment
         android:id="@+id/navigation_notifications"

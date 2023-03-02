@@ -9,7 +9,7 @@ import java.util.List;
 public  class SuccessResAddbank implements Serializable {
   @SerializedName("result")
   @Expose
-  private List<Result> result;
+  private Result result;
   @SerializedName("message")
   @Expose
   private String message;
@@ -17,11 +17,11 @@ public  class SuccessResAddbank implements Serializable {
   @Expose
   private String status;
 
-  public List<Result> getResult() {
+  public Result getResult() {
     return result;
   }
 
-  public void setResult(List<Result> result) {
+  public void setResult(Result result) {
     this.result = result;
   }
 

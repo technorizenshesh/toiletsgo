@@ -101,7 +101,8 @@ public class BankDetailsActivity extends AppCompatActivity {
                         Log.e("TAG", "onResponse: " + UserType);
                         if (UserType.equalsIgnoreCase("in")) {
                             onBackPressed();
-                        } else if (UserType.equalsIgnoreCase("User")) {
+                        } else
+                            if (UserType.equalsIgnoreCase("User")) {
                             startActivity(new Intent(getApplicationContext(), HomeUserAct.class)
                                     .putExtra("User_type", UserType).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK
                                             | Intent.FLAG_ACTIVITY_CLEAR_TOP));

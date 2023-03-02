@@ -24,6 +24,7 @@ import com.google.android.gms.location.LocationSettingsRequest;
 import com.google.android.gms.location.LocationSettingsResponse;
 import com.google.android.gms.location.SettingsClient;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.bottomnavigation.BottomNavigationItemView;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.toilets.go.R;
 import com.toilets.go.utills.DataManager;
@@ -40,6 +41,10 @@ public class ProviderHomeActivity extends AppCompatActivity   {
     private final int REQUEST_LOCATION_PERMISSION = 1;
     Location mLocation;
     Session session ;
+    public void hideBadge() {
+        BottomNavigationItemView itemView = navView.findViewById(R.id.provider_home);
+        itemView.performClick();
+    }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -77,22 +82,18 @@ public class ProviderHomeActivity extends AppCompatActivity   {
                         enableGPSAutomatically();
                     else {
 
-                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                            if (shouldShowRequestPermissionRationale(ACCESS_FINE_LOCATION)) {
-                                showMessageOKCancel(
-                                        "You need to allow access to both the permissions",
-                                        new DialogInterface.OnClickListener() {
-                                            @Override
-                                            public void onClick(DialogInterface dialog, int which) {
-                                                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                                                    requestPermissions(new String[]{ACCESS_FINE_LOCATION,
-                                                                    ACCESS_COARSE_LOCATION},
-                                                            REQUEST_LOCATION_PERMISSION);
-                                                }
-                                            }
-                                        });
-                                return;
-                            }
+                        if (shouldShowRequestPermissionRationale(ACCESS_FINE_LOCATION)) {
+                            showMessageOKCancel(
+                                    "You need to allow access to both the permissions",
+                                    new DialogInterface.OnClickListener() {
+                                        @Override
+                                        public void onClick(DialogInterface dialog, int which) {
+                                            requestPermissions(new String[]{ACCESS_FINE_LOCATION,
+                                                            ACCESS_COARSE_LOCATION},
+                                                    REQUEST_LOCATION_PERMISSION);
+                                        }
+                                    });
+                            return;
                         }
 
                     }

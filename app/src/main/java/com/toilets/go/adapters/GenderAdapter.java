@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.toilets.go.models.SuccessResGetGender;
@@ -26,15 +27,16 @@ public class GenderAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
     }
 
 
+    @NonNull
     @Override
     public GenderAdapter.ViewHolder onCreateViewHolder(ViewGroup viewGroup, int viewType) {
         View view = LayoutInflater.from(viewGroup.getContext()).inflate(
                 R.layout.item_filter_price, viewGroup, false);
-        return new GenderAdapter.ViewHolder(view);
+        return new ViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(RecyclerView.ViewHolder holder, @SuppressLint("RecyclerView")
+    public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, @SuppressLint("RecyclerView")
     final int position) {
         if (holder instanceof GenderAdapter.ViewHolder) {
             final SuccessResGetGender.Result model = modelList.get(position);
@@ -48,7 +50,7 @@ public class GenderAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
         return modelList.size();
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder {
+    public static class ViewHolder extends RecyclerView.ViewHolder {
         TextView txtName;
 
         public ViewHolder(final View itemView) {

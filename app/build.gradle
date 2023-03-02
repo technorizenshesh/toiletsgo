@@ -84,5 +84,7 @@ dependencies {
 //lottianem
     implementation 'com.airbnb.android:lottie:5.2.0'
 
-
+//QRCODE
+    implementation 'com.github.blikoon:QRCodeScanner:0.1.2'
+    implementation 'com.github.androidmads:QRGenerator:1.0.1'
 }

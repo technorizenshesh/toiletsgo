@@ -11,14 +11,20 @@ import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.graphics.Bitmap;
+import android.graphics.Color;
+import android.graphics.Point;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Environment;
 import android.provider.DocumentsContract;
 import android.provider.MediaStore;
+import android.text.Html;
 import android.util.Log;
+import android.view.Display;
 import android.view.View;
+import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -37,6 +43,12 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
 import java.util.concurrent.atomic.AtomicReference;
+
+import androidmads.library.qrgenearator.QRGContents;
+import androidmads.library.qrgenearator.QRGEncoder;
+
+import static android.content.Context.WINDOW_SERVICE;
+import static androidx.fragment.app.FragmentManager.TAG;
 
 public class Util {
 
@@ -127,6 +139,29 @@ public class Util {
 
     public static boolean isExternalStorageDocument(Uri uri) {
         return "com.android.externalstorage.documents".equals(uri.getAuthority());
+    }
+public static Bitmap generateQrCodeFromStringData(String data , Context context) {
+            WindowManager manager = (WindowManager) context.getSystemService(WINDOW_SERVICE);
+            Display display = manager.getDefaultDisplay();
+            Point point = new Point();
+            display.getSize(point);
+            int width = point.x;
+            int height = point.y;
+            int smallerDimension = Math.min(width, height);
+            smallerDimension = smallerDimension * 3 / 4;
+
+            QRGEncoder qrgEncoder = new QRGEncoder(data, null, QRGContents.Type.TEXT, smallerDimension);
+            qrgEncoder.setColorBlack(Color.parseColor("#000000"));
+            qrgEncoder.setColorWhite(Color.parseColor("#FFFFFF"));
+        Bitmap bitmap = null;
+        try {
+            bitmap   = qrgEncoder.getBitmap();
+
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+        return bitmap;
     }
 
     public static boolean isDownloadsDocument(Uri uri) {

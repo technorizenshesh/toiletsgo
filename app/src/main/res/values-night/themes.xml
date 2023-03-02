@@ -34,4 +34,9 @@
         <!-- Add attributes here -->
         <item name="colorPrimary">@color/colorPrimary</item>
     </style>
+    <style name="control" parent="Theme.AppCompat.Light">
+        <!-- active thumb & track color (30% transparency) -->
+        <item name="colorControlActivated">@color/colorPrimary</item>
+        <item name="colorSwitchThumbNormal">@color/colorSecondary</item>
+    </style>
 </resources>

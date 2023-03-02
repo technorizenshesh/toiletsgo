@@ -21,6 +21,7 @@ import android.widget.Toast;
 
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.Navigation;
 
 import com.toilets.go.adapters.CustomerListAdapter;
 import com.toilets.go.R;
@@ -73,6 +74,7 @@ public class ProviderHomeFragment extends Fragment implements CustomClickListene
             //do other stuff here
         }
     };
+
     @SuppressLint("UseCompatLoadingForDrawables")
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -81,7 +83,7 @@ public class ProviderHomeFragment extends Fragment implements CustomClickListene
                 , R.layout.fragment_provider_home, container, false);
         apiInterface = ApiClient.getClient().create(GosInterface.class);
         session = new Session(requireActivity());
-        Log.e(TAG, "getFireBaseTokengetFireBaseToken: "+session.getFireBaseToken() );
+        Log.e(TAG, "getFireBaseTokengetFireBaseToken: " + session.getFireBaseToken());
         binding.btnOne.setOnClickListener(v -> {
 
             if (checkConnection((requireActivity()))) {
@@ -93,9 +95,9 @@ public class ProviderHomeFragment extends Fragment implements CustomClickListene
 
 
             } else {
-                showNoInternet(requireActivity(),true);
+                showNoInternet(requireActivity(), true);
             }
-             });
+        });
         binding.btnTwo.setOnClickListener(v -> {
 
             if (checkConnection((requireActivity()))) {
@@ -107,9 +109,9 @@ public class ProviderHomeFragment extends Fragment implements CustomClickListene
                 binding.btnOne.setBackground(getActivity().getResources().getDrawable(R.drawable.border_btn));
 
             } else {
-                showNoInternet(requireActivity(),true);
+                showNoInternet(requireActivity(), true);
             }
-            });
+        });
         return binding.getRoot();
     }
 
@@ -143,7 +145,7 @@ public class ProviderHomeFragment extends Fragment implements CustomClickListene
 
 
         } else {
-            showNoInternet(requireActivity(),true);
+            showNoInternet(requireActivity(), true);
         }
         requireActivity().registerReceiver(mMessageReceiver, new IntentFilter("Booking"));
 
@@ -207,9 +209,12 @@ public class ProviderHomeFragment extends Fragment implements CustomClickListene
 
     @Override
     public void cardClicked(SuccessResRequests.Result f, String Status, Integer position) {
-
-
-        if (Status.equalsIgnoreCase("Accept")) {
+        if (Status.equalsIgnoreCase("Clicked")) {
+            Bundle bundle = new Bundle();
+            bundle.putSerializable("Result",f);
+            Navigation.findNavController(binding.getRoot())
+                    .navigate(R.id.action_booking_to_booking_details, bundle);
+        } else if (Status.equalsIgnoreCase("Accept")) {
             new AlertDialog.Builder(requireActivity())
                     .setTitle(R.string.accept_booking).setMessage(R.string.are_you_sure_to_accept)
                     .setPositiveButton(android.R.string.yes, (dialog, which) -> {

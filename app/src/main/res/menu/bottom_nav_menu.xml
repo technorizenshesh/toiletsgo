@@ -2,9 +2,14 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
         <item
+            android:id="@+id/provider_qr"
+            android:icon="@drawable/baseline_qr_code_scanner"
+            android:title="Home"
+            />
+        <item
             android:id="@+id/provider_home"
             android:icon="@drawable/home_booking"
-            android:title="Home"
+            android:title="Booking"
             />
 
         <item

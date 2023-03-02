@@ -4,8 +4,16 @@ import static com.toilets.go.utills.DataManager.checkConnection;
 import static com.toilets.go.utills.DataManager.showNoInternet;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
+import android.text.Html;
+import android.text.SpannableStringBuilder;
+import android.text.method.LinkMovementMethod;
+import android.text.style.ClickableSpan;
+import android.text.style.ForegroundColorSpan;
 import android.util.Log;
+import android.view.View;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -36,13 +44,40 @@ public class LoginActivity extends AppCompatActivity {
     Session session;
     private GosInterface apiInterface;
 
+    private void customTextView(TextView view) {
+        SpannableStringBuilder spanTxt = new SpannableStringBuilder(getString(R.string.i_aggree)
+        );
+        spanTxt.append(" " + getString(R.string.tos));
+        spanTxt.setSpan(new ClickableSpan() {
+            @Override
+            public void onClick(View widget) {
+                Toast.makeText(getApplicationContext(), "Terms of services Clicked",
+                        Toast.LENGTH_SHORT).show();
+            }
+        }, spanTxt.length() - getString(R.string.tos).length(), spanTxt.length(), 0);
+        spanTxt.append(" " + getString(R.string.and) + " ");
+        spanTxt.setSpan(new ForegroundColorSpan(Color.BLACK), 32, spanTxt.length(), 0);
+        spanTxt.append(getString(R.string.privacy));
+        spanTxt.setSpan(new ClickableSpan() {
+            @Override
+            public void onClick(View widget) {
+                Toast.makeText(getApplicationContext(), "Privacy Policy Clicked",
+                        Toast.LENGTH_SHORT).show();
+            }
+        }, spanTxt.length() - getString(R.string.privacy).length(), spanTxt.length(), 0);
+        view.setMovementMethod(LinkMovementMethod.getInstance());
+        view.setText(spanTxt, TextView.BufferType.SPANNABLE);
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         binding = DataBindingUtil.setContentView(this, R.layout.activity_login);
         apiInterface = ApiClient.getClient().create(GosInterface.class);
         session = new Session(this);
-            UserType = session.getUSERTYPE();
+        UserType = session.getUSERTYPE();
+        //binding.prvc.setText(Html.fromHtml(getString(R.string.datal)));
+        customTextView(binding.prvc);
         binding.btnSubmit.setOnClickListener(v -> {
             String email = binding.edtEmail.getText().toString().trim();
             String pass = binding.edtPass.getText().toString().trim();
@@ -54,14 +89,14 @@ public class LoginActivity extends AppCompatActivity {
                 if (checkConnection(LoginActivity.this)) {
                     loginAPI(email, pass);
                 } else {
-                    showNoInternet(LoginActivity.this,true);
+                    showNoInternet(LoginActivity.this, true);
                 }
             }
         });
-         binding.botm.setOnClickListener(v -> {
-             startActivity(new Intent(getApplicationContext(), SignupActivity.class)
-                     .putExtra("User_type", UserType));
-         });
+        binding.botm.setOnClickListener(v -> {
+            startActivity(new Intent(getApplicationContext(), SignupActivity.class)
+                    .putExtra("User_type", UserType));
+        });
     }
 
 
@@ -95,16 +130,18 @@ public class LoginActivity extends AppCompatActivity {
                         session.setAuthtoken(response.body().getResult().getToken());
                         if (UserType.equalsIgnoreCase("User")) {
                             startActivity(new Intent(getApplicationContext(), HomeUserAct.class)
-                                    .putExtra("User_type", UserType));
+                                    .putExtra("User_type", UserType).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP));
                         } else {
                             if (signup.getStep().equalsIgnoreCase("0")) {
                                 startActivity(new Intent(getApplicationContext(),
                                         BasicDetailsActivity.class)
-                                        .putExtra("User_type", UserType));
+                                        .putExtra("User_type", UserType).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP));
+
                             } else {
+                                session.setUSERBASIC("1");
                                 startActivity(new Intent(getApplicationContext(),
                                         ProviderHomeActivity.class)
-                                        .putExtra("User_type", UserType));
+                                        .putExtra("User_type", UserType).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP));
                             }
                         }
                     } else {

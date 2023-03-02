@@ -35,6 +35,8 @@ Session session ;
             bundle.putString("from", "home");
             Navigation.findNavController(binding.getRoot())
                     .navigate(R.id.action_setting_to_payment_history, bundle);
+
+
         });
         binding.tvContactUs.setOnClickListener(v -> {
             Bundle bundle = new Bundle();
