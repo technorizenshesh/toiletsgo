@@ -18,6 +18,7 @@ import android.widget.Toast;
 
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.Navigation;
 
 import com.toilets.go.R;
 import com.toilets.go.adapters.UserBookingAdapter;
@@ -133,9 +134,16 @@ public class BookingFragment extends Fragment implements CustomClickListener {
 
     @Override
     public void cardClicked(SuccessResRequests.Result f, String Status, Integer position) {
+        if (Status.equalsIgnoreCase("viewDetails")) {
+            Bundle bundle = new Bundle();
+            bundle.putSerializable("Result",f);
+            Navigation.findNavController(binding.getRoot())
+                    .navigate(R.id.action_booking_to_booking_details, bundle);
 
-            Log.e(TAG, "cardClicked: " );
+        } else {
+            Log.e(TAG, "cardClicked: ");
             showDialog(f.getId());
+        }
 
     }
 
@@ -148,7 +156,7 @@ public class BookingFragment extends Fragment implements CustomClickListener {
         dialog.setContentView(binding.getRoot());
         dialog.setCancelable(false);
         WindowManager.LayoutParams lp = new WindowManager.LayoutParams();
-          Window window = dialog.getWindow();
+        Window window = dialog.getWindow();
         lp.copyFrom(window.getAttributes());
         lp.width = WindowManager.LayoutParams.MATCH_PARENT;
         lp.height = WindowManager.LayoutParams.MATCH_PARENT;
@@ -161,7 +169,7 @@ public class BookingFragment extends Fragment implements CustomClickListener {
                 binding.etComment.setError(getString(R.string.empty));
                 DataManager.showToast(requireActivity(), getString(R.string.empty));
             } else {
-                submitReview(rating,review,id);
+                submitReview(rating, review, id);
                 dialog.dismiss();
 
             }
@@ -173,45 +181,45 @@ public class BookingFragment extends Fragment implements CustomClickListener {
 
     private void submitReview(String rating, String review, String id) {
 
-            DataManager.getInstance().showProgressMessage(requireActivity(), getString(R.string.please_wait));
-            Map<String, String> map = new HashMap<>();
-            map.put("rating", rating);
-            map.put("comment", review);
-            map.put("toilet_id", id);
-            map.put("token", session.getAuthtoken());
-            Log.e(TAG, "sendRequestAPI: " + map);
-            Call<ResponseBody> call = apiInterface.add_rating(map);
-            call.enqueue(new Callback<>() {
-                @Override
-                public void onResponse(Call<ResponseBody> call,
-                                       Response<ResponseBody> response) {
-                    try {
-                        DataManager.getInstance().hideProgressMessage();
-                        JSONObject jsonObject = new JSONObject(response.body().string());
-
-                        String data = jsonObject.getString("status");
-
-                        String message = jsonObject.getString("message");
-                        Toast.makeText(requireActivity(),message, Toast.LENGTH_SHORT).show();
-
-                        //    }
-
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                }
-
-                @Override
-                public void onFailure(Call<ResponseBody> call, Throwable t) {
-                    call.cancel();
-                    Log.e(TAG, "onFailure: " + t.getCause());
-                    Log.e(TAG, "onFailure: " + t.getMessage());
-                    Log.e(TAG, "onFailure: " + t.getLocalizedMessage());
-                    Toast.makeText(requireActivity(), t.getCause().toString(),
-                            Toast.LENGTH_SHORT).show();
+        DataManager.getInstance().showProgressMessage(requireActivity(), getString(R.string.please_wait));
+        Map<String, String> map = new HashMap<>();
+        map.put("rating", rating);
+        map.put("comment", review);
+        map.put("toilet_id", id);
+        map.put("token", session.getAuthtoken());
+        Log.e(TAG, "sendRequestAPI: " + map);
+        Call<ResponseBody> call = apiInterface.add_rating(map);
+        call.enqueue(new Callback<>() {
+            @Override
+            public void onResponse(Call<ResponseBody> call,
+                                   Response<ResponseBody> response) {
+                try {
                     DataManager.getInstance().hideProgressMessage();
+                    JSONObject jsonObject = new JSONObject(response.body().string());
+
+                    String data = jsonObject.getString("status");
+
+                    String message = jsonObject.getString("message");
+                    Toast.makeText(requireActivity(), message, Toast.LENGTH_SHORT).show();
+
+                    //    }
+
+                } catch (Exception e) {
+                    e.printStackTrace();
                 }
-            });
+            }
+
+            @Override
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
+                call.cancel();
+                Log.e(TAG, "onFailure: " + t.getCause());
+                Log.e(TAG, "onFailure: " + t.getMessage());
+                Log.e(TAG, "onFailure: " + t.getLocalizedMessage());
+                Toast.makeText(requireActivity(), t.getCause().toString(),
+                        Toast.LENGTH_SHORT).show();
+                DataManager.getInstance().hideProgressMessage();
+            }
+        });
 
 
     }

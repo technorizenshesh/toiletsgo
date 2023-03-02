@@ -11,12 +11,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.bumptech.glide.Glide;
 import com.toilets.go.R;
 import com.toilets.go.databinding.FragmentBookingDetailsBinding;
 import com.toilets.go.databinding.FragmentProviderHomeQrBinding;
 import com.toilets.go.models.SuccessResRequests;
 import com.toilets.go.retrofit.ApiClient;
 import com.toilets.go.retrofit.GosInterface;
+import com.toilets.go.ui.LoginSignup.BasicDetailsActivity;
 import com.toilets.go.utills.Session;
 
 import java.util.Objects;
@@ -43,10 +45,20 @@ public class BookingDetailsFragment extends Fragment {
                 result = (SuccessResRequests.Result) getArguments().getSerializable("Result");
                 Log.i("getuserValidate",result.toString());
                 binding.header.tvtitle.setText("Booking Details");
+                 if(session.getUSERTYPE().equalsIgnoreCase("USER")){
+                     binding.processBooking.setVisibility(View.VISIBLE);
+                 }
                 binding.tvName.setText(result.getUserName());
-                Bitmap qr = generateQrCodeFromStringData(result.getId(),requireActivity());
+                binding.tvAddress.setText(result.getAddress());
+                binding.tvRating.setText(" $ "+result.getAmount()+" ");
+                binding.bookingId.setText("  #"+result.getId()+" ");
+                Bitmap qr = generateQrCodeFromStringData(result.getId());
                  binding.qrCodeImage.setImageBitmap(qr);
                 Log.e("TAG", "onCreateView: "+result.getId() );
+                Glide.with(BookingDetailsFragment.this)
+                        .load(result.getCartDetails().getImage1())
+                        .centerCrop()
+                        .into(binding.userImage);
             }
         }catch (Exception e){
             e.printStackTrace();

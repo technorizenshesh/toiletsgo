@@ -56,6 +56,9 @@ public class UserBookingAdapter extends
           holder.itemRowBinding.giveReview.setOnClickListener( v -> {
               customClickListener.cardClicked(dataModel,"",position);
           });
+         holder.itemRowBinding.viewDtl.setOnClickListener( v -> {
+              customClickListener.cardClicked(dataModel,"viewDetails",position);
+          });
 
     }
 

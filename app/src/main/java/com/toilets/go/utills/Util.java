@@ -140,19 +140,10 @@ public class Util {
     public static boolean isExternalStorageDocument(Uri uri) {
         return "com.android.externalstorage.documents".equals(uri.getAuthority());
     }
-public static Bitmap generateQrCodeFromStringData(String data , Context context) {
-            WindowManager manager = (WindowManager) context.getSystemService(WINDOW_SERVICE);
-            Display display = manager.getDefaultDisplay();
-            Point point = new Point();
-            display.getSize(point);
-            int width = point.x;
-            int height = point.y;
-            int smallerDimension = Math.min(width, height);
-            smallerDimension = smallerDimension * 3 / 4;
-
-            QRGEncoder qrgEncoder = new QRGEncoder(data, null, QRGContents.Type.TEXT, smallerDimension);
-            qrgEncoder.setColorBlack(Color.parseColor("#000000"));
-            qrgEncoder.setColorWhite(Color.parseColor("#FFFFFF"));
+public static Bitmap generateQrCodeFromStringData(String data ) {
+            QRGEncoder qrgEncoder = new QRGEncoder(data, null, QRGContents.Type.TEXT, 2048);
+            qrgEncoder.setColorBlack(Color.BLACK);
+            qrgEncoder.setColorWhite(Color.WHITE);
         Bitmap bitmap = null;
         try {
             bitmap   = qrgEncoder.getBitmap();
