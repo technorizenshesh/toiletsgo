@@ -42,6 +42,7 @@ public class LoginTypeActivity extends AppCompatActivity {
     private final int REQUEST_LOCATION_PERMISSION = 1;
     Location mLocation;
     Session session;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -64,10 +65,10 @@ public class LoginTypeActivity extends AppCompatActivity {
                     }
                     // Get new FCM registration token
                     String token = task.getResult();
-session.setFireBaseToken(token);
+                    session.setFireBaseToken(token);
                     // Log and toast
                     Log.e("TAG", token);
-                   // Toast.makeText(MainActivity.this, msg, Toast.LENGTH_SHORT).show();
+                    // Toast.makeText(MainActivity.this, msg, Toast.LENGTH_SHORT).show();
                 });
         binding.btnIndividual.setOnClickListener(v -> {
             session.setUSERTYPE("User");
@@ -87,6 +88,7 @@ session.setFireBaseToken(token);
         ActivityCompat.requestPermissions(this, new String[]
                 {ACCESS_FINE_LOCATION, ACCESS_COARSE_LOCATION}, REQUEST_LOCATION_PERMISSION);
     }
+
     @Override
     public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
@@ -122,6 +124,7 @@ session.setFireBaseToken(token);
                 break;
         }
     }
+
     private void enableGPSAutomatically() {
         LocationSettingsRequest.Builder l_builder = new LocationSettingsRequest.Builder().
                 addLocationRequest(LocationHandler.createLocationRequest());
@@ -139,6 +142,7 @@ session.setFireBaseToken(token);
             }
         });
     }
+
     private void showMessageOKCancel(String message, DialogInterface.OnClickListener okListener) {
         new AlertDialog.Builder(LoginTypeActivity.this)
                 .setMessage(message)
@@ -147,6 +151,7 @@ session.setFireBaseToken(token);
                 .create()
                 .show();
     }
+
     private boolean checkPermission() {
         int result = ContextCompat.checkSelfPermission(getApplicationContext(), ACCESS_FINE_LOCATION);
         int result1 = ContextCompat.checkSelfPermission(getApplicationContext(), ACCESS_COARSE_LOCATION);
@@ -169,7 +174,7 @@ session.setFireBaseToken(token);
                                     double longitude = mLocation.getLongitude();
                                     session.setHOME_LAT(String.valueOf(lat));
                                     session.setHOME_LONG(String.valueOf(longitude));
-                                    session.setRestraID(DataManager.CurrentCity(lat,longitude,getApplicationContext()));
+                                    session.setRestraID(DataManager.CurrentCity(lat, longitude, getApplicationContext()));
                                     Log.e("TAG", "onLocationChange:   lat  --" + String.valueOf(lat) +
                                             "---lang---" + String.valueOf(longitude));
 

@@ -79,7 +79,7 @@
     <string name="verify">Verify</string>
     <string name="verify_establishment">Verify Identification number of the establishment</string>
     <string name="register_successfull">Register Successfull</string>
-    <string name="register_unsuccessfull">Establishment Number Already Exist ?</string>
+    <string name="register_unsuccessfull">Establishment Number Already Exist !</string>
     <string name="is_automatic">Automatic acceptance of users ?</string>
     <string name="is_access">Access for people with reduced mobility ?</string>
     <string name="is_usnt">Unstoppable nature of the toilets ?</string>

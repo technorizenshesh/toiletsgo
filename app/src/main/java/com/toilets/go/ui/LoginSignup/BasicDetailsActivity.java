@@ -28,6 +28,7 @@ import android.os.Bundle;
 import android.provider.MediaStore;
 import android.util.Log;
 import android.view.View;
+import android.widget.RadioButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -76,12 +77,12 @@ public class BasicDetailsActivity extends AppCompatActivity {
     private static final int SELECT_FILE2 = 22;
     String str_image_path = "";
     String str_image_path2 = "";
-    String auto_accpet1 = "";
+    String auto_accpet1 = "True";
     String establishment_no1 = "";
     String est_type1 = "";
-    String is_toilet_available1 = "";
-    String access_toilets1 = "";
-    String unstoppable_nature1 = "";
+    String is_toilet_available1 = "True";
+    String access_toilets1 = "True";
+    String unstoppable_nature1 = "True";
     private static final int REQUEST_CAMERA = 1;
     private static final int REQUEST_CAMERA2 = 12;
     private GosInterface apiInterface;
@@ -89,18 +90,18 @@ public class BasicDetailsActivity extends AppCompatActivity {
     Session session;
     boolean cameraClicked = true;
     private List<SuccessResStabRes.Result> country_list;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         binding = DataBindingUtil.setContentView(this, R.layout.activity_basic_details);
         apiInterface = ApiClient.getClient().create(GosInterface.class);
         session = new Session(this);
-            UserType = session.getUSERTYPE();
-
+        UserType = session.getUSERTYPE();
         if (checkConnection(BasicDetailsActivity.this)) {
             get_countryAPI();
         } else {
-            showNoInternet(BasicDetailsActivity.this,true);
+            showNoInternet(BasicDetailsActivity.this, true);
         }
 
         binding.edtAddress.setText(session.getRestraID());
@@ -121,6 +122,43 @@ public class BasicDetailsActivity extends AppCompatActivity {
             }
         });
         binding.btnSubmit.setOnClickListener(v -> {
+           //autoradio group
+            int genid = binding.isAuto.getCheckedRadioButtonId();
+            RadioButton isAuto = (RadioButton) findViewById(genid);
+            String gender1 = isAuto.getText().toString();
+            if (gender1.equalsIgnoreCase("no")) {
+                auto_accpet1 = "False";
+            } else {
+                auto_accpet1 = "True";
+
+            }
+            //isToilet group
+            int genid1 = binding.isToilet.getCheckedRadioButtonId();
+            RadioButton isAuto1 = (RadioButton) findViewById(genid1);
+            String gender11 = isAuto1.getText().toString();
+            if (gender11.equalsIgnoreCase("no")) {
+                is_toilet_available1 = "False";
+            } else {
+                is_toilet_available1 = "True";
+            }
+            //isUnstopable group
+            int genid12 = binding.isUnstopable.getCheckedRadioButtonId();
+            RadioButton isAuto12 = (RadioButton) findViewById(genid12);
+            String gender112 = isAuto12.getText().toString();
+            if (gender112.equalsIgnoreCase("no")) {
+                unstoppable_nature1 = "False";
+            } else {
+                unstoppable_nature1 = "True";
+            }
+            //isUnstopable group
+            int genid123 = binding.isReduse.getCheckedRadioButtonId();
+            RadioButton isAuto123 = (RadioButton) findViewById(genid123);
+            String gender1123 = isAuto123.getText().toString();
+            if (gender1123.equalsIgnoreCase("no")) {
+                access_toilets1 = "False";
+            } else {
+                access_toilets1 = "True";
+            }
             if (binding.edtToiletName.getText().toString().equalsIgnoreCase("")) {
                 binding.edtToiletName.setError(getString(R.string.empty));
             } else if (binding.edtPrice.getText().toString().equalsIgnoreCase("")) {
@@ -213,6 +251,7 @@ public class BasicDetailsActivity extends AppCompatActivity {
         );
         openFilterBottem();
     }
+
     private void openFilterBottem() {
 
         Log.e(TAG, "openBottemSheet: " + "=-=-=-=-=-=-");
@@ -224,52 +263,61 @@ public class BasicDetailsActivity extends AppCompatActivity {
         mBottomSheetDialog.setContentView(bottemSheeetEstBinding.getRoot());
         bottemSheeetEstBinding.btnSubmit.setOnClickListener(v -> {
             if (checkConnection(BasicDetailsActivity.this)) {
-                 if (bottemSheeetEstBinding.edtExtNo.getText()
-                         .toString().equalsIgnoreCase("")){
-                     Toast.makeText(getApplicationContext(), getString(R.string.empty), Toast.LENGTH_SHORT).show();
-                 }else {
-                checkEstNo(mBottomSheetDialog,"");}
+                if (bottemSheeetEstBinding.edtExtNo.getText()
+                        .toString().equalsIgnoreCase("")) {
+                    Toast.makeText(getApplicationContext(), getString(R.string.empty), Toast.LENGTH_SHORT).show();
+                } else {
+                    checkEstNo(mBottomSheetDialog, bottemSheeetEstBinding.edtExtNo.getText()
+                            .toString());
+                }
 
             } else {
-                showNoInternet(BasicDetailsActivity.this,true);
+                showNoInternet(BasicDetailsActivity.this, true);
             }
         });
         mBottomSheetDialog.show();
     }
 
-    private void checkEstNo(RoundedBottomSheetDialog mBottomSheetDialog, String s)
-        {
-            DataManager.getInstance().showProgressMessage(BasicDetailsActivity.this, getString(R.string.please_wait));
-            Map<String, String> map = new HashMap<>();
-            map.put("user_id", session.getUserId());
-            map.put("establishment_no", s);
-            map.put("token", session.getAuthtoken());
-            Call<SuccessResCheckRes> call = apiInterface.check_if_exist(map);
-            call.enqueue(new Callback<>() {
-                @Override
-                public void onResponse(Call<SuccessResCheckRes> call,
-                                       Response<SuccessResCheckRes> response) {
-                    try {
-                        if (response.body().getStatus().equalsIgnoreCase("1")) {
-
-                            mBottomSheetDialog.dismiss();
-                            establishment_no1=s;
-                        }
-                    } catch (Exception e) {
-                        e.printStackTrace();
+    private void checkEstNo(RoundedBottomSheetDialog mBottomSheetDialog, String s) {
+        DataManager.getInstance().showProgressMessage(BasicDetailsActivity.this, getString(R.string.please_wait));
+        Map<String, String> map = new HashMap<>();
+        map.put("user_id", session.getUserId());
+        map.put("establishment_no", s);
+        map.put("token", session.getAuthtoken());
+        Log.e(TAG, "checkEstNo: " + map);
+        Call<SuccessResCheckRes> call = apiInterface.check_if_exist(map);
+        call.enqueue(new Callback<>() {
+            @Override
+            public void onResponse(Call<SuccessResCheckRes> call,
+                                   Response<SuccessResCheckRes> response) {
+                DataManager.getInstance().hideProgressMessage();
+                try {
+                    if (response.body().getEstablishmentStatus().equalsIgnoreCase("True")) {
+                        Toast.makeText(BasicDetailsActivity.this, getString(R.string.register_unsuccessfull), Toast.LENGTH_SHORT).show();
+                        // {"establishment_status":"True","message":"successfull","status":"1"}
+                        //mBottomSheetDialog.dismiss();
+                        //establishment_no1 = s;
+                    } else {
+                        Toast.makeText(BasicDetailsActivity.this, getString(R.string.register_successfull), Toast.LENGTH_SHORT).show();
+                        // {"establishment_status":"True","message":"successfull","status":"1"}
+                        mBottomSheetDialog.dismiss();
+                        establishment_no1 = s;
                     }
+                } catch (Exception e) {
+                    e.printStackTrace();
                 }
+            }
 
-                @Override
-                public void onFailure(Call<SuccessResCheckRes> call, Throwable t) {
-                    call.cancel();
-                    Log.e("TAG", "onFailure: " + t.getLocalizedMessage());
-                    Log.e("TAG", "onFailure: " + t.getMessage());
-                    //    DataManager.getInstance().hideProgressMessage();
-                }
-            });
+            @Override
+            public void onFailure(Call<SuccessResCheckRes> call, Throwable t) {
+                call.cancel();
+                Log.e("TAG", "onFailure: " + t.getLocalizedMessage());
+                Log.e("TAG", "onFailure: " + t.getMessage());
+                DataManager.getInstance().hideProgressMessage();
+            }
+        });
 
-        }
+    }
 
 
     private void get_countryAPI() {
@@ -314,29 +362,28 @@ public class BasicDetailsActivity extends AppCompatActivity {
         recycle.setLayoutManager(linearLayoutManager);
         mBottomSheetDialog.show();
         EstAdapter adapter = new EstAdapter(getApplicationContext(), country_list);
-            recycle.setAdapter(adapter);
-            recycle.addOnItemTouchListener(new RecyclerTouchListener(BasicDetailsActivity.this, recycle,
-                    new RecyclerTouchListener.ClickListener() {
-                        @Override
-                        public void onClick(View view, int position) {
-                            Log.e("->>", "" + country_list.get(position));
-                            Log.e("->>", country_list.get(position).getName());
-                            Log.e("->>", country_list.get(position).getId());
-                            binding.edtType.setText(country_list.get(position).getName());
-                            est_type1 = country_list.get(position).getId();
-                            mBottomSheetDialog.dismiss();
+        recycle.setAdapter(adapter);
+        recycle.addOnItemTouchListener(new RecyclerTouchListener(BasicDetailsActivity.this, recycle,
+                new RecyclerTouchListener.ClickListener() {
+                    @Override
+                    public void onClick(View view, int position) {
+                        Log.e("->>", "" + country_list.get(position));
+                        Log.e("->>", country_list.get(position).getName());
+                        Log.e("->>", country_list.get(position).getId());
+                        binding.edtType.setText(country_list.get(position).getName());
+                        est_type1 = country_list.get(position).getId();
+                        mBottomSheetDialog.dismiss();
 
-                        }
+                    }
 
-                        @Override
-                        public void onLongClick(View view, int position) {
+                    @Override
+                    public void onLongClick(View view, int position) {
 
-                        }
-                    }));
+                    }
+                }));
 
 
     }
-
 
 
     private void SignupAPI(String name, String price, String desc, String address) {
@@ -371,21 +418,34 @@ public class BasicDetailsActivity extends AppCompatActivity {
             filePart2 = MultipartBody.Part.createFormData("attachment", "", attachmentEmpty);
         }
 
-        RequestBody User_id = RequestBody.create(MediaType.parse("text/plain"), session.getUserId());
-        RequestBody T_name = RequestBody.create(MediaType.parse("text/plain"), name);
-        RequestBody Descript = RequestBody.create(MediaType.parse("text/plain"), desc);
-        RequestBody Address = RequestBody.create(MediaType.parse("text/plain"), address);
-        RequestBody PRICE = RequestBody.create(MediaType.parse("text/plain"), price);
-        RequestBody token = RequestBody.create(MediaType.parse("text/plain"), session.getAuthtoken());
-        RequestBody lat = RequestBody.create(MediaType.parse("text/plain"), session.getHOME_LAT());
-        RequestBody lang = RequestBody.create(MediaType.parse("text/plain"), session.getHOME_LONG());
-        RequestBody auto_accpet = RequestBody.create(MediaType.parse("text/plain"), auto_accpet1);
-        RequestBody establishment_no = RequestBody.create(MediaType.parse("text/plain"), establishment_no1);
-        RequestBody est_type = RequestBody.create(MediaType.parse("text/plain"), est_type1);
-        RequestBody is_toilet_available = RequestBody.create(MediaType.parse("text/plain"), is_toilet_available1);
-        RequestBody access_toilets = RequestBody.create(MediaType.parse("text/plain"), access_toilets1);
-        RequestBody unstoppable_nature = RequestBody.create(MediaType.parse("text/plain"), unstoppable_nature1);
-
+        RequestBody User_id             = RequestBody.create(MediaType.parse("text/plain"), session.getUserId());
+        RequestBody T_name               = RequestBody.create(MediaType.parse("text/plain"), name);
+        RequestBody Descript            = RequestBody.create(MediaType.parse("text/plain"), desc);
+        RequestBody Address              = RequestBody.create(MediaType.parse("text/plain"), address);
+        RequestBody PRICE                 = RequestBody.create(MediaType.parse("text/plain"), price);
+        RequestBody token                 = RequestBody.create(MediaType.parse("text/plain"), session.getAuthtoken());
+        RequestBody lat                     = RequestBody.create(MediaType.parse("text/plain"), session.getHOME_LAT());
+        RequestBody lang                 = RequestBody.create(MediaType.parse("text/plain"), session.getHOME_LONG());
+        RequestBody auto_accpet           = RequestBody.create(MediaType.parse("text/plain"), auto_accpet1);
+        RequestBody establishment_no        = RequestBody.create(MediaType.parse("text/plain"), establishment_no1);
+        RequestBody est_type               = RequestBody.create(MediaType.parse("text/plain"), est_type1);
+        RequestBody is_toilet_available    = RequestBody.create(MediaType.parse("text/plain"), is_toilet_available1);
+        RequestBody access_toilets          = RequestBody.create(MediaType.parse("text/plain"), access_toilets1);
+        RequestBody unstoppable_nature      = RequestBody.create(MediaType.parse("text/plain"), unstoppable_nature1);
+        Log.e(TAG, "SignupAPI: User_id           ---------"+ User_id            );
+        Log.e(TAG, "SignupAPI: T_name            ---------"+ T_name             );
+        Log.e(TAG, "SignupAPI: Descript          ---------"+ Descript           );
+        Log.e(TAG, "SignupAPI: Address           ---------"+ Address            );
+        Log.e(TAG, "SignupAPI: PRICE             ---------"+ PRICE              );
+        Log.e(TAG, "SignupAPI: token             ---------"+ token              );
+        Log.e(TAG, "SignupAPI: lat               ---------"+ lat                );
+        Log.e(TAG, "SignupAPI: lang              ---------"+ lang               );
+        Log.e(TAG, "SignupAPI: auto_accpet       ---------"+ auto_accpet        );
+        Log.e(TAG, "SignupAPI: establishment_no  ---------"+ establishment_no   );
+        Log.e(TAG, "SignupAPI: est_type          ---------"+ est_type           );
+        Log.e(TAG, "SignupAPI: is_toilet_availabl---------"+ is_toilet_available);
+        Log.e(TAG, "SignupAPI: access_toilets    ---------"+ access_toilets     );
+        Log.e(TAG, "SignupAPI: unstoppable_nature---------"+ unstoppable_nature );
 
         Call<SuccessResSignup> call = apiInterface.add_toilet(auto_accpet,
                 establishment_no, est_type, is_toilet_available,
@@ -404,10 +464,11 @@ public class BasicDetailsActivity extends AppCompatActivity {
                         SuccessResSignup.Result signup = response.body().getResult();
                         Gson gson = new Gson();
                         String json = gson.toJson(signup);
-
+                        session.setUSERDATA(json);
+                        session.setUSERBASIC("1");
                         startActivity(new Intent(getApplicationContext(), BankDetailsActivity.class)
                                 .putExtra("User_type", UserType));
-
+                        finish();
                     }
                 } catch (Exception e) {
 

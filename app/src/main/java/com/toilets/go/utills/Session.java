@@ -28,6 +28,7 @@ public class Session extends Object {
     private static final String USERTYPE = "type";
     private static final String AUTHTOKEN = "token";
     private static final String BOOKINGID = "booking_id";
+    private static final String USERBASIC = "basic_fill";
     private Context _context;
     private SharedPreferences Rapidine_pref;
     private SharedPreferences.Editor editor;
@@ -55,6 +56,15 @@ public class Session extends Object {
 
     public void setBookingid(String user_name) {
         editor.putString(BOOKINGID, user_name);
+        this.editor.apply();
+    }
+    public String getUSERBASIC() {
+        return Rapidine_pref.getString(USERBASIC, "");
+
+    }
+
+    public void setUSERBASIC(String user_name) {
+        editor.putString(USERBASIC, user_name);
         this.editor.apply();
     }
     public String getUser_name() {

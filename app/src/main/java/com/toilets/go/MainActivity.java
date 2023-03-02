@@ -19,6 +19,7 @@ import androidx.core.content.ContextCompat;
 
 import com.google.gson.Gson;
 import com.toilets.go.models.SuccessResSignup;
+import com.toilets.go.ui.LoginSignup.BasicDetailsActivity;
 import com.toilets.go.ui.LoginSignup.LoginTypeActivity;
 import com.toilets.go.ui.ProviderHome.ProviderHomeActivity;
 import com.toilets.go.ui.UserSide.HomeUserAct;
@@ -61,21 +62,23 @@ public class MainActivity extends AppCompatActivity {
                           |Intent.FLAG_ACTIVITY_CLEAR_TOP));
                   finish();
               }else {
-                  Gson gson = new Gson();
-                  String json = session.getUSERDATA();
-                  SuccessResSignup.Result obj = gson.fromJson(json,  SuccessResSignup.Result.class);
-                  /*if (obj.getStep().equalsIgnoreCase("0")){
+                 // Gson gson = new Gson();
+               //   String json = session.getUSERDATA();
+                //  SuccessResSignup.Result obj = gson.fromJson(json,  SuccessResSignup.Result.class);
+                  if (session.getUSERBASIC().equalsIgnoreCase("1")){
+                      startActivity(new Intent(MainActivity.this,
+                              ProviderHomeActivity.class)
+                              .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK
+                                      |Intent.FLAG_ACTIVITY_CLEAR_TOP));
+                      finish();
+
+                  }else {
                       startActivity(new Intent(MainActivity.this,
                               BasicDetailsActivity.class).putExtra("User_type", "PROVIDER")
                               .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK
                                       |Intent.FLAG_ACTIVITY_CLEAR_TOP));
                       finish();
-                  }else {*/
-                  startActivity(new Intent(MainActivity.this,
-                          ProviderHomeActivity.class)
-                          .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK
-                                  |Intent.FLAG_ACTIVITY_CLEAR_TOP));
-                  finish();//}
+                 }
               }
 
 
