@@ -229,8 +229,10 @@
                     android:textColor="@color/texts"
                     android:textSize="@dimen/_12sdp" />
                 <ImageView
+                    android:backgroundTint="@color/colorPrimary_semi"
                      android:id="@+id/qr_code_image"
                     android:layout_width="250sp"
+                    android:background="@color/transparent"
                     android:layout_height="250sp"
                     android:layout_gravity="center"
                     android:layout_marginTop="@dimen/_10sdp"

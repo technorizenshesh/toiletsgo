@@ -77,7 +77,7 @@
     <string name="no">No</string>
     <string name="yes">Yes</string>
     <string name="verify">Verify</string>
-    <string name="verify_establishment">Verify Identification number of the establishment</string>
+    <string name="verify_establishment">Verify Identification TaxID of the establishment</string>
     <string name="register_successfull">Register Successfull</string>
     <string name="register_unsuccessfull">Establishment Number Already Exist !</string>
     <string name="is_automatic">Automatic acceptance of users ?</string>
@@ -94,6 +94,15 @@
     <string name="privacy"> Privacy Policy</string>
     <string name="process_booking">Process Booking</string>
     <string name="scheduled_booking_s">Scheduled Booking\'s</string>
+    <string name="edit_profile">Edit Profile</string>
+    <string name="view_booking">View Booking</string>
+    <string name="review">Review</string>
+    <string name="contact_us">Contact Us</string>
+    <string name="share_app">Share App</string>
+    <string name="logout">logout</string>
+    <string name="please_enter_your_email_we_will_send_a_new_password_on_this_email_address_you_can_use_that_password_for_login_and_change_the_password_according_to_you">Please enter your email we will send a new password on this email address you can use that password for login and change the password according to you</string>
+    <string name="booking_successful">Booking Successful</string>
+    <string name="tax_id">Tax ID</string>
 
 
 </resources>

@@ -98,13 +98,14 @@
 
 
                     <TextView
+                         android:id="@+id/forget_pass"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_margin="@dimen/_10sdp"
+                        android:layout_margin="@dimen/_8sdp"
                         android:fontFamily="@font/poppins_medium"
                         android:padding="@dimen/_5sdp"
                         android:text="@string/forget_password"
-                        android:textAlignment="textStart"
+                        android:textAlignment="center"
                         android:textColor="@color/texts"
                         android:textSize="@dimen/_10sdp" />
 <RelativeLayout
@@ -122,7 +123,6 @@
 
     <TextView
         android:id="@+id/prvc"
-
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/_2sdp"
@@ -132,7 +132,6 @@
         android:layout_toRightOf="@+id/check"
         android:fontFamily="@font/poppins_medium"
         android:padding="@dimen/_5sdp"
-        android:text="@string/accept_booking"
         android:textAlignment="textStart"
         android:textColor="@color/texts"
         android:textColorLink="@color/colorPrimary"

@@ -90,7 +90,7 @@
                     android:drawablePadding="@dimen/_15sdp"
                     android:fontFamily="@font/poppins_medium"
                     android:padding="@dimen/_10sdp"
-                    android:text="Edit Profile"
+                    android:text="@string/edit_profile"
                     android:textColor="@color/texts"
                     android:textSize="@dimen/_13sdp" />
                 <TextView
@@ -102,7 +102,7 @@
                     android:drawablePadding="@dimen/_15sdp"
                     android:fontFamily="@font/poppins_medium"
                     android:padding="@dimen/_10sdp"
-                    android:text="View Booking"
+                    android:text="@string/view_booking"
                     android:textColor="@color/texts"
                     android:textSize="@dimen/_13sdp" />
                 <TextView
@@ -114,7 +114,7 @@
                     android:drawablePadding="@dimen/_15sdp"
                     android:fontFamily="@font/poppins_medium"
                     android:padding="@dimen/_10sdp"
-                    android:text="Notification"
+                    android:text="@string/notification"
                     android:textColor="@color/texts"
                     android:textSize="@dimen/_13sdp" />
                 <TextView
@@ -126,7 +126,7 @@
                     android:drawablePadding="@dimen/_15sdp"
                     android:fontFamily="@font/poppins_medium"
                     android:padding="@dimen/_10sdp"
-                    android:text="Review"
+                    android:text="@string/review"
                     android:textColor="@color/texts"
                     android:textSize="@dimen/_13sdp" />
                 <TextView
@@ -138,7 +138,7 @@
                     android:drawablePadding="@dimen/_15sdp"
                     android:fontFamily="@font/poppins_medium"
                     android:padding="@dimen/_10sdp"
-                    android:text="Contact Us"
+                    android:text="@string/contact_us"
                     android:textColor="@color/texts"
                     android:textSize="@dimen/_13sdp" />
 
@@ -151,7 +151,7 @@
                     android:drawablePadding="@dimen/_15sdp"
                     android:fontFamily="@font/poppins_medium"
                     android:padding="@dimen/_10sdp"
-                    android:text="Share App"
+                    android:text="@string/share_app"
                     android:textColor="@color/texts"
                     android:textSize="@dimen/_13sdp" />
 
@@ -164,7 +164,7 @@
                     android:layout_marginBottom="@dimen/_15sdp"
                     android:background="@drawable/border_btn_google"
                     android:fontFamily="@font/poppins_bold"
-                    android:text="logout"
+                    android:text="@string/logout"
                     android:textAllCaps="false"
                     android:textColor="@color/white"
                     android:textSize="@dimen/_12sdp" />

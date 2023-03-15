@@ -2,6 +2,7 @@ package com.toilets.go.ui.UserSide.Home;
 
 import android.Manifest;
 import android.app.AlertDialog;
+import android.app.Dialog;
 import android.content.Context;
 import android.content.pm.PackageManager;
 import android.content.res.Resources;
@@ -19,8 +20,12 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
+import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.Button;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -56,13 +61,12 @@ import com.google.android.libraries.places.api.net.PlacesClient;
 import com.mancj.materialsearchbar.MaterialSearchBar;
 import com.mancj.materialsearchbar.adapter.SuggestionsAdapter;
 import com.toilets.go.R;
-import com.toilets.go.adapters.NotificationListAdapter;
+import com.toilets.go.adapters.RatingReviewsListAdapter;
 import com.toilets.go.databinding.BottemSheeetDetailsBinding;
 import com.toilets.go.databinding.BottemSheeetFilterBinding;
 import com.toilets.go.databinding.BottemSheeetWaitingBinding;
 import com.toilets.go.models.SuccessResBooking;
-import com.toilets.go.models.SuccessResNotifications;
-import com.toilets.go.ui.UserSide.Notification.NotificationFragment;
+import com.toilets.go.models.SuccessResRatingList;
 import com.toilets.go.utills.DataManager;
 import com.toilets.go.utills.GPSTracker;
 import com.toilets.go.utills.Session;
@@ -92,6 +96,7 @@ public class UserHomeFragment extends Fragment implements OnMapReadyCallback {
     Session session;
     private GosInterface apiInterface;
     private ArrayList<SuccessResNearbyList.Result> resultArrayList = new ArrayList<>();
+    private ArrayList<SuccessResRatingList.Result> ratinglist = new ArrayList<>();
     GoogleMap googleMap;
     GPSTracker gpsTracker;
     HashMap<Marker, SuccessResNearbyList.Result> datasnap = new HashMap<>();
@@ -116,7 +121,7 @@ public class UserHomeFragment extends Fragment implements OnMapReadyCallback {
         session = new Session(requireActivity());
         lat = session.getHOME_LAT();
         lon = session.getHOME_LONG();
-        Log.e(TAG, "getFireBaseTokengetFireBaseToken: "+session.getFireBaseToken() );
+        Log.e(TAG, "getFireBaseTokengetFireBaseToken: " + session.getFireBaseToken());
 
 ///rearch
         Places.initialize(requireActivity(), requireActivity().getString(R.string.api_key));
@@ -249,6 +254,7 @@ public class UserHomeFragment extends Fragment implements OnMapReadyCallback {
                 e.printStackTrace();
             }
         });
+       // openBottemSheetfor();
 
         return binding.getRoot();
     }
@@ -259,7 +265,7 @@ public class UserHomeFragment extends Fragment implements OnMapReadyCallback {
             getnearByUsersAPI();
 
         } else {
-            showNoInternet(requireActivity(),true);
+            showNoInternet(requireActivity(), true);
         }
         super.onResume();
     }
@@ -331,6 +337,7 @@ public class UserHomeFragment extends Fragment implements OnMapReadyCallback {
     }
 
     private void openBottemSheet(SuccessResNearbyList.Result data) {
+
         Log.e(TAG, "openBottemSheet: " + "=-=-=-=-=-=-");
         RoundedBottomSheetDialog mBottomSheetDialog = new RoundedBottomSheetDialog(requireActivity());
         BottemSheeetDetailsBinding bottemSheeetDetailsBinding = DataBindingUtil.inflate(getLayoutInflater()
@@ -339,12 +346,17 @@ public class UserHomeFragment extends Fragment implements OnMapReadyCallback {
         mBottomSheetDialog.setContentView(bottemSheeetDetailsBinding.getRoot());
         bottemSheeetDetailsBinding.setDatamodel(data);
         //  getRating(bottemSheeetDetailsBinding.recyclerView,bottemSheeetDetailsBinding.progressBar,data.getId());
+        ratinglist.clear();
+        getrating(bottemSheeetDetailsBinding.recyclerView
+                ,bottemSheeetDetailsBinding.nodata
+                ,bottemSheeetDetailsBinding.progressBar
+                ,data.getUserId());
         bottemSheeetDetailsBinding.btnSubmit.setOnClickListener(v -> {
             if (checkConnection((requireActivity()))) {
                 sendRequestAPI(data.getUserId(), data.getId(), data.getPrice());
 
             } else {
-                showNoInternet(requireActivity(),true);
+                showNoInternet(requireActivity(), true);
             }
             mBottomSheetDialog.dismiss();
           /*  Bundle bundle = new Bundle();
@@ -357,60 +369,57 @@ public class UserHomeFragment extends Fragment implements OnMapReadyCallback {
 
     }
 
-   /* private void getRating(RecyclerView recyclerView, LinearLayout progressBar, String id) {
-        {
-            DataManager.getInstance().showProgressMessage(requireActivity(), getString(R.string.please_wait));
-            Map<String, String> map = new HashMap<>();
-            map.put("user_id", session.getUserId());
-            map.put("token", session.getAuthtoken());
-            Log.e(TAG, "sendRequestAPI: " + map);
-            Call<SuccessResNotifications> call = apiInterface.get_notification(map);
-            call.enqueue(new Callback<>() {
-                @Override
-                public void onResponse(Call<SuccessResNotifications> call,
-                                       Response<SuccessResNotifications> response) {
-                    try {
-                        DataManager.getInstance().hideProgressMessage();
-                        SuccessResNotifications data = response.body();
-                        Log.e("data", data.getStatus());
-                        if (data.getStatus().equalsIgnoreCase("1")) {
-                          progressBar.setVisibility(View.GONE);
-                            recyclerView.setVisibility(View.VISIBLE);
-                            res = response.body().getResult();
-                            binding.recyclerView.setLayoutManager(new LinearLayoutManager(requireContext()
-                                    , LinearLayoutManager.VERTICAL, false));
-                            myRecyclerViewAdapter = new NotificationListAdapter(res, requireActivity(),
-                                    NotificationFragment.this);
-                            recyclerView.setAdapter(myRecyclerViewAdapter);
-                            recyclerView.hasFixedSize();
-                        } else {
-                            Toast.makeText(requireActivity(), data.getMessage(), Toast.LENGTH_SHORT).show();
-                            recyclerView.setVisibility(View.GONE);
-
-                        }
-
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                }
-
-                @Override
-                public void onFailure(Call<SuccessResNotifications> call, Throwable t) {
-                    call.cancel();
-                    Log.e(TAG, "onFailure: " + t.getCause());
-                    Log.e(TAG, "onFailure: " + t.getMessage());
-                    Log.e(TAG, "onFailure: " + t.getLocalizedMessage());
-                    Toast.makeText(requireActivity(), t.getCause().toString(),
-                            Toast.LENGTH_SHORT).show();
-                    binding.nodata.setVisibility(View.VISIBLE);
-                    binding.recyclerView.setVisibility(View.GONE);
+    private void getrating(RecyclerView recyclerView, TextView nodata, LinearLayout progressBar, String id) {
+         progressBar.setVisibility(View.VISIBLE);
+        Map<String, String> map = new HashMap<>();
+        map.put("provider_id", id);
+        map.put("user_id", session.getUserId());
+        map.put("token", session.getAuthtoken());
+        Call<SuccessResRatingList> call = apiInterface.get_rating(map);
+        call.enqueue(new Callback<>() {
+            @Override
+            public void onResponse(Call<SuccessResRatingList> call,
+                                   Response<SuccessResRatingList> response) {
+                 progressBar.setVisibility(View.GONE);
+                 recyclerView.setVisibility(View.VISIBLE);
+                try {
                     DataManager.getInstance().hideProgressMessage();
+                    SuccessResRatingList data = response.body();
+                    Log.e("data", data.getStatus());
+                    if (data.getStatus().equals("1")) {
+                        ratinglist = response.body().getResult();
+                        RatingReviewsListAdapter adpater = new RatingReviewsListAdapter(ratinglist, getActivity());
+                        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
+                      recyclerView.setLayoutManager(linearLayoutManager);
+                      recyclerView.setAdapter(adpater);
+                    }else {
+                        nodata.setVisibility(View.VISIBLE);
+
+                    }
+
+
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    nodata.setVisibility(View.VISIBLE);
+
                 }
-            });
+            }
 
+            @Override
+            public void onFailure(Call<SuccessResRatingList> call, Throwable t) {
+                call.cancel();
+                progressBar.setVisibility(View.GONE);
+                nodata.setVisibility(View.VISIBLE);
 
-        }
-    }*/
+                DataManager.getInstance().hideProgressMessage();
+                Log.e(TAG, "onFailure: " + t.getCause());
+                Log.e(TAG, "onFailure: " + t.getMessage());
+                Log.e(TAG, "onFailure: " + t.getLocalizedMessage());
+            }
+        });
+
+    }
+
 
     private void openFilterBottem() {
 
@@ -453,7 +462,7 @@ public class UserHomeFragment extends Fragment implements OnMapReadyCallback {
                 getnearByUsersAPI();
 
             } else {
-                showNoInternet(requireActivity(),true);
+                showNoInternet(requireActivity(), true);
             }
         });
         bottemSheeetFilterBinding.imgReset.setOnClickListener(v -> {
@@ -482,12 +491,12 @@ public class UserHomeFragment extends Fragment implements OnMapReadyCallback {
 
 
     private BitmapDescriptor bitmapDescriptorFromVector(Context context, int vectorResId) {
-         try {
+        try {
 
-         }catch (Exception e){
+        } catch (Exception e) {
 
-         }
-        Drawable vectorDrawable = requireContext().getDrawable( vectorResId);
+        }
+        Drawable vectorDrawable = requireContext().getDrawable(vectorResId);
         vectorDrawable.setBounds(0, 0, vectorDrawable.getIntrinsicWidth(), vectorDrawable.getIntrinsicHeight());
         Bitmap bitmap = Bitmap.createBitmap(vectorDrawable.getIntrinsicWidth(), vectorDrawable.getIntrinsicHeight(), Bitmap.Config.ARGB_8888);
         Canvas canvas = new Canvas(bitmap);
@@ -563,8 +572,9 @@ public class UserHomeFragment extends Fragment implements OnMapReadyCallback {
             @Override
             public void onResponse(Call<SuccessResBooking> call,
                                    Response<SuccessResBooking> response) {
+                DataManager.getInstance().hideProgressMessage();
+
                 try {
-                    DataManager.getInstance().hideProgressMessage();
                     SuccessResBooking data = response.body();
                     Log.e("data", data.getStatus());
                     if (data.getStatus().equals("1")) {
@@ -583,6 +593,8 @@ public class UserHomeFragment extends Fragment implements OnMapReadyCallback {
             @Override
             public void onFailure(Call<SuccessResBooking> call, Throwable t) {
                 call.cancel();
+                Log.e(TAG, "onFailure: "+t.getLocalizedMessage() );
+                Log.e(TAG, "onFailure: "+t.getMessage() );
                 DataManager.getInstance().hideProgressMessage();
             }
         });
@@ -590,24 +602,22 @@ public class UserHomeFragment extends Fragment implements OnMapReadyCallback {
     }
 
     private void openBottemSheetfor() {
+            final Dialog dialog = new Dialog(getActivity());
+            dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+           dialog.getWindow().getAttributes().windowAnimations =
+                    android.R.style.Widget_Material_PopupWindow;
+          WindowManager.LayoutParams lp = new WindowManager.LayoutParams();
+            Window window = dialog.getWindow();
+            lp.copyFrom(window.getAttributes());
+            lp.width = WindowManager.LayoutParams.MATCH_PARENT;
+            lp.height = WindowManager.LayoutParams.MATCH_PARENT;
+            dialog.getWindow().setBackgroundDrawable(new ColorDrawable
+                    (Color.TRANSPARENT));
+        dialog.setContentView(R.layout.dialog_request_sent);
+        dialog.setCancelable(false);
+        dialog.show();
+        Handler handler = new Handler();
+        handler.postDelayed(dialog::dismiss,5000);
 
-        Log.e(TAG, "openBottemSheet: " + "=-=-=-=-=-=-");
-        RoundedBottomSheetDialog mBottomSheetDialog = new RoundedBottomSheetDialog(requireActivity());
-        BottemSheeetWaitingBinding bottemSheeetWaitingBinding = DataBindingUtil.inflate(getLayoutInflater()
-                , R.layout.bottem_sheeet_waiting, null, false);
-        mBottomSheetDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-        mBottomSheetDialog.setContentView(bottemSheeetWaitingBinding.getRoot());
-       // bottemSheeetWaitingBinding.setDatamodel(data);
-        bottemSheeetWaitingBinding.btnSubmit.setOnClickListener(v -> {
-
-          //  sendRequestAPI(data.getUserId(), data.getId(), data.getPrice());
-            mBottomSheetDialog.dismiss();
-          /*  Bundle bundle = new Bundle();
-            bundle.putString("from", "home");
-            Navigation.findNavController(binding.getRoot())
-                    .navigate(R.id.action_navigation_home_to_payment_fragment, bundle);*/
-        });
-
-        mBottomSheetDialog.show();
     }
 }
