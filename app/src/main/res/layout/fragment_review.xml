@@ -41,7 +41,7 @@
                     android:layout_gravity="center"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="You rate this product: good"
+                    android:text="@string/you_rate_this_product_good"
                     android:textColor="@color/gray"
                     android:textSize="@dimen/_12sdp"
                     />

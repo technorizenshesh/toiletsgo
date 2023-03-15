@@ -142,8 +142,8 @@ public class Util {
     }
 public static Bitmap generateQrCodeFromStringData(String data ) {
             QRGEncoder qrgEncoder = new QRGEncoder(data, null, QRGContents.Type.TEXT, 2048);
-            qrgEncoder.setColorBlack(Color.BLACK);
-            qrgEncoder.setColorWhite(Color.WHITE);
+            qrgEncoder.setColorBlack(Color.WHITE);
+            qrgEncoder.setColorWhite(Color.parseColor("#4CBCE5"));
         Bitmap bitmap = null;
         try {
             bitmap   = qrgEncoder.getBitmap();

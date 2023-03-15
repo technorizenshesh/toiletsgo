@@ -40,8 +40,7 @@ public  class SuccessResProfile implements Serializable {
     this.status = status;
   }
 
-  public class Result implements Serializable
-  {
+  public class Result  implements Serializable {
 
     @SerializedName("id")
     @Expose
@@ -118,6 +117,24 @@ public  class SuccessResProfile implements Serializable {
     @SerializedName("gender")
     @Expose
     private String gender;
+    @SerializedName("establishment_no")
+    @Expose
+    private String establishmentNo;
+    @SerializedName("est_type")
+    @Expose
+    private String estType;
+    @SerializedName("auto_accpet")
+    @Expose
+    private String autoAccpet;
+    @SerializedName("is_toilet_available")
+    @Expose
+    private String isToiletAvailable;
+    @SerializedName("access_toilets")
+    @Expose
+    private String accessToilets;
+    @SerializedName("unstoppable_nature")
+    @Expose
+    private String unstoppableNature;
     @SerializedName("bank_name")
     @Expose
     private String bankName;
@@ -133,7 +150,6 @@ public  class SuccessResProfile implements Serializable {
     @SerializedName("account_number")
     @Expose
     private String accountNumber;
-    private final static long serialVersionUID = -8004714735225712728L;
 
     public String getId() {
       return id;
@@ -335,6 +351,54 @@ public  class SuccessResProfile implements Serializable {
       this.gender = gender;
     }
 
+    public String getEstablishmentNo() {
+      return establishmentNo;
+    }
+
+    public void setEstablishmentNo(String establishmentNo) {
+      this.establishmentNo = establishmentNo;
+    }
+
+    public String getEstType() {
+      return estType;
+    }
+
+    public void setEstType(String estType) {
+      this.estType = estType;
+    }
+
+    public String getAutoAccpet() {
+      return autoAccpet;
+    }
+
+    public void setAutoAccpet(String autoAccpet) {
+      this.autoAccpet = autoAccpet;
+    }
+
+    public String getIsToiletAvailable() {
+      return isToiletAvailable;
+    }
+
+    public void setIsToiletAvailable(String isToiletAvailable) {
+      this.isToiletAvailable = isToiletAvailable;
+    }
+
+    public String getAccessToilets() {
+      return accessToilets;
+    }
+
+    public void setAccessToilets(String accessToilets) {
+      this.accessToilets = accessToilets;
+    }
+
+    public String getUnstoppableNature() {
+      return unstoppableNature;
+    }
+
+    public void setUnstoppableNature(String unstoppableNature) {
+      this.unstoppableNature = unstoppableNature;
+    }
+
     public String getBankName() {
       return bankName;
     }
@@ -376,4 +440,5 @@ public  class SuccessResProfile implements Serializable {
     }
 
   }
+
 }

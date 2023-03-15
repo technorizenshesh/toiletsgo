@@ -15,18 +15,17 @@
     <string name="enter_txt">enter search text</string>
     <string name="suggaction">Suggestion</string>
     <string name="price">Price</string>
-    <string name="desc">Discription</string>
+    <string name="desc">Description</string>
     <string name="address">Address</string>
     <string name="my_last">MY LAST SEARCHES</string>
     <string name="my_location"> Within my country:  India </string>
     <string name="i_support">I support local travel!</string>
     <string name="anywere_in_world">Anywhere in the world</string>
-    <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="api_key">AIzaSyB90Ml5dpDCKI5-WuAGnkT-EHyCJrUR7ao</string>
     <string name="message">Message</string>
     <string name="trems_condition"><![CDATA[Terms & Condition\'s]]></string>
-    <string name="share_your_views">Loorem ipsum dolor sit amet consectetur. In aliquet hac tincidunt congue tellus pellentesque vestibulum.</string>
+    <string name="share_your_views">Loorem ipsum dolor sit amet consecrate. In aliquot hac incident tongue tellus pellentesque vestibulum.</string>
     <string name="cancel">Cancel</string>
     <string name="take_photo">Take Photo</string>
     <string name="select_from_gallery">Select From Gallery</string>
@@ -64,9 +63,6 @@
     <string name="reject_booking">Reject Booking</string>
     <string name="write">Write</string>
     <string name="notification">Notification</string>
-    <!--
-    <string name="no_internet_connection_please_check_your_network">NO Internet Connection Please Check Your Network</string>
--->
     <string name="no_internet_connection_please_check_your_network">Connection Lost !</string>
     <string name="give_rating">Give Rating</string>
     <string name="welcome">Welcome,</string>
@@ -77,8 +73,8 @@
     <string name="no">No</string>
     <string name="yes">Yes</string>
     <string name="verify">Verify</string>
-    <string name="verify_establishment">Verify Identification number of the establishment</string>
-    <string name="register_successfull">Register Successfull</string>
+    <string name="verify_establishment">Verify Identification TaxID of the establishment</string>
+    <string name="register_successfull">Register Successful</string>
     <string name="register_unsuccessfull">Establishment Number Already Exist !</string>
     <string name="is_automatic">Automatic acceptance of users ?</string>
     <string name="is_access">Access for people with reduced mobility ?</string>
@@ -94,6 +90,32 @@
     <string name="privacy"> Privacy Policy</string>
     <string name="process_booking">Process Booking</string>
     <string name="scheduled_booking_s">Scheduled Booking\'s</string>
-
-
+    <string name="edit_profile">Edit Profile</string>
+    <string name="view_booking">View Booking</string>
+    <string name="review">Review</string>
+    <string name="contact_us">Contact Us</string>
+    <string name="share_app">Share App</string>
+    <string name="logout">logout</string>
+    <string name="please_enter_your_email_we_will_send_a_new_password_on_this_email_address_you_can_use_that_password_for_login_and_change_the_password_according_to_you">Please enter your email we will send a new password on this email address you can use that password for login and change the password according to you</string>
+    <string name="booking_successful">Booking Successful</string>
+    <string name="tax_id">Tax ID</string>
+    <string name="scan_qr">Scan QR</string>
+    <string name="bank_details">Bank Details</string>
+    <string name="bank_name">Bank Name</string>
+    <string name="account_no">Account No</string>
+    <string name="holder_name">Holder Name</string>
+    <string name="ifsc_code">IFSC Code</string>
+    <string name="branch">Branch</string>
+    <string name="login">Login</string>
+    <string name="decline">Decline</string>
+    <string name="accept">Accept</string>
+    <string name="you_rate_this_product_good">You rate this product: </string>
+    <string name="name">Name</string>
+    <string name="est_name">Est Name</string>
+    <string name="booking_date">Booking Date</string>
+    <string name="end_date">End Date</string>
+    <string name="booking_qr">Booking Qr</string>
+    <string name="payment_history">Payment History</string>
+    <string name="withdraw_amount">Withdraw Amount</string>
+    <string name="payment">Payment</string>
 </resources>

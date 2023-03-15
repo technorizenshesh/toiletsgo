@@ -125,7 +125,7 @@
                     android:layout_marginTop="@dimen/_5sdp"
                     android:background="@drawable/background_edit"
                     android:fontFamily="@font/poppinsregular"
-                    android:hint="password"
+                    android:hint="@string/password"
                     android:maxLines="1"
                     android:inputType="textPassword"
                     android:padding="@dimen/_10sdp"

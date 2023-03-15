@@ -97,6 +97,10 @@ public class LoginActivity extends AppCompatActivity {
             startActivity(new Intent(getApplicationContext(), SignupActivity.class)
                     .putExtra("User_type", UserType));
         });
+        binding.forgetPass.setOnClickListener(v -> {
+            startActivity(new Intent(getApplicationContext(), ForgetPassActivity.class)
+                    .putExtra("User_type", UserType));
+        });
     }
 
 
@@ -112,8 +116,9 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onResponse(Call<SuccessResSignup> call,
                                    Response<SuccessResSignup> response) {
+                DataManager.getInstance().hideProgressMessage();
+
                 try {
-                    DataManager.getInstance().hideProgressMessage();
                     SuccessResSignup data = response.body();
                     Log.e("data", data.getStatus());
                     if (data.getStatus().equals("1")) {
@@ -155,6 +160,8 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onFailure(Call<SuccessResSignup> call, Throwable t) {
                 call.cancel();
+                Log.e("TAG", "onFailure: "+t.getMessage() );
+                Log.e("TAG", "onFailure: "+t.getLocalizedMessage() );
                 DataManager.getInstance().hideProgressMessage();
             }
         });

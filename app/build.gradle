@@ -83,6 +83,7 @@ dependencies {
 
 //lottianem
     implementation 'com.airbnb.android:lottie:5.2.0'
+    implementation 'pl.droidsonroids.gif:android-gif-drawable:1.2.25'
 
 //QRCODE
     implementation 'com.github.blikoon:QRCodeScanner:0.1.2'

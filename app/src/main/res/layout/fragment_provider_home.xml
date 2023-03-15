@@ -54,11 +54,14 @@
 
                 <TextView
                     android:id="@+id/txt_two"
-                    android:padding="@dimen/_5sdp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerInParent="true"
-                    android:layout_margin="2sp"
+                    android:layout_marginStart="2sp"
+                    android:layout_marginTop="2sp"
+                    android:layout_marginEnd="2sp"
+                    android:layout_marginBottom="2sp"
+                    android:padding="@dimen/_5sdp"
                     android:text="@string/waiting"
                     android:textColor="@color/white"
                     android:textSize="@dimen/_12sdp"

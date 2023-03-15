@@ -180,13 +180,18 @@ public class BookingFragment extends Fragment implements CustomClickListener {
     }
 
     private void submitReview(String rating, String review, String id) {
-
+/*user_id:8
+token:$6$rounds=5042$63e9fda148be62.6$Cd2itzIhPFlK1lWwvC2Uq4QNnf10JgzQRBB8/a1qAP4i8VybRIrtYzQxmOTrffbnkcnBQxccOxcmE26ENkm3x0
+toilet_id:1
+rating:3
+comment:44*/
         DataManager.getInstance().showProgressMessage(requireActivity(), getString(R.string.please_wait));
         Map<String, String> map = new HashMap<>();
         map.put("rating", rating);
         map.put("comment", review);
         map.put("toilet_id", id);
         map.put("token", session.getAuthtoken());
+        map.put("user_id", session.getUserId());
         Log.e(TAG, "sendRequestAPI: " + map);
         Call<ResponseBody> call = apiInterface.add_rating(map);
         call.enqueue(new Callback<>() {

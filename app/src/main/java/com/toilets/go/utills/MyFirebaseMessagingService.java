@@ -185,7 +185,7 @@ if (Util.appInForeground(this)){
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
 
                 PowerManager powerManager = (PowerManager) getSystemService(POWER_SERVICE);
-                boolean result= Build.VERSION.SDK_INT>= Build.VERSION_CODES.KITKAT_WATCH&&powerManager.isInteractive()|| Build.VERSION.SDK_INT< Build.VERSION_CODES.KITKAT_WATCH&&powerManager.isScreenOn();
+                boolean result= powerManager.isInteractive();
 
                 if (!result){
                     @SuppressLint("InvalidWakeLockTag") PowerManager.WakeLock wl = powerManager.newWakeLock(PowerManager.FULL_WAKE_LOCK |
@@ -196,7 +196,7 @@ if (Util.appInForeground(this)){
                 }
 
                 PowerManager pm = (PowerManager) getSystemService(Context.POWER_SERVICE);
-                boolean isScreenOn = Build.VERSION.SDK_INT >= 20 ? pm.isInteractive() : pm.isScreenOn(); // check if screen is on
+                boolean isScreenOn = pm.isInteractive(); // check if screen is on
                 if (!isScreenOn) {
                     PowerManager.WakeLock wl = pm.newWakeLock(PowerManager.SCREEN_DIM_WAKE_LOCK | PowerManager.ACQUIRE_CAUSES_WAKEUP, "myApp:notificationLock");
                     wl.acquire(3000); //set your time in milliseconds
@@ -220,7 +220,7 @@ if (Util.appInForeground(this)){
             else {
 
                 PowerManager powerManager = (PowerManager) getSystemService(POWER_SERVICE);
-                boolean result= Build.VERSION.SDK_INT>= Build.VERSION_CODES.KITKAT_WATCH && powerManager.isInteractive()|| Build.VERSION.SDK_INT< Build.VERSION_CODES.KITKAT_WATCH&&powerManager.isScreenOn();
+                boolean result= powerManager.isInteractive();
 
                 if (!result){
                     @SuppressLint("InvalidWakeLockTag") PowerManager.WakeLock wl = powerManager.newWakeLock(PowerManager.FULL_WAKE_LOCK |PowerManager.ACQUIRE_CAUSES_WAKEUP |PowerManager.ON_AFTER_RELEASE,"MH24_SCREENLOCK");
@@ -269,8 +269,10 @@ if (Util.appInForeground(this)){
 }
             Log.e(TAG, "sendNotification: ---------  "+ title);
             Log.e(TAG, "sendNotification: ---------  "+ message);
-            PendingIntent pendingIntent = PendingIntent.getActivity(this, 0 /* Request code */, intent,
-                    PendingIntent.FLAG_IMMUTABLE);
+            PendingIntent pendingIntent
+
+                    = PendingIntent.getActivity(this, 0 /* Request code */, intent,
+                    PendingIntent.FLAG_UPDATE_CURRENT| PendingIntent.FLAG_IMMUTABLE);
             String channelId = getString(R.string.default_notification_channel_id);
             Uri defaultSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
             NotificationCompat.Builder notificationBuilder =

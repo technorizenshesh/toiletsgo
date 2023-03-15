@@ -4,6 +4,7 @@ package com.toilets.go.retrofit;
 import com.toilets.go.models.SuccessResAcptRej;
 import com.toilets.go.models.SuccessResBooking;
 import com.toilets.go.models.SuccessResCheckRes;
+import com.toilets.go.models.SuccessResForgetPass;
 import com.toilets.go.models.SuccessResGetCountry;
 import com.toilets.go.models.SuccessResGetGender;
 import com.toilets.go.models.SuccessResNearbyList;
@@ -32,6 +33,9 @@ public interface GosInterface {
     @FormUrlEncoded
     @POST("login")
     Call<SuccessResSignup> login(@FieldMap Map<String, String> paramHashMap);
+  @FormUrlEncoded
+    @POST("forgot_password")
+    Call<SuccessResForgetPass> forgot_password(@FieldMap Map<String, String> paramHashMap);
 
     @Multipart
     @POST("signup")

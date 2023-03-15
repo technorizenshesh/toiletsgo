@@ -17,11 +17,10 @@
         android:background="@color/white">
 
         <RelativeLayout
-
+android:layout_alignParentTop="true"
             style="@style/Widget.Design.BottomNavigationView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:gravity="center"
 
             android:orientation="vertical"
             android:padding="@dimen/_5sdp">
@@ -53,25 +52,41 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentEnd="true"
-                    android:layout_margin="@dimen/_5sdp"
+                    android:layout_marginStart="@dimen/_5sdp"
                     android:layout_marginTop="@dimen/_5sdp"
                     android:layout_marginEnd="@dimen/_5sdp"
                     android:layout_marginBottom="@dimen/_5sdp"
                     android:fontFamily="@font/poppins_bold"
                     android:outlineProvider="background"
                     android:outlineSpotShadowColor="@color/white"
-                    android:padding="@dimen/_10sdp"
+                    android:padding="@dimen/_8sdp"
                     android:text="@string/request"
                     android:textAllCaps="false"
                     android:textColor="@color/white"
-                    android:textSize="@dimen/_14sdp"
+                    android:textSize="@dimen/_12sdp"
                     app:backgroundTint="@color/colorPrimary"
-                    app:cornerRadius="@dimen/_10sdp"
+                    app:cornerRadius="@dimen/_8sdp"
                     app:rippleColor="@color/new_primarey" />
 
             </RelativeLayout>
-            <LinearLayout
+            <TextView
+                android:id="@+id/nodata"
                 android:visibility="gone"
+                android:layout_below="@+id/top"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_5sdp"
+                android:layout_marginTop="@dimen/_5sdp"
+                android:layout_marginEnd="@dimen/_5sdp"
+                android:layout_marginBottom="@dimen/_5sdp"
+                android:fontFamily="@font/poppins_bold"
+                android:gravity="center"
+                android:maxLines="1"
+                android:text="No rating Found"
+                android:textColor="@color/texts"
+                android:textSize="@dimen/_18sdp" />
+            <LinearLayout
+                android:visibility="visible"
                 android:id="@+id/progressBar"
                 android:layout_below="@+id/top"
                 android:layout_width="match_parent"
@@ -82,16 +97,17 @@
                     android:foregroundGravity="center"
                     android:visibility="visible"
                     android:layout_margin="@dimen/_5sdp"
-                    android:theme="@style/WhiteAccent"
+                    android:theme="@style/WhiteAccent_no"
                     android:progressTint="@color/colorPrimary"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_width="@dimen/_20sdp"
+                    android:layout_height="@dimen/_20sdp"
                     android:layout_gravity="center"
                     />
 
             </LinearLayout>
 <androidx.recyclerview.widget.RecyclerView
     android:layout_below="@+id/top"
+    android:visibility="gone"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:id="@+id/recyclerView"

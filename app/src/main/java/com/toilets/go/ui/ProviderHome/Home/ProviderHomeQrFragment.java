@@ -14,15 +14,25 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CompoundButton;
 
 import com.blikoon.qrcodescanner.QrCodeActivity;
 import com.toilets.go.R;
 import com.toilets.go.databinding.FragmentProviderHomeQrBinding;
+import com.toilets.go.models.SuccessResProfile;
 import com.toilets.go.retrofit.ApiClient;
 import com.toilets.go.retrofit.GosInterface;
 import com.toilets.go.ui.ProviderHome.ProviderHomeActivity;
 import com.toilets.go.ui.UserSide.HomeUserAct;
+import com.toilets.go.utills.DataManager;
 import com.toilets.go.utills.Session;
+
+import java.util.HashMap;
+import java.util.Map;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 
 public class ProviderHomeQrFragment extends Fragment {
@@ -57,8 +67,53 @@ FragmentProviderHomeQrBinding binding ;
              }catch (Exception e){
                  e.printStackTrace();}
          });
+
+          binding.SitchBtn.setOnCheckedChangeListener((buttonView, isChecked) -> {
+              if (isChecked){
+                  changeAutoAccept("True");
+              }else {
+                  changeAutoAccept("False");
+
+              }
+          });
+        getUserProfileAPI();
         return binding.getRoot() ;
     }
+
+    private void changeAutoAccept(String yes) {
+        DataManager.getInstance().showProgressMessage(requireActivity(), getString(R.string.please_wait));
+        Map<String, String> map = new HashMap<>();
+        map.put("user_id", session.getUserId());
+        map.put("token", session.getAuthtoken());
+        map.put("auto_accept", yes);
+        Call<SuccessResProfile> call = apiInterface.get_profile(map);
+        call.enqueue(new Callback<>() {
+            @Override
+            public void onResponse(Call<SuccessResProfile> call,
+                                   Response<SuccessResProfile> response) {
+                try {
+                    DataManager.getInstance().hideProgressMessage();
+                    SuccessResProfile data = response.body();
+                    Log.e("data", data.getStatus());
+                    if (data.getStatus().equals("1")) {
+                        getUserProfileAPI();
+                    }
+
+
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<SuccessResProfile> call, Throwable t) {
+                call.cancel();
+                DataManager.getInstance().hideProgressMessage();
+            }
+        });
+
+    }
+
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if(resultCode != Activity.RESULT_OK)
         {
@@ -103,4 +158,43 @@ FragmentProviderHomeQrBinding binding ;
 
         }
     }
+    private void getUserProfileAPI() {
+        DataManager.getInstance().showProgressMessage(requireActivity(), getString(R.string.please_wait));
+        Map<String, String> map = new HashMap<>();
+        map.put("user_id", session.getUserId());
+        map.put("token", session.getAuthtoken());
+        Call<SuccessResProfile> call = apiInterface.get_profile(map);
+        call.enqueue(new Callback<>() {
+            @Override
+            public void onResponse(Call<SuccessResProfile> call,
+                                   Response<SuccessResProfile> response) {
+                DataManager.getInstance().hideProgressMessage();
+
+                try {
+                    SuccessResProfile data = response.body();
+                    Log.e("data", data.getStatus());
+                    if (data.getStatus().equals("1")) {
+                        String isacpt = data.getResult().getAutoAccpet();
+                         if (isacpt.equalsIgnoreCase("True")){
+                             binding.SitchBtn.setChecked(true);
+                         }else binding.SitchBtn.setChecked(false);
+                        // binding.setModel(response.body().getResult());
+                        // binding.setImageUrl(response.body().getResult().getImage());
+                    }
+
+
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<SuccessResProfile> call, Throwable t) {
+                call.cancel();
+                DataManager.getInstance().hideProgressMessage();
+            }
+        });
+
+    }
+
 }
