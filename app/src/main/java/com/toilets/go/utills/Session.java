@@ -29,6 +29,7 @@ public class Session extends Object {
     private static final String AUTHTOKEN = "token";
     private static final String BOOKINGID = "booking_id";
     private static final String USERBASIC = "basic_fill";
+    private static final String WALLET_BALANCE = "wallet_balance";
     private Context _context;
     private SharedPreferences Rapidine_pref;
     private SharedPreferences.Editor editor;
@@ -49,6 +50,15 @@ public class Session extends Object {
     }
 
 
+    public String getWALLET_BALANCE() {
+        return Rapidine_pref.getString(WALLET_BALANCE, "");
+
+    }
+
+    public void setWALLET_BALANCE(String user_name) {
+        editor.putString(WALLET_BALANCE, user_name);
+        this.editor.apply();
+    }
     public String getBookingid() {
         return Rapidine_pref.getString(BOOKINGID, "");
 

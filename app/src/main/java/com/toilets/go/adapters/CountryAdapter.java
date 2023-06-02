@@ -24,8 +24,6 @@ public class CountryAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
         this.modelList = modelList;
 
     }
-
-
     @Override
     public CountryAdapter.ViewHolder onCreateViewHolder(ViewGroup viewGroup, int viewType) {
         View view = LayoutInflater.from(viewGroup.getContext()).inflate(

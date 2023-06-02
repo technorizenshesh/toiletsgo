@@ -18,21 +18,17 @@ import com.toilets.go.utills.CustomClickListener;
 
 import java.util.List;
 
-public class NotificationListAdapter extends
-        RecyclerView.Adapter<NotificationListAdapter.ViewHolder>
+public class NotificationListAdapter extends RecyclerView.Adapter<NotificationListAdapter.ViewHolder>
          {
-
     private List<SuccessResNotifications.Result> dataModelList;
     private Context context;
-             NotificationClickListener customClickListener ;
-
+    NotificationClickListener customClickListener ;
     public NotificationListAdapter(List<SuccessResNotifications.Result> dataModelList,
                                    Context ctx, NotificationClickListener customClickListener ) {
         this.dataModelList = dataModelList;
         this.customClickListener = customClickListener;
         context = ctx;
     }
-
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent,
                                          int viewType) {
@@ -41,19 +37,13 @@ public class NotificationListAdapter extends
                 R.layout.item_row_notificatin, parent, false);
         return new ViewHolder(binding);
     }
-
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
         SuccessResNotifications.Result dataModel = dataModelList.get(position);
         holder.bind(dataModel);
-
-
         holder.itemRowBinding.getRoot().setOnClickListener( v -> {
             customClickListener.notificationCardClicked(dataModel,"Reject",position);
-        });
-
-    }
-
+        });}
 
     @Override
     public int getItemCount() {
@@ -67,13 +57,11 @@ public class NotificationListAdapter extends
             super(itemRowBinding.getRoot());
             this.itemRowBinding = itemRowBinding;
         }
-
         public void bind(Object obj) {
             itemRowBinding.setVariable(BR.model, obj);
             itemRowBinding.executePendingBindings();
         }
     }
-
              public void removeAt(int position) {
                  dataModelList.remove(position);
                  notifyItemRemoved(position);

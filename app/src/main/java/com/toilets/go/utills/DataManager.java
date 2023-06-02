@@ -66,6 +66,32 @@ public class DataManager {
 
                 mDialog.getWindow().setAttributes(lp);
                 mDialog.getWindow().addFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND);
+                mDialog.setCancelable(true);
+                mDialog.setCanceledOnTouchOutside(true);
+                mDialog.show();
+
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
+        }
+        public void showProgressMessageForced(Activity dialogActivity, String msg) {
+            try {
+                if (isProgressDialogRunning) {
+                    hideProgressMessage();
+                }
+                isProgressDialogRunning = true;
+                mDialog = new Dialog(dialogActivity);
+                mDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+                mDialog.setContentView(R.layout.dialog_loading);
+                mDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+                //TextView textView = mDialog.findViewById(R.id.textView);
+                progressBar = mDialog.findViewById(R.id.progressBar);
+               // textView.setText(msg);
+                WindowManager.LayoutParams lp = mDialog.getWindow().getAttributes();
+                lp.dimAmount = 0.6f;
+
+                mDialog.getWindow().setAttributes(lp);
+                mDialog.getWindow().addFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND);
                 mDialog.setCancelable(false);
                 mDialog.setCanceledOnTouchOutside(false);
                 mDialog.show();

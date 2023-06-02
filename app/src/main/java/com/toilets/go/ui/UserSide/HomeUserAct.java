@@ -7,6 +7,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
@@ -83,16 +84,18 @@ public class HomeUserAct extends AppCompatActivity {
         Call<SuccessResProfile> call = apiInterface.get_profile(map);
         call.enqueue(new Callback<SuccessResProfile>() {
             @Override
-            public void onResponse(Call<SuccessResProfile> call,
-                                   Response<SuccessResProfile> response) {
+            public void onResponse(@NonNull Call<SuccessResProfile> call,
+                                   @NonNull Response<SuccessResProfile> response) {
                 try {
                     DataManager.getInstance().hideProgressMessage();
                     SuccessResProfile data = response.body();
                     Log.e("data", data.getStatus());
                     if (data.getStatus().equals("1")) {
                         binding.drawerLayout.setModel(response.body().getResult());
+                        Log.e("TAG", "onResponse: "+ response.body().getResult().getWallet());
+                         session.setWALLET_BALANCE(response.body().getResult().getWallet());
 
-                         }
+                    }
 
 
                 } catch (Exception e) {
@@ -101,7 +104,7 @@ public class HomeUserAct extends AppCompatActivity {
             }
 
             @Override
-            public void onFailure(Call<SuccessResProfile> call, Throwable t) {
+            public void onFailure(@NonNull Call<SuccessResProfile> call, @NonNull Throwable t) {
                 call.cancel();
                 DataManager.getInstance().hideProgressMessage();
             }
@@ -162,10 +165,14 @@ public class HomeUserAct extends AppCompatActivity {
         binding.drawerLayout.btnLogin.setOnClickListener(v ->
                 {
                     session.logout();
-                    //  SharedPreferenceUtility.getInstance(HomeAct.this).putBoolean(Constant.IS_USER_LOGGED_IN, false);
-                   /* Intent intent = new Intent(HomeUserAct.this, HomeUserAct.class);
-                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                    startActivity(intent);*/
+                }
+        );
+        binding.drawerLayout.tvWallet.setOnClickListener(v ->
+                {
+                    binding.drawer.closeDrawer(GravityCompat.START);
+                    Navigation.findNavController(binding.navHostFragment)
+                            .navigate(R.id.action_user_home_to_walletFragment);
+
                 }
         );
 

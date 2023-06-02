@@ -1,6 +1,7 @@
 package com.toilets.go.retrofit;
 
 
+import com.toilets.go.models.AddWalletResponse;
 import com.toilets.go.models.SuccessResAcptRej;
 import com.toilets.go.models.SuccessResBooking;
 import com.toilets.go.models.SuccessResCheckRes;
@@ -15,6 +16,7 @@ import com.toilets.go.models.SuccessResRequests;
 import com.toilets.go.models.SuccessResSignup;
 import com.toilets.go.models.SuccessResAddbank;
 import com.toilets.go.models.SuccessResStabRes;
+import com.toilets.go.ui.UserSide.Wallet.WalletResponse;
 
 import java.util.Map;
 
@@ -72,12 +74,16 @@ public interface GosInterface {
 
     @GET("get_country")
     Call<SuccessResGetCountry> get_country();
+
     @GET("get_gender")
     Call<SuccessResGetGender> get_gender();
 
     @FormUrlEncoded
     @POST("get_profile")
     Call<SuccessResProfile> get_profile(@FieldMap Map<String, String> paramHashMap);
+    @FormUrlEncoded
+    @POST("add_money")
+    Call<AddWalletResponse> add_money(@FieldMap Map<String, String> paramHashMap);
     @FormUrlEncoded
     @POST("add_update_bank_account")
     Call<SuccessResAddbank> add_bank_account(@FieldMap Map<String, String> paramHashMap);
@@ -111,5 +117,7 @@ public interface GosInterface {
     @FormUrlEncoded
     @POST("check_establishment")
     Call<SuccessResCheckRes> check_if_exist(@FieldMap Map<String, String> paramHashMap);
-
+  @FormUrlEncoded
+  @POST("get_wallet_history")
+  Call<WalletResponse> get_wallet_history(@FieldMap Map<String, String> paramHashMap);
 }

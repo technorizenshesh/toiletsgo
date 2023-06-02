@@ -111,6 +111,9 @@ public  class SuccessResProfile implements Serializable {
     @SerializedName("city")
     @Expose
     private String city;
+    @SerializedName("wallet")
+    @Expose
+    private String wallet;
     @SerializedName("step")
     @Expose
     private String step;
@@ -150,6 +153,14 @@ public  class SuccessResProfile implements Serializable {
     @SerializedName("account_number")
     @Expose
     private String accountNumber;
+
+    public String getWallet() {
+      return wallet;
+    }
+
+    public void setWallet(String wallet) {
+      this.wallet = wallet;
+    }
 
     public String getId() {
       return id;

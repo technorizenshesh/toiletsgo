@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:cardCornerRadius="@dimen/_5sdp"
+        app:cardUseCompatPadding="true"
+        app:cardElevation="@dimen/_2sdp"
+
+        >
+        <LinearLayout
+
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="@dimen/_5sdp"
+            >
+            <TextView
+                android:id="@+id/tvName"
+                android:layout_margin="@dimen/_2sdp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:maxLines="1"
+                android:fontFamily="@font/poppins_medium"
+                android:padding="@dimen/_5sdp"
+                android:textColor="@color/red"
+                android:textSize="@dimen/_12sdp" />
+            <TextView
+                android:id="@+id/tvDate"
+                android:layout_margin="@dimen/_2sdp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:maxLines="1"
+                android:layout_gravity="end"
+                android:textAlignment="textEnd"
+                android:fontFamily="@font/poppinsregular"
+                android:padding="@dimen/_1sdp"
+                android:textColor="@color/hint_text_color"
+                android:textSize="@dimen/_8sdp" />
+        </LinearLayout>
+
+    </androidx.cardview.widget.CardView>
+</layout>

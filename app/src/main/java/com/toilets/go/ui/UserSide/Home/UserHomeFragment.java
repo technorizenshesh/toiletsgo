@@ -122,7 +122,6 @@ public class UserHomeFragment extends Fragment implements OnMapReadyCallback {
         lat = session.getHOME_LAT();
         lon = session.getHOME_LONG();
         Log.e(TAG, "getFireBaseTokengetFireBaseToken: " + session.getFireBaseToken());
-
 ///rearch
         Places.initialize(requireActivity(), requireActivity().getString(R.string.api_key));
         placesClient = Places.createClient(requireActivity());

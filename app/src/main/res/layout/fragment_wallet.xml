@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <include
+            android:id="@+id/header"
+            layout="@layout/header_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@+id/header"
+            android:fillViewport="true">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <androidx.cardview.widget.CardView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        app:cardCornerRadius="@dimen/_10sdp"
+                        app:cardElevation="@dimen/_4sdp"
+                        app:cardUseCompatPadding="true">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:id="@+id/edt_price"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:layout_marginTop="@dimen/_12sdp"
+                                android:layout_marginStart="@dimen/_12sdp"
+                                android:layout_marginEnd="@dimen/_12sdp"
+                                android:layout_marginBottom="@dimen/_5sdp"
+                                android:drawableLeft="@drawable/baseline_attach_money"
+                                android:drawablePadding="@dimen/_5sdp"
+
+                                android:fontFamily="@font/poppins_bold"
+                                android:gravity="center"
+                                android:maxLines="1"
+                                android:padding="@dimen/_10sdp"
+                                android:text="00.00"
+                                android:textAlignment="center"
+                                android:textColor="@color/colorPrimary"
+                                android:textSize="@dimen/_16sdp" />
+
+                            <ImageView
+                                android:id="@+id/img_header"
+                                android:layout_width="@dimen/_45sdp"
+                                android:layout_height="@dimen/_45sdp"
+                                android:layout_centerVertical="true"
+                                android:layout_gravity="center"
+                                android:layout_marginBottom="@dimen/_4sdp"
+                                android:padding="@dimen/_2sdp"
+                                android:scaleType="centerInside"
+                                android:src="@drawable/add_to_svg" />
+                        </LinearLayout>
+
+                    </androidx.cardview.widget.CardView>
+
+                    <TextView
+                        android:id="@+id/tvtitle"
+                        android:padding="@dimen/_4sdp"
+                        android:layout_margin="@dimen/_4sdp"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/texts"
+                        android:text="Transaction History"
+                        android:textSize="@dimen/_12sdp"
+                        android:layout_gravity="center"
+                        android:fontFamily="@font/poppins_medium" />
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/pay_history"
+                        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
+
+                </LinearLayout>
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btn_payment"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentBottom="true"
+                    android:layout_marginStart="@dimen/_10sdp"
+                    android:layout_marginTop="@dimen/_10sdp"
+                    android:layout_marginEnd="@dimen/_10sdp"
+                    android:layout_marginBottom="@dimen/_10sdp"
+                    android:elevation="@dimen/_3sdp"
+                    android:fontFamily="@font/poppins_bold"
+                    android:outlineProvider="background"
+                    android:outlineSpotShadowColor="@color/white"
+                    android:padding="@dimen/_10sdp"
+                    android:text="Payment"
+                    android:textAllCaps="false"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/_12sdp"
+                    android:textStyle="bold"
+                    android:visibility="gone"
+                    app:backgroundTint="@color/colorPrimary"
+                    app:cornerRadius="@dimen/_10sdp"
+                    app:rippleColor="@color/gray_two" />
+
+            </RelativeLayout>
+
+        </LinearLayout>
+
+    </RelativeLayout>
+</layout>

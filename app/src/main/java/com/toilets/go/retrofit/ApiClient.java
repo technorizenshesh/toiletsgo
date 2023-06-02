@@ -15,9 +15,9 @@ public class ApiClient {
             final HttpLoggingInterceptor interceptor = new HttpLoggingInterceptor();
             interceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
             OkHttpClient client = new OkHttpClient.Builder()
-                    .connectTimeout(300, TimeUnit.SECONDS)
+                    .connectTimeout(50, TimeUnit.SECONDS)
                     .addInterceptor(interceptor)
-                    .readTimeout(300, TimeUnit.SECONDS).build();
+                    .readTimeout(50, TimeUnit.SECONDS).build();
 
             retrofit = new Retrofit.Builder()
                     .baseUrl(BASE_URL)

@@ -27,6 +27,9 @@
         <action
             android:id="@+id/action_navigation_home_to_payment_fragment"
             app:destination="@id/payment_fragment" />
+        <action
+            android:id="@+id/action_user_home_to_walletFragment"
+            app:destination="@id/walletFragment" />
 
     </fragment>
     <fragment
@@ -87,4 +90,9 @@
             app:restoreState="true"
             />
     </fragment>
+    <fragment
+        android:id="@+id/walletFragment"
+        android:name="com.toilets.go.ui.UserSide.Wallet.WalletFragment"
+        android:label="fragment_wallet"
+        tools:layout="@layout/fragment_wallet" />
 </navigation>
