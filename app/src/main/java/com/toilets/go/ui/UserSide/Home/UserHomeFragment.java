@@ -309,18 +309,15 @@ public class UserHomeFragment extends Fragment implements OnMapReadyCallback {
             } else {
                 Toast.makeText(requireActivity(), R.string.no_location, Toast.LENGTH_SHORT).show();
             }
-            googleMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
-                @Override
-                public boolean onMarkerClick(@NonNull Marker marker) {
-                    SuccessResNearbyList.Result data = datasnap.get(marker);
-                    binding.mrkerLay.setDatamodel(data);
-                    binding.mrkerLay.viewDtl.setOnClickListener(v -> {
-                        openBottemSheet(data);
-                    });
-                    binding.mrkerLay.getRoot().setVisibility(View.VISIBLE);
-                    //  openBottemSheet(data);
-                    return false;
-                }
+            googleMap.setOnMarkerClickListener(marker -> {
+                SuccessResNearbyList.Result data = datasnap.get(marker);
+                binding.mrkerLay.setDatamodel(data);
+                binding.mrkerLay.viewDtl.setOnClickListener(v -> {
+                    openBottemSheet(data);
+                });
+                binding.mrkerLay.getRoot().setVisibility(View.VISIBLE);
+                //  openBottemSheet(data);
+                return false;
             });
             googleMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
                 @Override
@@ -601,10 +598,8 @@ public class UserHomeFragment extends Fragment implements OnMapReadyCallback {
     }
 
     private void openBottemSheetfor() {
-            final Dialog dialog = new Dialog(getActivity());
+            final Dialog dialog = new Dialog(getActivity(),R.style.NewDialog);
             dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-           dialog.getWindow().getAttributes().windowAnimations =
-                    android.R.style.Widget_Material_PopupWindow;
           WindowManager.LayoutParams lp = new WindowManager.LayoutParams();
             Window window = dialog.getWindow();
             lp.copyFrom(window.getAttributes());

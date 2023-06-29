@@ -1,15 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
-
     <data>
-
         <variable
             name="model"
             type="com.toilets.go.models.SuccessResProfile.Result" />
     </data>
-
-
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -76,7 +72,7 @@
                 android:layout_marginTop="@dimen/_5sdp"
                 android:orientation="vertical">
 
-                <RelativeLayout
+                <LinearLayout
                     android:id="@+id/tv_wallet"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -102,16 +98,17 @@
                         android:layout_alignParentEnd="true"
                         android:layout_marginStart="@dimen/_20sdp"
                         android:layout_toRightOf="@id/tv_wallet2"
-                        android:drawableLeft="@drawable/baseline_attach_money"
+                        android:drawableLeft="@drawable/baseline_diamond"
                         android:drawablePadding="@dimen/_15sdp"
                         android:fontFamily="@font/poppins_bold"
                         android:padding="@dimen/_10sdp"
+                        android:maxLines="1"
                         android:text="@{model.wallet}"
                         android:textAlignment="textStart"
                         android:textColor="@color/colorPrimary"
                         android:textSize="@dimen/_13sdp" />
 
-                </RelativeLayout>
+                </LinearLayout>
 
                 <TextView
                     android:id="@+id/tv_profile"

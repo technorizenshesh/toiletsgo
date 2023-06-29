@@ -22,6 +22,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:maxLines="1"
+                android:drawablePadding="@dimen/_10sdp"
+                 android:drawableLeft="@drawable/baseline_diamond"
                 android:fontFamily="@font/poppins_medium"
                 android:padding="@dimen/_5sdp"
                 android:textColor="@color/red"

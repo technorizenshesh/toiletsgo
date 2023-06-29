@@ -201,7 +201,8 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentRight="true"
-                        android:text="@{datamodel.price+` $`}"
+                        android:text="@{datamodel.price}"
+                        android:drawableRight="@drawable/baseline_diamond"
                         android:fontFamily="@font/poppins_bold"
                         android:textColor="@color/colorSecondary"                    android:textSize="@dimen/_10sdp" />
 

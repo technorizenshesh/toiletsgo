@@ -11,21 +11,19 @@ import com.toilets.go.models.AddWalletResponse;
 import com.toilets.go.utills.Session;
 
 public class WalletViewModel  extends AndroidViewModel {
-    private WalletRepository walletRepository;
-    private LiveData<WalletResponse> walletResponseLiveData;
-    private LiveData<AddWalletResponse> addmoney;
+     WalletRepository walletRepository;
+     LiveData<WalletResponse> walletResponseLiveData;
+     LiveData<AddWalletResponse> addmoney;
 Session session ;
     public WalletViewModel(@NonNull Application application) {
         super(application);
         walletRepository = new WalletRepository();
          session = new Session(application);
-        this.walletResponseLiveData = walletRepository.getMovieArticles(session.getUserId(),
-                session.getAuthtoken());
-
+        getwalletResponse();
     }
-    public LiveData<WalletResponse> getWalletResponseLiveData() {
-        return walletResponseLiveData;
-    }
+public void getwalletResponse(){
+    walletResponseLiveData=  walletRepository.getMovieArticles(session.getUserId(), session.getAuthtoken());
+}
 
     public LiveData<AddWalletResponse> getAddMoney(String amount, String user_id, String auth) {
         this.addmoney = walletRepository.getAddMoney(amount,user_id,auth);

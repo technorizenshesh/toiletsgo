@@ -41,7 +41,9 @@
                     android:fontFamily="@font/poppins_bold"
                     android:gravity="center_vertical"
                     android:maxLines="1"
-                    android:text="@{datamodel.price+` $`}"
+                    android:text="@{datamodel.price}"
+                    android:drawableRight="@drawable/baseline_diamond"
+                    android:drawablePadding="@dimen/_5sdp"
                     android:textColor="@color/texts"
                     android:textSize="@dimen/_18sdp" />
 

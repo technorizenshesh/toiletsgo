@@ -40,8 +40,8 @@ public class WalletAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
             final WalletResponse.Result model = modelList.get(position);
             TextView tvName = holder.itemView.findViewById(R.id.tvName);
             TextView tvDate = holder.itemView.findViewById(R.id.tvDate);
-            tvName.setText("+ $ "+model.amount+"         ");
-            tvDate.setText("+ $ "+model.userName+"         ");
+            tvName.setText(" "+model.amount+"         ");
+            tvDate.setText(" "+model.userName+"         ");
             tvName.setTextColor(mContext.getColor(R.color.green));
         }
     }

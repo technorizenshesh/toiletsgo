@@ -1,5 +1,8 @@
 package com.toilets.go.ui.UserSide;
 
+import static android.Manifest.permission.ACCESS_COARSE_LOCATION;
+import static android.Manifest.permission.ACCESS_FINE_LOCATION;
+
 import android.content.DialogInterface;
 import android.content.pm.PackageManager;
 import android.location.Location;
@@ -24,13 +27,13 @@ import com.google.android.gms.location.LocationSettingsResponse;
 import com.google.android.gms.location.SettingsClient;
 import com.google.android.gms.tasks.Task;
 import com.toilets.go.R;
-import com.toilets.go.utills.DataManager;
-import com.toilets.go.utills.LocationHandler;
-import com.toilets.go.utills.Session;
 import com.toilets.go.databinding.ActivityHomeUserBinding;
 import com.toilets.go.models.SuccessResProfile;
 import com.toilets.go.retrofit.ApiClient;
 import com.toilets.go.retrofit.GosInterface;
+import com.toilets.go.utills.DataManager;
+import com.toilets.go.utills.LocationHandler;
+import com.toilets.go.utills.Session;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -39,16 +42,13 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-import static android.Manifest.permission.ACCESS_COARSE_LOCATION;
-import static android.Manifest.permission.ACCESS_FINE_LOCATION;
-
 public class HomeUserAct extends AppCompatActivity {
-    ActivityHomeUserBinding binding;
     private static final int ENABLE_GPS = 3030;
     private final int REQUEST_LOCATION_PERMISSION = 1;
+    ActivityHomeUserBinding binding;
     Location mLocation;
     // NavController navController;
-    Session session ;
+    Session session;
     private GosInterface apiInterface;
 
     @Override
@@ -82,7 +82,7 @@ public class HomeUserAct extends AppCompatActivity {
         map.put("user_id", session.getUserId());
         map.put("token", session.getAuthtoken());
         Call<SuccessResProfile> call = apiInterface.get_profile(map);
-        call.enqueue(new Callback<SuccessResProfile>() {
+        call.enqueue(new Callback<>() {
             @Override
             public void onResponse(@NonNull Call<SuccessResProfile> call,
                                    @NonNull Response<SuccessResProfile> response) {
@@ -92,8 +92,8 @@ public class HomeUserAct extends AppCompatActivity {
                     Log.e("data", data.getStatus());
                     if (data.getStatus().equals("1")) {
                         binding.drawerLayout.setModel(response.body().getResult());
-                        Log.e("TAG", "onResponse: "+ response.body().getResult().getWallet());
-                         session.setWALLET_BALANCE(response.body().getResult().getWallet());
+                        Log.e("TAG", "onResponse: " + response.body().getResult().getWallet());
+                        session.setWALLET_BALANCE(response.body().getResult().getWallet());
 
                     }
 
@@ -118,7 +118,29 @@ public class HomeUserAct extends AppCompatActivity {
         else binding.drawer.openDrawer(GravityCompat.START);
     }
 
+    @Override
+    public void onBackPressed() {
+        if (binding.drawer.isDrawerOpen(GravityCompat.START)){
+            binding.drawer.closeDrawer(GravityCompat.START);}
+        else {
+           /* AlertDialog.Builder builder = new AlertDialog.Builder(HomeUserAct.this);
+            builder.setTitle(R.string.app_name);
+            builder.setIcon(R.drawable.logo);
+            builder.setMessage("Do you want to exit?")
+                    .setCancelable(false)
+                    .setPositiveButton("Yes", (dialog, id) -> finish())
+                    .setNegativeButton("No", (dialog, id) -> dialog.cancel());
+            AlertDialog alert = builder.create();
+            alert.show();*/
+            super.onBackPressed();
+
+        }
+
+    }
+
     private void setUpNavigationDrawer() {
+
+
         binding.drawerLayout.tvProfile.setOnClickListener(v ->
                 {
                     binding.drawer.closeDrawer(GravityCompat.START);
@@ -178,10 +200,12 @@ public class HomeUserAct extends AppCompatActivity {
 
 
     }
+
     private void requestPermission() {
         ActivityCompat.requestPermissions(this, new String[]
                 {ACCESS_FINE_LOCATION, ACCESS_COARSE_LOCATION}, REQUEST_LOCATION_PERMISSION);
     }
+
     @Override
     public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
@@ -221,6 +245,7 @@ public class HomeUserAct extends AppCompatActivity {
                 break;
         }
     }
+
     private void enableGPSAutomatically() {
         LocationSettingsRequest.Builder l_builder = new LocationSettingsRequest.Builder().
                 addLocationRequest(LocationHandler.createLocationRequest());
@@ -238,6 +263,7 @@ public class HomeUserAct extends AppCompatActivity {
             }
         });
     }
+
     private void showMessageOKCancel(String message, DialogInterface.OnClickListener okListener) {
         new AlertDialog.Builder(HomeUserAct.this)
                 .setMessage(message)
@@ -246,6 +272,7 @@ public class HomeUserAct extends AppCompatActivity {
                 .create()
                 .show();
     }
+
     private boolean checkPermission() {
         int result = ContextCompat.checkSelfPermission(getApplicationContext(), ACCESS_FINE_LOCATION);
         int result1 = ContextCompat.checkSelfPermission(getApplicationContext(), ACCESS_COARSE_LOCATION);
@@ -268,7 +295,7 @@ public class HomeUserAct extends AppCompatActivity {
                                     double longitude = mLocation.getLongitude();
                                     session.setHOME_LAT(String.valueOf(lat));
                                     session.setHOME_LONG(String.valueOf(longitude));
-                                    session.setRestraID(DataManager.CurrentCity(lat,longitude,getApplicationContext()));
+                                    session.setRestraID(DataManager.CurrentCity(lat, longitude, getApplicationContext()));
                                     Log.e("TAG", "onLocationChange:   lat  --" + String.valueOf(lat) +
                                             "---lang---" + String.valueOf(longitude));
 

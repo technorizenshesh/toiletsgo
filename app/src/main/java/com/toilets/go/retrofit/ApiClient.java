@@ -8,7 +8,7 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 public class ApiClient {
-    private static final String BASE_URL = "https://technorizen.com/ToiletsGo/webservice/";
+    private static final String BASE_URL = "https://server-php-7-3.technorizen.com/ToiletsGo/webservice/";
     public static Retrofit retrofit = null;
     public static Retrofit getClient() {
         if (retrofit == null) {

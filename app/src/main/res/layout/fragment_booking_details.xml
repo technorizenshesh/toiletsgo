@@ -170,6 +170,7 @@
                             android:background="@drawable/border_btn_ovel"
                             android:fontFamily="@font/poppins_medium"
                             android:padding="@dimen/_5sdp"
+                            android:drawableRight="@drawable/baseline_diamond_gold"
                             android:text=""
                             android:textColor="@color/white"
                             android:textSize="@dimen/_12sdp" />

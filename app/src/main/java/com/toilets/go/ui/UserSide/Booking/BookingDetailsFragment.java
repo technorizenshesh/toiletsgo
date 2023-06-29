@@ -53,7 +53,7 @@ public class BookingDetailsFragment extends Fragment {
                 }
                 binding.tvName.setText(result.getCartDetails().getToiletName());
                 binding.tvAddress.setText(result.getCartDetails().getAddress());
-                binding.tvRating.setText(" $ " + result.getAmount() + " ");
+                binding.tvRating.setText( result.getAmount() + " ");
                 binding.bookingId.setText("  #" + result.getId() + " ");
                 binding.startDate.setText(result.getOrderDate() + " ");
                 binding.endDate.setText(result.getDateTime() + " ");
